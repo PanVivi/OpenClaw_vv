@@ -1,0 +1,20 @@
+.env
+.env.*
+!.env.example
+
+# OpenClaw local runtime state / secrets
+.openclaw/
+agents/*/agent/auth-profiles.json
+agents/*/sessions/
+workspace-*/
+
+# Local extracted source records
+*.mht
+*.har
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
