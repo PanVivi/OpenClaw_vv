@@ -15,7 +15,7 @@
 4. 如果要执行任务，读 [工作流程 v0.02](001-OpenClaw规划设计/Workflows工作流程-v0.02.md)
 5. 如果要判断当前状态，读 [当前进度 v0.02](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
 6. 如果要继续推进，读 [实施路线图 v0.02](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.02.md)
-7. 如果要避免踩坑，读 [纠错事故 v0.01](003-OpenClaw事故经验/CorrectionsIncident纠错事故-v0.01.md)、[经验教训 v0.01](003-OpenClaw事故经验/LessonsLearned经验教训-v0.01.md) 和 [Telegram Bot Polling 冲突观察 v0.01](003-OpenClaw事故经验/OBSERVATION-003-TelegramBotPollingConflict-v0.01.md)
+7. 如果要避免踩坑，读 [纠错事故 v0.01](003-OpenClaw事故经验/CorrectionsIncident纠错事故-v0.01.md)、[经验教训 v0.01](003-OpenClaw事故经验/LessonsLearned经验教训-v0.01.md) 和 [轮询冲突观察 v0.01](003-OpenClaw事故经验/TelegramBotPollingConflict轮询冲突观察-v0.01.md)
 
 文档分类：
 
@@ -40,4 +40,4 @@
 
 - [CorrectionsIncident纠错事故-v0.01.md](003-OpenClaw事故经验/CorrectionsIncident纠错事故-v0.01.md)：纠错记录、事故根因、修复结果。
 - [LessonsLearned经验教训-v0.01.md](003-OpenClaw事故经验/LessonsLearned经验教训-v0.01.md)：经验教训和后续变更方法。
-- [OBSERVATION-003-TelegramBotPollingConflict-v0.01.md](003-OpenClaw事故经验/OBSERVATION-003-TelegramBotPollingConflict-v0.01.md)：Telegram Bot polling 冲突观察记录。
+- [TelegramBotPollingConflict轮询冲突观察-v0.01.md](003-OpenClaw事故经验/TelegramBotPollingConflict轮询冲突观察-v0.01.md)：Telegram Bot polling 冲突观察记录。
