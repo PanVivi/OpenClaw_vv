@@ -1,4 +1,4 @@
-# 40｜当前进度
+# 001 OpenClaw架设部署｜CurrentProgress 当前进度｜v0.02
 
 ## 1. 一句话状态
 

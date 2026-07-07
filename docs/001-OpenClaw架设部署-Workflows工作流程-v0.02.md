@@ -1,13 +1,13 @@
-# 30｜工作流程
+# 001 OpenClaw架设部署｜Workflows 工作流程｜v0.02
 
 本文件记录 v2.1 精简结构下的流程。早期文档中薛濤、文薑、夏姬是独立角色；后期已合并进 `reviewer`。
 
 ## 1. 通用入口
 
 ```text
-PANVIVI
+薇（少爷 / 少主 / 公子）
 ↓
-housekeeper / 南風
+housekeeper / 賈南風
 ↓
 ops / 魚玄機 或 coder / 步非煙
 ↓
@@ -15,13 +15,13 @@ reviewer 内部阶段：Review / Risk / Test
 ↓
 housekeeper 汇总
 ↓
-PANVIVI
+薇（少爷 / 少主 / 公子）
 ```
 
 ## 2. 调试任务
 
 ```text
-PANVIVI 提出目标
+薇提出目标
 ↓
 housekeeper 评估优先级和任务类型
 ↓
@@ -40,7 +40,7 @@ ops 准备执行命令
 reviewer.Risk 评估危险等级
 ├── 低危：ops 直接执行
 ├── 中危：确认备份/回滚后放行
-└── 高危：上报 housekeeper，由 PANVIVI 决策
+└── 高危：上报 housekeeper，由薇决策
 ↓
 reviewer.Test 验收
 ```
@@ -68,7 +68,7 @@ reviewer.Test 验收
 ## 3. 代码任务
 
 ```text
-PANVIVI 提需求
+薇提出需求
 ↓
 housekeeper 整理需求和优先级
 ↓
@@ -76,9 +76,9 @@ ops 制定设计方案
 ↓
 reviewer.Review 审查方案
 ├── 不通过：打回 ops
-└── 通过：housekeeper 转呈 PANVIVI
+└── 通过：housekeeper 转呈薇
 ↓
-PANVIVI 三选一：
+薇三选一：
   - 通过
   - 修改
   - 不做
@@ -109,17 +109,17 @@ reviewer.Test 功能验收
 | 方案问题 | 打回 ops 改方案，重新 Review |
 | 代码问题 | 打回 coder，重新走 ops 确认和 Review |
 | 部署问题 | 打回 ops 重新部署 |
-| 需求不清 | housekeeper 向 PANVIVI 澄清 |
+| 需求不清 | housekeeper 向薇澄清 |
 
 ## 5. 熔断
 
 | 熔断 | 条件 | 处理 |
 | --- | --- | --- |
-| Review 熔断 | coder 被 reviewer.Review 连续/累计打回 5 次 | housekeeper 上报 PANVIVI |
-| Ops 确认熔断 | coder 被 ops 打回 5 次 | housekeeper 上报 PANVIVI |
-| Test 熔断 | reviewer.Test 连续验收失败 5 次 | housekeeper 上报 PANVIVI |
+| Review 熔断 | coder 被 reviewer.Review 连续/累计打回 5 次 | housekeeper 上报薇 |
+| Ops 确认熔断 | coder 被 ops 打回 5 次 | housekeeper 上报薇 |
+| Test 熔断 | reviewer.Test 连续验收失败 5 次 | housekeeper 上报薇 |
 
-PANVIVI 决策：
+薇决策：
 
 - 调整目标。
 - 换方案方向。
