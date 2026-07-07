@@ -1,6 +1,6 @@
 # OpenClaw_vv 项目文档
 
-本仓库用于保存 PANVIVI 的 OpenClaw 多 Agent 组织架构、部署方案、工作流程、部署进度、纠错记录和经验复盘。
+本仓库用于保存薇的 OpenClaw 多 Agent 组织架构、部署方案、工作流程、部署进度、纠错记录和经验复盘。当前组织名设定为：合欢宗。
 
 整理来源：
 
@@ -9,20 +9,23 @@
 
 给其他 AI 的阅读顺序：
 
-1. 先读 [00 快速简报](docs/00-ai-quick-brief.md)
-2. 再读 [10 最终设计](docs/10-final-design.md)
-3. 如果要部署，读 [20 部署方案](docs/20-deployment-plan.md)
-4. 如果要执行任务，读 [30 工作流程](docs/30-workflows.md)
-5. 如果要判断当前状态，读 [40 当前进度](docs/40-current-progress.md)
-6. 如果要避免踩坑，读 [50 纠错与事故](docs/50-corrections-and-incident.md) 和 [60 经验教训](docs/60-lessons-learned.md)
+1. 先读 [001 OpenClaw架设部署 快速简报 v1.01](docs/001-OpenClaw架设部署-QuickBrief快速简报-v1.01.md)
+2. 再读 [001 OpenClaw架设部署 最终设计 v1.01](docs/001-OpenClaw架设部署-FinalDesign最终设计-v1.01.md)
+3. 如果要部署，读 [001 OpenClaw架设部署 部署方案 v0.02](docs/001-OpenClaw架设部署-DeploymentPlan部署方案-v0.02.md)
+4. 如果要执行任务，读 [001 OpenClaw架设部署 工作流程 v0.02](docs/001-OpenClaw架设部署-Workflows工作流程-v0.02.md)
+5. 如果要判断当前状态，读 [001 OpenClaw架设部署 当前进度 v0.02](docs/001-OpenClaw架设部署-CurrentProgress当前进度-v0.02.md)
+6. 如果要继续推进，读 [001 OpenClaw架设部署 实施路线图 v0.02](docs/001-OpenClaw架设部署-ImplementationRoadmap实施路线图-v0.02.md)
+7. 如果要避免踩坑，读 [001 OpenClaw架设部署 纠错事故 v0.01](docs/001-OpenClaw架设部署-CorrectionsIncident纠错事故-v0.01.md) 和 [001 OpenClaw架设部署 经验教训 v0.01](docs/001-OpenClaw架设部署-LessonsLearned经验教训-v0.01.md)
 
 文档分类：
 
-- [00-ai-quick-brief.md](docs/00-ai-quick-brief.md)：AI 快速接手摘要。
-- [10-final-design.md](docs/10-final-design.md)：最后确定的组织架构设计。
-- [20-deployment-plan.md](docs/20-deployment-plan.md)：部署方案与分阶段推进方式。
-- [30-workflows.md](docs/30-workflows.md)：调试任务、代码任务、复杂任务流程。
-- [40-current-progress.md](docs/40-current-progress.md)：当前部署进度和未完成事项。
-- [50-corrections-and-incident.md](docs/50-corrections-and-incident.md)：纠错记录、事故根因、修复结果。
-- [60-lessons-learned.md](docs/60-lessons-learned.md)：经验教训和后续变更方法。
-- [90-source-index.md](docs/90-source-index.md)：来源文件和核对说明。
+- [001-OpenClaw架设部署-DocumentRules文档编号规则-v1.0.md](docs/001-OpenClaw架设部署-DocumentRules文档编号规则-v1.0.md)：项目文档编号规则。
+- [001-OpenClaw架设部署-QuickBrief快速简报-v1.01.md](docs/001-OpenClaw架设部署-QuickBrief快速简报-v1.01.md)：AI 快速接手摘要。
+- [001-OpenClaw架设部署-FinalDesign最终设计-v1.01.md](docs/001-OpenClaw架设部署-FinalDesign最终设计-v1.01.md)：最后确定的组织架构设计。
+- [001-OpenClaw架设部署-DeploymentPlan部署方案-v0.02.md](docs/001-OpenClaw架设部署-DeploymentPlan部署方案-v0.02.md)：部署方案与分阶段推进方式。
+- [001-OpenClaw架设部署-Workflows工作流程-v0.02.md](docs/001-OpenClaw架设部署-Workflows工作流程-v0.02.md)：调试任务、代码任务、复杂任务流程。
+- [001-OpenClaw架设部署-CurrentProgress当前进度-v0.02.md](docs/001-OpenClaw架设部署-CurrentProgress当前进度-v0.02.md)：当前部署进度和未完成事项。
+- [001-OpenClaw架设部署-CorrectionsIncident纠错事故-v0.01.md](docs/001-OpenClaw架设部署-CorrectionsIncident纠错事故-v0.01.md)：纠错记录、事故根因、修复结果。
+- [001-OpenClaw架设部署-LessonsLearned经验教训-v0.01.md](docs/001-OpenClaw架设部署-LessonsLearned经验教训-v0.01.md)：经验教训和后续变更方法。
+- [001-OpenClaw架设部署-ImplementationRoadmap实施路线图-v0.02.md](docs/001-OpenClaw架设部署-ImplementationRoadmap实施路线图-v0.02.md)：从当前进度继续推进部署的实施路线图。
+- [001-OpenClaw架设部署-SourceIndex来源索引-v0.01.md](docs/001-OpenClaw架设部署-SourceIndex来源索引-v0.01.md)：来源文件和核对说明。

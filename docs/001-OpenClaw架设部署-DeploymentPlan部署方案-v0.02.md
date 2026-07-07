@@ -1,4 +1,4 @@
-# 20｜部署方案
+# 001 OpenClaw架设部署｜DeploymentPlan 部署方案｜v0.02
 
 ## 1. 部署原则
 
@@ -11,6 +11,13 @@ housekeeper / ops / coder / reviewer / life / companion-dugu / companion-wu / co
 ```
 
 其中 `reviewer` 合并原薛濤、文薑、夏姬职责。
+
+组织设定：
+
+- 组织名：合欢宗。
+- 主人/用户名：薇。
+- 下级 Agent 对薇的称呼：少爷、少主、公子。
+- housekeeper 人格名：賈南風。
 
 推荐原则：
 
@@ -86,7 +93,8 @@ Agent Migration：迁移魚玄機自己的配置到 agents/ops
 新增：
 
 - `agents/housekeeper`
-- 南風人格和调度规则。
+- 賈南風人格和调度规则。
+- 面向薇时的称呼规则：少爷 / 少主 / 公子。
 
 验收：
 

@@ -1,8 +1,24 @@
-# 10｜最终设计：v2.1 精简组织架构
+# 001 OpenClaw架设部署｜FinalDesign 最终设计｜v1.01
 
 本文件记录聊天后期确定的最终落地结构。早期 `openclaw-house-architecture-v3` 是十角色方案，但后来已经根据维护成本和单线联系需求做了精简。
 
-## 1. 为什么要精简
+## 1. 基础身份设定
+
+| 项目 | 设定 |
+| --- | --- |
+| 组织名 | 合欢宗 |
+| 主人/用户名 | 薇 |
+| 下级 Agent 对薇的称呼 | 少爷、少主、公子 |
+| housekeeper 人格名 | 賈南風 |
+
+执行约定：
+
+- 文档、配置、记忆和任务摘要中，对组织统一使用“合欢宗”。
+- 对内身份统一使用“薇”，不再使用旧身份名作为角色名。
+- 下级 Agent 面向薇汇报、请示、陪伴或转呈任务时，可根据人格选择“少爷 / 少主 / 公子”。
+- housekeeper 旧名设定已更新为“賈南風”，职责仍是 housekeeper / 总管家 / 总调度。
+
+## 2. 为什么要精简
 
 用户明确提出：
 
@@ -10,15 +26,15 @@
 
 后续讨论确认：
 
-- Housekeeper、Ops、Coder、Life、Companion 这些角色可能会被 PANVIVI 单独联系，保留为独立 Agent/Bot 有意义。
+- Housekeeper、Ops、Coder、Life、Companion 这些角色可能会被薇单独联系，保留为独立 Agent/Bot 有意义。
 - Tester / Reviewer / Supervisor 更多是工作流阶段，不一定需要单独 Telegram Bot。
 - 因此将薛濤、文薑、夏姬合并为 `reviewer`，由它内部切换 Review / Test / Risk prompt。
 
-## 2. 最终 Agent 目录
+## 3. 最终 Agent 目录
 
 | 目录 | 人格/职能 | 是否常用单独对话 | 说明 |
 | --- | --- | --- | --- |
-| `agents/housekeeper` | 南風 | 是 | 总管家、总调度、任务入口 |
+| `agents/housekeeper` | 賈南風 | 是 | 总管家、总调度、任务入口 |
 | `agents/ops` | 魚玄機 | 是 | 运营效率、本地调试、部署执行 |
 | `agents/coder` | 步非煙 | 是 | 代码、脚本、结构化产出 |
 | `agents/reviewer` | 合并 Reviewer | 默认否 | 内部 Review / Risk / Test 阶段 |
@@ -27,11 +43,11 @@
 | `agents/companion-wu` | 武曌 | 是 | 绝对权威型陪伴 |
 | `agents/companion-lv` | 呂雉 | 是 | 冷酷命令型陪伴 |
 
-## 3. 架构图
+## 4. 架构图
 
 ```mermaid
 flowchart TD
-  P["PANVIVI"] --> H["housekeeper / 南風"]
+  P["薇 / 少爷·少主·公子"] --> H["housekeeper / 賈南風"]
   H --> O["ops / 魚玄機"]
   H --> C["coder / 步非煙"]
   H --> R["reviewer / 合并审查"]
@@ -44,9 +60,9 @@ flowchart TD
   R --> TS["Test / 原文薑职责"]
 ```
 
-## 4. 各 Agent 职责
+## 5. 各 Agent 职责
 
-### housekeeper｜南風
+### housekeeper｜賈南風
 
 总入口、任务分派、节奏控制、汇总上报。
 
@@ -92,7 +108,7 @@ flowchart TD
 - `companion-wu`：武曌，绝对权威型。
 - `companion-lv`：呂雉，冷酷命令型。
 
-## 5. 扩展接口
+## 6. 扩展接口
 
 保留后续扩展能力：
 
