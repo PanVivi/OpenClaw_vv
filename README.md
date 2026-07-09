@@ -13,9 +13,10 @@
 2. 再读 [最终设计 v1.01](001-OpenClaw规划设计/FinalDesign最终设计-v1.01.md)
 3. 如果要部署，读 [部署方案 v0.02](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.02.md)
 4. 如果要执行任务，读 [工作流程 v0.02](001-OpenClaw规划设计/Workflows工作流程-v0.02.md)
-5. 如果要判断当前状态，读 [当前进度 v0.02](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
-6. 如果要继续推进，读 [实施路线图 v0.02](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.02.md)
-7. 如果要避免踩坑，读 [纠错事故 v0.01](003-OpenClaw事故经验/CorrectionsIncident纠错事故-v0.01.md)、[经验教训 v0.01](003-OpenClaw事故经验/LessonsLearned经验教训-v0.01.md) 和 [轮询冲突观察 v0.01](003-OpenClaw事故经验/TelegramBotPollingConflict轮询冲突观察-v0.01.md)
+5. 如果要让 Codex 与 OpenClaw 通信，读 [通信方法 v0.01](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
+6. 如果要判断当前状态，读 [当前进度 v0.02](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
+7. 如果要继续推进，读 [实施路线图 v0.02](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.02.md)
+8. 如果要避免踩坑，读 [纠错事故 v0.01](003-OpenClaw事故经验/CorrectionsIncident纠错事故-v0.01.md)、[经验教训 v0.01](003-OpenClaw事故经验/LessonsLearned经验教训-v0.01.md) 和 [轮询冲突观察 v0.01](003-OpenClaw事故经验/TelegramBotPollingConflict轮询冲突观察-v0.01.md)
 
 文档分类：
 
@@ -31,6 +32,7 @@
 - [DeploymentPlan部署方案-v0.02.md](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.02.md)：部署方案与分阶段推进方式。
 - [Workflows工作流程-v0.02.md](001-OpenClaw规划设计/Workflows工作流程-v0.02.md)：调试任务、代码任务、复杂任务流程。
 - [ImplementationRoadmap实施路线图-v0.02.md](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.02.md)：从当前进度继续推进部署的实施路线图。
+- [CodexOpenClawCommunication通信方法-v0.01.md](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)：Codex 通过 WebSocket RPC 与 OpenClaw 通信的方法和经验。
 
 ### 002-OpenClaw部署进度
 
