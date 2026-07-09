@@ -1,4 +1,4 @@
-# OBSERVATION-003 — Telegram Bot 已读不回 / Polling Conflict
+# TelegramBotPollingConflict 轮询冲突观察｜v0.01
 
 - **状态**：Resolved（2026-07-07）
 - **发现时间**：2026-07-06 12:07 CST / UTC+8
