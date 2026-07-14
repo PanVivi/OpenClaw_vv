@@ -10,9 +10,9 @@
 给其他 AI 的阅读顺序：
 
 1. 先读 [快速简报 v1.01](001-OpenClaw规划设计/QuickBrief快速简报-v1.01.md)
-2. 再读 [最终设计 v1.01](001-OpenClaw规划设计/FinalDesign最终设计-v1.01.md)
+2. 再读 [最终设计 v1.02](001-OpenClaw规划设计/FinalDesign最终设计-v1.02.md)
 3. 如果要部署，读 [部署方案 v0.02](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.02.md)
-4. 如果要执行任务，读 [工作流程 v0.02](001-OpenClaw规划设计/Workflows工作流程-v0.02.md)
+4. 如果要执行任务，读 [工作流程 v0.03](001-OpenClaw规划设计/Workflows工作流程-v0.03.md)
 5. 如果要让 Codex 与 OpenClaw 通信，读 [通信方法 v0.01](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
 6. 如果要判断当前状态，读 [当前进度 v0.02](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
 7. 如果要继续推进，读 [实施路线图 v0.02](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.02.md)
@@ -28,9 +28,9 @@
 ### 001-OpenClaw规划设计
 
 - [QuickBrief快速简报-v1.01.md](001-OpenClaw规划设计/QuickBrief快速简报-v1.01.md)：AI 快速接手摘要。
-- [FinalDesign最终设计-v1.01.md](001-OpenClaw规划设计/FinalDesign最终设计-v1.01.md)：最后确定的组织架构设计。
+- [FinalDesign最终设计-v1.02.md](001-OpenClaw规划设计/FinalDesign最终设计-v1.02.md)：最后确定的组织架构设计、标准受管入口和 Agent 职责边界。
 - [DeploymentPlan部署方案-v0.02.md](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.02.md)：部署方案与分阶段推进方式。
-- [Workflows工作流程-v0.02.md](001-OpenClaw规划设计/Workflows工作流程-v0.02.md)：调试任务、代码任务、复杂任务流程。
+- [Workflows工作流程-v0.03.md](001-OpenClaw规划设计/Workflows工作流程-v0.03.md)：标准受管入口、快速直达、调试、代码、验收和子 Agent 流程。
 - [ImplementationRoadmap实施路线图-v0.02.md](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.02.md)：从当前进度继续推进部署的实施路线图。
 - [CodexOpenClawCommunication通信方法-v0.01.md](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)：Codex 通过 WebSocket RPC 与 OpenClaw 通信的方法和经验。
 
