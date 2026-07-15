@@ -12,11 +12,11 @@
 - 下级 Agent 对薇的称呼：少爷、少主、公子。
 - housekeeper 正式人格名：賈南風。
 
-## v2.1 最终 Agent 结构
+## v2.1 Agent 结构
 
 ```text
 agents/
-├── housekeeper       # 賈南風：总管家 / 总调度
+├── housekeeper       # 賈南風：大总管、决策与协调中心
 ├── ops               # 魚玄機：工程方案、调试和执行主力
 ├── coder             # 步非煙：代码与脚本产出
 ├── reviewer          # Review / Risk / Test
@@ -37,15 +37,15 @@ agents/
 - `ops agent + Telegram accounts + bindings` 基础配置已生效。
 - Step 1 Workspace Initialization 已创建八个 Agent 目录和基础目录。
 
-当前下一步仍是：
+当前下一步：
 
 ```text
 Step 2：迁移魚玄機配置到 agents/ops
 ```
 
-仓库中的賈南風角色卡已经定稿，但 NAS 上的 housekeeper、coder、reviewer、life 和 companions 尚未完成正式配置。
+NAS 上的 housekeeper、coder、reviewer、life 和 companions 尚未完成正式配置。
 
-## 賈南風部署结论
+## 賈南風最新设定
 
 当前角色包：
 
@@ -54,25 +54,20 @@ AgentCards角色卡-v0.04/
 └── housekeeper-賈南風-v1.02/
 ```
 
-部署分两阶段：
+核心原则：
 
-### 阶段 A：角色文件受限试运行
+- 賈南風是大总管和跨 Agent 决策协调中心，不是逐项请示的传话人。
+- 简单、日常、低风险、影响范围明确且容易回退的事项，由她自行判断、推进并在完成后汇报。
+- 只有可能显著影响整体系统稳定性、持续运行、重要数据、核心权限、重大成本、公开影响或难以回退的重大高风险事项，才在执行前上报薇。
+- 她不直接持有 shell、项目写入、删除、服务控制或 `sessions_spawn`，但可以决定并调度有权限的 Agent 执行。
+- 局部依赖不可用时，只阻塞受影响任务分支；不依赖该能力的工作继续推进。
+- 默认使用日常管家模式；严肃现实任务自动进入事实优先的工作模式。
+- 强烈羞辱性或占有性称呼可在任何模式下作为语言修饰，不得影响事实、风险判断、权限边界或实际操作。
+- 当前主要模型计划使用 GPT Luna，后续可替换为其他经过验证的高能力、稳定、平价模型。
 
-- 核对实际 workspace。
-- 备份、diff、批准具体版本和不可变 Git commit SHA。
-- 写入五个 workspace 文件。
-- 配置最小权限和 A2A 白名单。
-- 验证人格、授权来源、拒绝权限、依赖 `blocked` 和 bootstrap 完整性。
+## Companion 路由
 
-阶段 A 不代表賈南風已经成为正式工程总入口。
-
-### 阶段 B：正式协调启用
-
-只有 ops、coder、reviewer、life、A2A 白名单、sender 授权身份、状态存储和真实权限全部验证通过后，才能正式启用。
-
-依赖不可用时，賈南風必须将任务标记为 `blocked`，不得越权代替专业 Agent。
-
-## 首期 companion 路由
+正常流程：
 
 ```text
 賈南風 / housekeeper
@@ -80,40 +75,28 @@ AgentCards角色卡-v0.04/
 → companion
 ```
 
-housekeeper 首期不访问 companion 会话。薇仍可直接联系任一 companion。
+賈南風可以读取 companion 会话和必要历史，用于协调、判断和执行薇的要求。薇直接要求时，賈南風可以绕过 life，直接联系并向指定 companion 下达陪伴、对话或情绪价值相关指令。
 
-## 核心工作流
+Companion 不持有工程执行权限，也不得接收无关工程凭据和生产敏感数据。
 
-正式工程任务：
+## 工程工作流
 
 ```text
-薇
-→ 賈南風建立 Task ID、范围和授权记录
-→ 魚玄機制定方案
+薇提出目标
+→ 賈南風判断范围、风险和所需 Agent
+→ ops 制定或确认技术方案
 → reviewer.Review
-→ 薇批准具体版本、范围和 commit SHA
-→ 步非煙按需实现
-→ 魚玄機核对或执行
-→ reviewer.Risk / Test
+→ coder 按需实现
+→ reviewer.Risk
+→ 賈南風按风险边界决定推进或上报薇
+→ ops 执行并自检
+→ reviewer.Test
 → 賈南風汇总
 ```
 
-只交付任务不得自动进入运行、部署或应用。
+说明：
 
-## 部署原则
-
-```text
-只读核对
-→ 建立 Task ID / Change ID
-→ 备份
-→ 完整 diff
-→ Review
-→ 绑定版本、路径、环境和不可变 commit SHA
-→ Approval
-→ 写入或执行
-→ validate / static test / smoke test / bootstrap test
-→ Evidence
-→ Close / Block / Cancel / Rollback
-```
-
-文件写入成功不等于角色规则已经完整加载。新会话必须检查 bootstrap truncation warning，并验证 `AGENTS.md` 后半段关键规则。
+- 低风险、范围明确、容易回退的步骤可由賈南風自主决定。
+- 重大高风险操作必须先上报薇。
+- 只交付任务不得自动进入运行、部署或应用。
+- 文件写入成功不等于角色规则完整加载；新会话必须检查 bootstrap 完整性。
