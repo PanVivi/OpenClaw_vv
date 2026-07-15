@@ -9,12 +9,12 @@
 3. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
 4. [賈南風当前角色卡 v1.04](001-OpenClaw规划设计/AgentCards角色卡/housekeeper-賈南風/README.md)
 5. [蕭觀音当前角色卡 v0.02](001-OpenClaw规划设计/AgentCards角色卡/life-蕭觀音/README.md)
-6. [全体 Agent 共同协议 v0.02](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议-v0.02.md)
+6. [全体 Agent 共同协议 v0.02](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
 7. [部署方案 v0.05](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.05.md)
 8. [工作流程 v0.06](001-OpenClaw规划设计/Workflows工作流程-v0.06.md)
 9. [实施路线图 v0.05](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.05.md)
 10. [通信方法 v0.01](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
-11. [当前进度 v0.02](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
+11. [当前进度 v0.03](002-OpenClaw部署进度/CurrentProgress当前进度-v0.03.md)
 12. [事故与经验](003-OpenClaw事故经验/)
 
 ## 当前角色卡结构
@@ -33,7 +33,7 @@
 - `life / 蕭觀音 v0.02`：待部署验收。
 - ops、coder、reviewer 和三位 companion 已建立独立目录，正式角色卡待后续逐个编写。
 
-## 当前設定结论
+## 当前设定结论
 
 ### 賈南風
 
@@ -88,7 +88,7 @@
 
 ### 002-OpenClaw部署进度
 
-- [CurrentProgress当前进度-v0.02.md](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
+- [CurrentProgress当前进度-v0.03.md](002-OpenClaw部署进度/CurrentProgress当前进度-v0.03.md)
 
 ### 003-OpenClaw事故经验
 
