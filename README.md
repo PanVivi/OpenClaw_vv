@@ -7,15 +7,16 @@
 1. [快速简报 v1.03](001-OpenClaw规划设计/QuickBrief快速简报-v1.03.md)
 2. [最终设计 v1.04](001-OpenClaw规划设计/FinalDesign最终设计-v1.04.md)
 3. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
-4. [賈南風当前角色卡 v1.04](001-OpenClaw规划设计/AgentCards角色卡/housekeeper-賈南風/README.md)
-5. [蕭觀音当前角色卡 v0.02](001-OpenClaw规划设计/AgentCards角色卡/life-蕭觀音/README.md)
-6. [全体 Agent 共同协议 v0.02](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
-7. [部署方案 v0.05](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.05.md)
-8. [工作流程 v0.06](001-OpenClaw规划设计/Workflows工作流程-v0.06.md)
-9. [实施路线图 v0.05](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.05.md)
-10. [通信方法 v0.01](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
-11. [当前进度 v0.03](002-OpenClaw部署进度/CurrentProgress当前进度-v0.03.md)
-12. [事故与经验](003-OpenClaw事故经验/)
+4. 处理某一 Agent 前，先进入该 Agent 目录读取 `DeploymentStatus部署状态.md`
+5. [賈南風当前角色卡 v1.04](001-OpenClaw规划设计/AgentCards角色卡/housekeeper-賈南風/README.md)
+6. [蕭觀音当前角色卡 v0.02](001-OpenClaw规划设计/AgentCards角色卡/life-蕭觀音/README.md)
+7. [全体 Agent 共同协议 v0.02](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
+8. [部署方案 v0.05](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.05.md)
+9. [工作流程 v0.06](001-OpenClaw规划设计/Workflows工作流程-v0.06.md)
+10. [实施路线图 v0.05](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.05.md)
+11. [通信方法 v0.01](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
+12. [当前进度 v0.03](002-OpenClaw部署进度/CurrentProgress当前进度-v0.03.md)
+13. [事故与经验](003-OpenClaw事故经验/)
 
 ## 当前角色卡结构
 
@@ -25,7 +26,7 @@
 001-OpenClaw规划设计/AgentCards角色卡/
 ```
 
-每位常驻 Agent 有独立目录。当前版本文件直接放在 Agent 目录根部，历史版本保存到该目录的 `旧文档/<版本>/`。不再新建带版本号的角色卡库顶层目录。
+每位常驻 Agent 有独立目录。当前版本文件直接放在 Agent 目录根部，历史版本保存到该目录的 `旧文档/<版本>/`。每个 Agent 根目录固定具有 `DeploymentStatus部署状态.md`，作为当前实际部署状态的唯一入口。
 
 当前设计版本：
 
@@ -59,20 +60,23 @@
 
 ## 部署与运行说明
 
+- 处理某一 Agent 时，先读取该 Agent 根目录的 `DeploymentStatus部署状态.md`。
 - 五个 workspace 文件为 `IDENTITY.md`、`SOUL.md`、`AGENTS.md`、`USER.md`、`TOOLS.md`。
 - `PERMISSIONS.md` 仅作为真实权限配置参考。
+- `README.md` 说明角色设计和验收要求，不代替部署状态文档。
 - 共同协议虽然有仓库权威源，但执行摘要必须内嵌到各 Agent 的 `AGENTS.md`。
 - 写入后必须创建普通正式新会话，核对五文件完整性和权限配置。
 - A2A、会话可见性、专用记忆、Telegram、天气、日历和 Cron 必须经过真实测试。
-- 当前賈南風 v1.02 角色主体已部署，但跨 Agent 发送和历史读取仍受全局策略限制。
 - 设计版本、部署版本和历史版本必须分别标记；实际能力不足时不得误报完整部署。
+- 每次部署、回滚、模型或权限变化、验收、故障和自动化变化后，必须更新对应 Agent 的根目录状态文档。
 
 ## 文档分类
 
 ### 000-OpenClaw文档管理
 
-- [DocumentRules文档编号规则-v1.03.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.03.md)（当前）
+- [DocumentRules文档编号规则-v1.04.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.04.md)（当前）
 - [SourceIndex来源索引-v0.02.md](000-OpenClaw文档管理/SourceIndex来源索引-v0.02.md)（当前）
+- [DocumentRules文档编号规则-v1.03.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.03.md)（历史保留）
 - [DocumentRules文档编号规则-v1.02.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.02.md)（历史保留）
 - [DocumentRules文档编号规则-v1.01.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.01.md)（历史保留）
 - [SourceIndex来源索引-v0.01.md](000-OpenClaw文档管理/SourceIndex来源索引-v0.01.md)（历史保留）
