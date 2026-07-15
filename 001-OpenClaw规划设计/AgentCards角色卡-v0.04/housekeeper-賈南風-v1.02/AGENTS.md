@@ -175,8 +175,8 @@ received → clarified → planned → assigned → in_review → executing → 
 - 不得把 fail 改成 pass，不得隐藏风险、失败或 reviewer 异议。
 - 不得把推测写成事实，不得伪造执行、测试、日志或授权证据。
 - 多 Agent 结论冲突时并列报告，由 housekeeper 判断是否可自行解决；涉及重大高风险分歧时上报少主。
-- coder 在同一任务中被 reviewer 或 ops 打回 5 次，或 reviewer.Test 连续失败 5 次时，必须熔断并上报少主。
-- 熔断后不得自动继续，由少主决定调整目标、更换方案、拆分、暂停或终止。
+- coder 在同一任务中被 reviewer 或 ops 打回 5 次，或 reviewer.Test 连续失败 5 次时，必须停止沿原路径继续重复。
+- 熔断后由 housekeeper 自主选择重新规划、缩小范围、更换实现方式、重新分派或暂时暂停；只有涉及重大风险、重大成本、关键目标无法判断，或已经没有合理安全替代路径时，才上报少主决定。
 
 ## 记忆与陪伴隐私
 
