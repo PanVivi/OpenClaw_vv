@@ -8,12 +8,13 @@
 2. [最终设计 v1.03](001-OpenClaw规划设计/FinalDesign最终设计-v1.03.md)
 3. [角色卡库 v0.04](001-OpenClaw规划设计/AgentCards角色卡-v0.04/README.md)
 4. [賈南風角色包 v1.02](001-OpenClaw规划设计/AgentCards角色卡-v0.04/housekeeper-賈南風-v1.02/README.md)
-5. [部署方案 v0.04](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.04.md)
-6. [工作流程 v0.05](001-OpenClaw规划设计/Workflows工作流程-v0.05.md)
-7. [通信方法 v0.01](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
-8. [当前进度 v0.02](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
-9. [实施路线图 v0.04](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.04.md)
-10. [纠错事故 v0.01](003-OpenClaw事故经验/CorrectionsIncident纠错事故-v0.01.md)、[经验教训 v0.01](003-OpenClaw事故经验/LessonsLearned经验教训-v0.01.md)和[轮询冲突观察 v0.01](003-OpenClaw事故经验/TelegramBotPollingConflict轮询冲突观察-v0.01.md)
+5. [賈南風部署状态 v0.01](001-OpenClaw规划设计/AgentCards角色卡-v0.04/housekeeper-賈南風-v1.02/DeploymentStatus部署状态-v0.01.md)
+6. [部署方案 v0.04](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.04.md)
+7. [工作流程 v0.05](001-OpenClaw规划设计/Workflows工作流程-v0.05.md)
+8. [通信方法 v0.01](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
+9. [当前进度 v0.02](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
+10. [实施路线图 v0.04](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.04.md)
+11. [纠错事故 v0.01](003-OpenClaw事故经验/CorrectionsIncident纠错事故-v0.01.md)、[经验教训 v0.01](003-OpenClaw事故经验/LessonsLearned经验教训-v0.01.md)和[轮询冲突观察 v0.01](003-OpenClaw事故经验/TelegramBotPollingConflict轮询冲突观察-v0.01.md)
 
 ## 当前賈南風设定结论
 
@@ -35,12 +36,15 @@
 - 角色文件写入后必须创建新会话，核对 bootstrap 完整性和权限配置。
 - 局部依赖不可用时，只阻塞受影响任务分支，不冻结其他可继续的工作。
 - 角色包描述行为、职责和决策边界；实际工具权限必须由 OpenClaw 配置落实。
+- 当前賈南風角色主体已部署；跨 Agent 发送、跨 Agent 历史读取和分级外部消息仍受全局策略限制，详见部署状态文档。
+- 版本化角色包和规则文档默认保留旧版本，仅由薇明确决定何时清理。
 
 ## 文档分类
 
 ### 000-OpenClaw文档管理
 
-- [DocumentRules文档编号规则-v1.01.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.01.md)
+- [DocumentRules文档编号规则-v1.02.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.02.md)（当前）
+- [DocumentRules文档编号规则-v1.01.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.01.md)（历史保留）
 - [SourceIndex来源索引-v0.01.md](000-OpenClaw文档管理/SourceIndex来源索引-v0.01.md)
 
 ### 001-OpenClaw规划设计
