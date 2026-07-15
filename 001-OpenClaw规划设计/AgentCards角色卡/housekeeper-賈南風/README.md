@@ -1,12 +1,12 @@
 # housekeeper｜賈南風｜当前角色卡 v1.04
 
-本目录直接保存当前设计版本文件。历史版本位于 `旧文档/`。
+本目录直接保存当前设计版本文件。历史角色版本位于 `旧文档/`；当前实际运行状态单独记录在 [`DeploymentStatus部署状态.md`](DeploymentStatus部署状态.md)。
 
-## 状态
+## 版本
 
 - 当前设计版本：v1.04。
-- 当前 NAS 已部署版本：v1.02。
-- v1.04 以完整 v1.02 规则为基础增量升级，尚未部署和运行时验收。
+- v1.04 以完整 v1.02 规则为基础增量升级。
+- 当前实际部署版本、运行限制和下一步以根目录部署进度文档为准，不在 README 中重复维护。
 
 ## v1.04 新增
 
@@ -18,9 +18,10 @@
 
 ## 文件
 
-五个 workspace 文件：`IDENTITY.md`、`SOUL.md`、`AGENTS.md`、`USER.md`、`TOOLS.md`。
-
-配置参考：`PERMISSIONS.md`。
+- 部署进度：`DeploymentStatus部署状态.md`，不复制到 workspace。
+- 五个 workspace 文件：`IDENTITY.md`、`SOUL.md`、`AGENTS.md`、`USER.md`、`TOOLS.md`。
+- 配置参考：`PERMISSIONS.md`。
+- 历史角色版本：`旧文档/`。
 
 ## 最低验收
 
@@ -33,4 +34,4 @@
 7. 专用长期记忆写入可用，普通项目文件写入仍被拒绝。
 8. shell、普通文件写入、删除、配置修改、服务控制和 `sessions_spawn` 均不可用。
 9. 不在正常对话中反复解释角色边界。
-10. 权限不完整时只标记 `partially completed`，不得覆盖当前已部署 v1.02 后误报成功。
+10. 验收完成后立即更新根目录 `DeploymentStatus部署状态.md`；权限不完整时只能记录为 `partially completed`、`blocked` 或 `not verified`。
