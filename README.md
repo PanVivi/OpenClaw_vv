@@ -72,9 +72,10 @@
 ### 000-OpenClaw文档管理
 
 - [DocumentRules文档编号规则-v1.03.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.03.md)（当前）
+- [SourceIndex来源索引-v0.02.md](000-OpenClaw文档管理/SourceIndex来源索引-v0.02.md)（当前）
 - [DocumentRules文档编号规则-v1.02.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.02.md)（历史保留）
 - [DocumentRules文档编号规则-v1.01.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.01.md)（历史保留）
-- [SourceIndex来源索引-v0.01.md](000-OpenClaw文档管理/SourceIndex来源索引-v0.01.md)
+- [SourceIndex来源索引-v0.01.md](000-OpenClaw文档管理/SourceIndex来源索引-v0.01.md)（历史保留）
 
 ### 001-OpenClaw规划设计
 
@@ -88,7 +89,8 @@
 
 ### 002-OpenClaw部署进度
 
-- [CurrentProgress当前进度-v0.03.md](002-OpenClaw部署进度/CurrentProgress当前进度-v0.03.md)
+- [CurrentProgress当前进度-v0.03.md](002-OpenClaw部署进度/CurrentProgress当前进度-v0.03.md)（当前）
+- [CurrentProgress当前进度-v0.02.md](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)（历史保留）
 
 ### 003-OpenClaw事故经验
 
