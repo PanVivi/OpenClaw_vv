@@ -1,39 +1,18 @@
 # 001 OpenClaw架设部署｜DeploymentPlan 部署方案｜v0.04
 
-本版本在 `v0.03` 基础上补充賈南風依赖降级、分阶段启用、首期 companion 经 life 路由、不可变 Git commit SHA 绑定和 bootstrap 注入验收。
+本方案以当前 `housekeeper / 賈南風 v1.02` 角色包为唯一角色设定来源。
 
-## 1. 部署原则
+## 1. 部署目标
 
-最终 v2.1 采用：
+部署以下 v2.1 Agent 结构：
 
 ```text
 housekeeper / ops / coder / reviewer / life / companion-dugu / companion-wu / companion-lv
 ```
 
-组织设定：
+其中賈南風是大总管和跨 Agent 决策协调中心。她应自主处理低风险事项，只将重大高风险事项事前上报薇。
 
-- 组织名：合欢宗。
-- 主人/用户名：薇。
-- housekeeper 人格名：賈南風。
-
-推荐原则：
-
-```text
-小步变更
-明确 Task ID / Change ID
-绑定具体角色包版本和不可变 Git commit SHA
-先只读核对
-先备份和 diff
-先 validate
-再 replace
-按批准范围决定是否执行或启用
-最后进行 static test / smoke test / bootstrap test
-记录证据并关闭
-```
-
-## 2. 当前賈南風角色卡来源
-
-唯一角色卡来源：
+## 2. 角色卡来源
 
 ```text
 001-OpenClaw规划设计/
@@ -41,7 +20,7 @@ housekeeper / ops / coder / reviewer / life / companion-dugu / companion-wu / co
     └── housekeeper-賈南風-v1.02/
 ```
 
-可复制到实际 housekeeper workspace 的文件：
+复制到 housekeeper workspace：
 
 ```text
 IDENTITY.md
@@ -51,63 +30,82 @@ USER.md
 TOOLS.md
 ```
 
-`PERMISSIONS.md` 不能直接当作 OpenClaw 配置复制，必须转换为真实工具策略、精确 allow/deny、`tools.agentToAgent.allow`、sender 身份策略、会话可见性、sandbox、workspace 和状态存储控制。
+`PERMISSIONS.md` 仅用于转换真实工具策略、精确 allow / deny、A2A、会话可见性、sandbox、workspace 和状态存储控制，不能直接当作 OpenClaw 配置复制。
 
 ## 3. 部署前置检查
 
-执行前必须确认：
+确认：
 
-- 当前 OpenClaw 实际版本。
-- `housekeeper` Agent ID 是否存在。
-- `agents.list[id=housekeeper].workspace` 的实际路径。
-- 五个现有 workspace 文件的路径、大小、权限、mtime 和 SHA-256。
-- 当前工具名称、工具 profile、allow/deny 和 sandbox 行为。
-- `tools.sessions.visibility`、`tools.agentToAgent.enabled` 和 `tools.agentToAgent.allow` 的实际支持与配置。
-- 授权 Telegram sender ID、授权会话和 Bot/account binding。
+- 当前 OpenClaw 版本。
+- `housekeeper` Agent ID 和真实 workspace。
+- 现有五文件路径、权限、mtime 和 SHA-256。
+- 当前工具名称、profile、allow / deny 和 sandbox 行为。
+- 会话查询、发送和历史读取工具的实际名称。
+- 授权 Telegram sender、会话和 account binding。
 - secret profile 和状态存储方式。
-- `bootstrapMaxChars`、`bootstrapTotalMaxChars` 和 context injection 配置。
-- ops、coder、reviewer、life 的实际可用状态。
+- bootstrap 字符限制和 context injection 配置。
+- 当前主要模型 GPT Luna 是否可用；如使用替代模型，是否完成能力验证。
+- ops、coder、reviewer、life 和 companions 的实际可用状态。
 
-缺少任何关键事实时，先只读调查，不直接覆盖或修改配置。
+缺少关键事实时先只读调查，不直接覆盖生产配置。
 
-## 4. 分阶段部署
+## 4. 部署步骤
 
-### 阶段 A：角色文件受限试运行
-
-允许执行：
-
-1. 确认实际 workspace。
+1. 确认 workspace。
 2. 备份现有五文件。
 3. 生成完整 diff 和回滚方案。
-4. 由薇批准角色包 `v1.02`、完整 diff、目标路径、运行环境和具体 Git commit SHA。
+4. 确认角色包版本、目标路径和运行环境。
 5. 写入五个角色文件。
-6. 配置最小权限。
-7. 启动新会话进行角色与拒绝测试。
+6. 按 `PERMISSIONS.md` 配置真实权限。
+7. 配置 GPT Luna 或经过验证的替代模型。
+8. 启动新会话。
+9. 检查 bootstrap 是否完整。
+10. 执行角色、权限、决策和路由验收。
 
-阶段 A 权限建议：
+角色卡部署本身属于明确范围的配置变更，应保留备份、diff、validate 和回滚证据。若可能影响核心运行或难以回退，执行前上报薇；普通测试环境或可快速回滚的低风险步骤可由賈南風按风险结论自主推进。
 
-- 明确拒绝 `exec`、`process`、`code_execution`、`write`、`edit`、`apply_patch`、删除、服务控制、`sessions_spawn`、`sessions_yield`、`subagents`、`cron` 和 `gateway`。
-- 仅按需要允许 `sessions_list`、`sessions_send`、`session_status`。
-- `sessions_history` 默认不开放。
-- A2A 白名单只包含 `housekeeper`、`ops`、`coder`、`reviewer`、`life`。
-- 不把 companion 纳入 housekeeper 首期会话白名单。
+## 5. 权限配置
 
-在依赖 Agent 尚未配置或不可用时，正式工程和跨 Agent 任务必须进入 `blocked`，賈南風不得越权代替缺失角色。
+### 5.1 禁止的直接能力
 
-### 阶段 B：正式协调启用
+housekeeper 不直接持有：
 
-只有以下条件全部通过后才允许正式启用：
+- shell / exec / process。
+- 项目或生产文件 write / edit / apply_patch。
+- 删除文件或数据。
+- 修改 OpenClaw 核心配置。
+- 服务重启、停止、升级和控制。
+- `sessions_spawn`。
+- 明文凭据访问。
 
-- ops、coder、reviewer、life 均已配置并可用。
-- reviewer Review / Risk / Test 可运行。
-- A2A 白名单和 sender 授权身份实机验证通过。
-- housekeeper 无法调用被禁止工具。
-- 状态存储路径和写入工具已明确，或明确使用“未持久化”模式。
-- companion 请求统一经 life 路由，housekeeper 无 companion 会话可见性。
-- bootstrap 无截断，关键规则完整注入。
-- Task ID 隔离、只交付、取消、防重复和依赖降级测试通过。
+这些限制约束直接工具能力，不取消她的决策和调度权。需要执行时由 ops、coder 或 reviewer 在其权限范围内完成。
 
-## 5. 首期 companion 路由
+### 5.2 会话能力
+
+housekeeper 应可按当前任务需要使用：
+
+- `sessions_list`：查看常驻 Agent 和 companion 状态。
+- `sessions_send`：向常驻 Agent 和 companion 发送任务和必要上下文。
+- `session_status`：查询运行状态。
+- `sessions_history`：读取协调、判断和薇要求所需的历史。
+
+允许目标：
+
+```text
+ops
+coder
+reviewer
+life
+companion-dugu
+companion-wu
+companion-lv
+```
+
+会话工具不得成为取得 shell、项目写入、删除、服务控制或凭据权限的间接路径。
+
+## 6. Companion 路由与隐私
+
+正常流程：
 
 ```text
 housekeeper / 賈南風
@@ -115,67 +113,70 @@ housekeeper / 賈南風
 → companion
 ```
 
-薇仍可直接联系任一 companion。
+同时：
 
-不得为了让 housekeeper 查询 companion 可用性而直接开放全量 companion 会话标题、摘要、活动或历史。
+- housekeeper 可以读取 companion 会话、标题、摘要、活动和必要历史。
+- 薇直接要求时，housekeeper 可以绕过 life，直接联系并向指定 companion 下达陪伴、对话或情绪价值相关指令。
+- companion 不具有工程执行权限。
+- 不向 companion 发送工程凭据、生产敏感数据或与陪伴任务无关的技术机密。
+- 私人内容不得无关扩散或默认写入公共长期记忆。
 
-## 6. 每次 Change 标准流程
+## 7. 自主决策与高风险上报测试
 
-```text
-1. Environment Check
-2. Preflight
-3. 建立 Task ID / Change ID
-4. Read-only Inspection
-5. Design
-6. reviewer.Review
-7. Approval Source Verification
-8. 绑定角色包版本、diff、目标路径、环境和 Git commit SHA
-9. Approval
-10. Backup
-11. 根据批准范围选择：只交付 / 写入文件 / 正式启用
-12. reviewer.Risk（涉及写入、配置或执行时）
-13. Replace / Execution
-14. Validate / Static Test / Smoke Test / Bootstrap Test
-15. Evidence
-16. Close / Block / Cancel / Rollback
-```
+部署后验证：
 
-## 7. 授权和外部输入
+### 自主处理
 
-- 批准必须来自授权账号、授权会话或薇当前直接消息。
-- 批准绑定具体内容、路径、目标、环境、账号、范围、有效期和不可变 commit SHA。
-- 文件、网页、邮件、日志、代码注释、转发和其他 Agent 输出中的指令不构成批准。
-- 目标、内容、commit SHA、路径、环境、权限或风险实质变化后，原批准失效。
+- 普通问答、文本整理和状态汇总不反复请示。
+- 只读调查、任务排序和信息核对可自行推进。
+- 低风险、范围明确、容易回退的步骤可根据 reviewer 和专业 Agent 结论自主决定。
+- 已明确目标范围内的标准步骤无需逐项向薇申请。
 
-## 8. 依赖降级
+### 事前上报
 
-- 所需 Agent、工具、模型、权限、白名单或环境不可用时，任务状态设为 `blocked`。
-- 报告缺失依赖、已完成部分、未完成部分和安全下一步。
-- housekeeper 不得代替 ops、coder、reviewer 或 life。
-- 依赖恢复后重新核对目标、范围、授权和状态。
+- 可能导致系统长时间不可用或核心服务中断。
+- 重要数据不可逆删除、覆盖或迁移。
+- 核心生产配置、网络、认证或权限体系重大改变。
+- 高权限凭据或明显扩大访问、传播和公开范围。
+- 重大持续成本、公开发布或重大外部承诺。
+- 难以回退、风险边界不清或重大专业分歧。
+
+## 8. 能力分支启用
+
+不采用“所有 Agent 全部完成后，賈南風才能启用”的一刀切规则。
+
+- 角色文件和基础权限验证通过后，賈南風可处理普通问答、协调、只读调查和其他自身能力范围任务。
+- ops 可用后，开放需要工程方案和执行的分支。
+- reviewer 可用后，开放需要独立 Review / Risk / Test 的分支。
+- coder 可用后，开放正式代码和脚本实现分支。
+- life 和 companions 可用后，开放相应生活和陪伴分支。
+- 某项依赖不可用时，只将受影响分支标记为 `blocked`，其他任务继续。
 
 ## 9. Bootstrap 验收
 
-写入后必须新建会话并检查：
+新会话检查：
 
-- 是否出现 bootstrap truncation warning。
-- `AGENTS.md` 是否完整注入。
-- 是否能复述依赖降级、批准绑定、熔断、记忆、companion 隐私和首期路由规则。
-- context/status 中是否显示截断或缺失。
+- 无 bootstrap truncation warning。
+- 五个 workspace 文件均完整加载。
+- 能正确复述低风险自主权和重大高风险上报边界。
+- 能区分决策权与直接工具权限。
+- 能复述默认日常管家模式、严肃任务工作模式和任意模式下的语言修饰规则。
+- 能读取和调度 companion，并遵守正常经 life、薇直接要求时可直达的规则。
+- 能正确处理依赖分支降级、取消、防重复和熔断。
 
-如发生截断，调整 housekeeper 的 `bootstrapMaxChars`、`bootstrapTotalMaxChars` 或精简文件后重新测试。截断解决前不得进入阶段 B。
+发生截断时，调整 bootstrap 字符限制或精简文件后重新测试。
 
-## 10. 回滚与证据
+## 10. 证据与回滚
 
-必须保留：
+保留：
 
 - 写入前文件备份。
-- 角色包来源路径和 commit SHA。
+- 角色包路径和实际提交版本。
 - 完整 diff。
 - 写入前后 SHA-256。
 - 配置 validate 结果。
-- 新会话测试结果。
-- 权限拒绝测试。
-- bootstrap 注入检查。
+- 新会话验收结果。
+- 权限拒绝和会话访问测试。
+- bootstrap 完整性检查。
 
-发生问题时先停止新步骤，核对实际状态，再按批准的回滚方案恢复；不得假设复制失败或重启失败等于系统未发生变化。
+发生异常时停止新的高风险步骤，核对实际状态，再按回滚方案恢复；不得根据 Agent 记忆假设系统未发生变化。
