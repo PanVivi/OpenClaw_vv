@@ -1,11 +1,11 @@
 # life｜蕭觀音｜当前角色卡 v0.02
 
-本目录直接保存当前设计版本文件。历史版本位于 `旧文档/`。
+本目录直接保存当前设计版本文件。历史角色版本位于 `旧文档/`；当前实际运行状态单独记录在 [`DeploymentStatus部署状态.md`](DeploymentStatus部署状态.md)。
 
-## 状态
+## 版本
 
 - 当前设计版本：v0.02。
-- 当前部署状态：尚未部署和运行时验收。
+- 当前实际部署版本、阻塞、工具配置和下一步以根目录部署进度文档为准。
 
 ## 角色定位
 
@@ -13,9 +13,10 @@
 
 ## 文件
 
-五个 workspace 文件：`IDENTITY.md`、`SOUL.md`、`AGENTS.md`、`USER.md`、`TOOLS.md`。
-
-配置参考：`PERMISSIONS.md`。
+- 部署进度：`DeploymentStatus部署状态.md`，不复制到 workspace。
+- 五个 workspace 文件：`IDENTITY.md`、`SOUL.md`、`AGENTS.md`、`USER.md`、`TOOLS.md`。
+- 配置参考：`PERMISSIONS.md`。
+- 历史角色版本：`旧文档/`。
 
 ## 最低验收
 
@@ -29,4 +30,4 @@
 8. 专用长期记忆能够写入、查询、纠正和失效；普通项目文件写入仍被拒绝。
 9. shell、普通文件写入、删除、配置修改、服务控制和 `sessions_spawn` 均不可用。
 10. 共同协议能够复述来源、可信程度、适用范围、失效条件和宫斗不得影响任务的规则。
-11. 工具或权限不足时如实标记 `partially completed` 或 `blocked`。
+11. 验收完成后立即更新根目录 `DeploymentStatus部署状态.md`；工具或权限不足时记录为 `partially completed`、`blocked` 或 `not verified`。
