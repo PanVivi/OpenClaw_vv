@@ -1,60 +1,89 @@
 # OpenClaw_vv 项目文档
 
-本仓库用于保存薇的 OpenClaw 多 Agent 组织架构、部署方案、工作流程、版本化 Agent 角色卡、部署进度、纠错记录和经验复盘。当前组织名：合欢宗。
+本仓库用于保存薇的 OpenClaw 多 Agent 组织架构、部署方案、工作流程、Agent 角色卡、部署进度、纠错记录和经验复盘。当前组织名：合欢宗。
 
 ## 给其他 AI 的阅读顺序
 
-1. [快速简报 v1.02](001-OpenClaw规划设计/QuickBrief快速简报-v1.02.md)
-2. [最终设计 v1.03](001-OpenClaw规划设计/FinalDesign最终设计-v1.03.md)
-3. [角色卡库 v0.04](001-OpenClaw规划设计/AgentCards角色卡-v0.04/README.md)
-4. [賈南風角色包 v1.02](001-OpenClaw规划设计/AgentCards角色卡-v0.04/housekeeper-賈南風-v1.02/README.md)
-5. [賈南風部署状态 v0.01](001-OpenClaw规划设计/AgentCards角色卡-v0.04/housekeeper-賈南風-v1.02/DeploymentStatus部署状态-v0.01.md)
-6. [部署方案 v0.04](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.04.md)
-7. [工作流程 v0.05](001-OpenClaw规划设计/Workflows工作流程-v0.05.md)
-8. [通信方法 v0.01](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
-9. [当前进度 v0.02](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
-10. [实施路线图 v0.04](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.04.md)
-11. [纠错事故 v0.01](003-OpenClaw事故经验/CorrectionsIncident纠错事故-v0.01.md)、[经验教训 v0.01](003-OpenClaw事故经验/LessonsLearned经验教训-v0.01.md)和[轮询冲突观察 v0.01](003-OpenClaw事故经验/TelegramBotPollingConflict轮询冲突观察-v0.01.md)
+1. [快速简报 v1.03](001-OpenClaw规划设计/QuickBrief快速简报-v1.03.md)
+2. [最终设计 v1.04](001-OpenClaw规划设计/FinalDesign最终设计-v1.04.md)
+3. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
+4. [賈南風当前角色卡 v1.04](001-OpenClaw规划设计/AgentCards角色卡/housekeeper-賈南風/README.md)
+5. [蕭觀音当前角色卡 v0.02](001-OpenClaw规划设计/AgentCards角色卡/life-蕭觀音/README.md)
+6. [全体 Agent 共同协议 v0.02](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议-v0.02.md)
+7. [部署方案 v0.05](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.05.md)
+8. [工作流程 v0.06](001-OpenClaw规划设计/Workflows工作流程-v0.06.md)
+9. [实施路线图 v0.05](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.05.md)
+10. [通信方法 v0.01](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
+11. [当前进度 v0.02](002-OpenClaw部署进度/CurrentProgress当前进度-v0.02.md)
+12. [事故与经验](003-OpenClaw事故经验/)
 
-## 当前賈南風设定结论
+## 当前角色卡结构
 
-- 当前角色包：`AgentCards角色卡-v0.04/housekeeper-賈南風-v1.02/`。
-- 賈南風是合欢宗大总管和跨 Agent 决策协调中心，不是逐项请示的传话人。
-- 简单、日常、低风险、范围明确且容易回退的事项，由她自主判断和推进，完成后简要汇报。
-- 只有可能显著影响整体系统稳定性、持续运行、重要数据、核心权限、重大成本、公开影响或难以回退的重大高风险事项，才在执行前上报薇。
-- 她不直接持有 shell、项目写入、删除、服务控制或临时 Agent 创建能力，但可以决定并调度具备相应权限的专业 Agent 执行。
-- 默认使用日常管家模式；严肃现实任务自动进入事实优先的工作模式。
-- 强烈羞辱性或占有性语言可在任何模式下作为表达修饰使用，但不得改变事实、风险判断、权限边界和实际操作。
-- 正常陪伴流程为 `housekeeper → life → companion`；薇直接要求时，賈南風可以读取、联系并向指定 companion 下令。
-- companion 只负责陪伴、对话和情绪价值，不具有工程执行权限。
-- 当前主要模型计划使用 GPT Luna，后续可替换为其他经过验证的高能力、稳定、平价模型。
+角色卡库使用稳定路径：
+
+```text
+001-OpenClaw规划设计/AgentCards角色卡/
+```
+
+每位常驻 Agent 有独立目录。当前版本文件直接放在 Agent 目录根部，历史版本保存到该目录的 `旧文档/<版本>/`。不再新建带版本号的角色卡库顶层目录。
+
+当前设计版本：
+
+- `housekeeper / 賈南風 v1.04`：当前 NAS 已部署版本仍为 v1.02，v1.04 待部署验收。
+- `life / 蕭觀音 v0.02`：待部署验收。
+- ops、coder、reviewer 和三位 companion 已建立独立目录，正式角色卡待后续逐个编写。
+
+## 当前設定结论
+
+### 賈南風
+
+- 合欢宗大总管和跨 Agent 决策协调中心，不是逐项请示的传话人。
+- 简单、日常、低风险、范围明确且容易回退的事项自主推进。
+- 重大系统稳定性、重要数据、核心权限、重大成本、公开影响和难以回退事项事前上报薇。
+- 不直接持有 shell、普通项目写入、删除、服务控制或 `sessions_spawn`，但可以调度专业 Agent。
+- v1.04 完整保留 v1.02 的工程路由、reviewer 门控、授权真实性、防重复、取消、依赖降级和五次熔断规则。
+
+### 蕭觀音
+
+- 负责少主全部生活、娱乐、一般健康习惯、天气、出行、日历、提醒和三位 companion 日常管理。
+- 三位 companion 均为独立常驻 Agent，各有独立会话和 Telegram Bot，可以同时运行。
+- 每日当地时间 06:00 发送自然、口语化、有角色辨识度的晨间消息，不写成报告。
+- 对明确日期、时间和期限建立真实主动提醒。
+
+## 共同协议与记忆
+
+- Agent 可在职责所需范围共享少主明确表达的偏好、当前状态、近期相关信息、日程和有效决定。
+- 共享信息必须注明来源、可信程度、适用范围和失效条件。
+- 宫斗、争宠和暗讽只能影响表达，不得影响任务、权限、证据、风险和验收。
+- housekeeper 与 life 使用完整但受限的长期记忆方案：专用记忆工具或仅允许写明确角色记忆目录，不开放普通项目文件写权限。
 
 ## 部署与运行说明
 
 - 五个 workspace 文件为 `IDENTITY.md`、`SOUL.md`、`AGENTS.md`、`USER.md`、`TOOLS.md`。
-- `PERMISSIONS.md` 仅作为真实权限配置参考，不能直接当作 OpenClaw 配置复制。
-- 角色文件写入后必须创建新会话，核对 bootstrap 完整性和权限配置。
-- 局部依赖不可用时，只阻塞受影响任务分支，不冻结其他可继续的工作。
-- 角色包描述行为、职责和决策边界；实际工具权限必须由 OpenClaw 配置落实。
-- 当前賈南風角色主体已部署；跨 Agent 发送、跨 Agent 历史读取和分级外部消息仍受全局策略限制，详见部署状态文档。
-- 版本化角色包和规则文档默认保留旧版本，仅由薇明确决定何时清理。
+- `PERMISSIONS.md` 仅作为真实权限配置参考。
+- 共同协议虽然有仓库权威源，但执行摘要必须内嵌到各 Agent 的 `AGENTS.md`。
+- 写入后必须创建普通正式新会话，核对五文件完整性和权限配置。
+- A2A、会话可见性、专用记忆、Telegram、天气、日历和 Cron 必须经过真实测试。
+- 当前賈南風 v1.02 角色主体已部署，但跨 Agent 发送和历史读取仍受全局策略限制。
+- 设计版本、部署版本和历史版本必须分别标记；实际能力不足时不得误报完整部署。
 
 ## 文档分类
 
 ### 000-OpenClaw文档管理
 
-- [DocumentRules文档编号规则-v1.02.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.02.md)（当前）
+- [DocumentRules文档编号规则-v1.03.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.03.md)（当前）
+- [DocumentRules文档编号规则-v1.02.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.02.md)（历史保留）
 - [DocumentRules文档编号规则-v1.01.md](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.01.md)（历史保留）
 - [SourceIndex来源索引-v0.01.md](000-OpenClaw文档管理/SourceIndex来源索引-v0.01.md)
 
 ### 001-OpenClaw规划设计
 
-- [QuickBrief快速简报-v1.02.md](001-OpenClaw规划设计/QuickBrief快速简报-v1.02.md)
-- [FinalDesign最终设计-v1.03.md](001-OpenClaw规划设计/FinalDesign最终设计-v1.03.md)
-- [AgentCards角色卡-v0.04/](001-OpenClaw规划设计/AgentCards角色卡-v0.04/README.md)
-- [DeploymentPlan部署方案-v0.04.md](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.04.md)
-- [Workflows工作流程-v0.05.md](001-OpenClaw规划设计/Workflows工作流程-v0.05.md)
-- [ImplementationRoadmap实施路线图-v0.04.md](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.04.md)
+- [QuickBrief快速简报-v1.03.md](001-OpenClaw规划设计/QuickBrief快速简报-v1.03.md)
+- [FinalDesign最终设计-v1.04.md](001-OpenClaw规划设计/FinalDesign最终设计-v1.04.md)
+- [AgentCards角色卡/](001-OpenClaw规划设计/AgentCards角色卡/README.md)
+- [DeploymentPlan部署方案-v0.05.md](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.05.md)
+- [Workflows工作流程-v0.06.md](001-OpenClaw规划设计/Workflows工作流程-v0.06.md)
+- [ImplementationRoadmap实施路线图-v0.05.md](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.05.md)
 - [CodexOpenClawCommunication通信方法-v0.01.md](001-OpenClaw规划设计/CodexOpenClawCommunication通信方法-v0.01.md)
 
 ### 002-OpenClaw部署进度
