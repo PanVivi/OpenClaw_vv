@@ -20,6 +20,13 @@
 | `USER.md` | 少主偏好和决策边界 | 是 |
 | `TOOLS.md` | 工具使用、自动化、companion 调度和模型说明 | 是 |
 | `PERMISSIONS.md` | 建议权限矩阵 | 否，仅供配置参考 |
+| `DeploymentStatus部署状态-v0.01.md` | 当前部署结果、未完成能力和后续任务边界 | 否，仅供状态追踪 |
+
+## 当前部署状态
+
+角色主体已经部署并生效，五个 workspace 文件完整加载，当前模型为 GPT Luna。跨 Agent 发送、跨 Agent 历史读取、companion 实际协调和分级外部消息仍受当前全局策略限制，因此整体状态为 `partially completed`。
+
+详细证据和限制见：[`DeploymentStatus部署状态-v0.01.md`](DeploymentStatus部署状态-v0.01.md)。
 
 ## 快速部署
 
