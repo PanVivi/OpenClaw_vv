@@ -3,10 +3,10 @@
 ## 当前结论
 
 - Agent ID：`housekeeper`
-- 当前设计版本：v1.04
-- 当前 NAS 已部署版本：v1.02
+- 当前设计版本：v1.04 `CANDIDATE`（候选版）
+- 当前实际部署版本：v1.02 `STABLE`（稳定版）
 - 当前运行状态：`partially completed`
-- 当前模型：`custom-1/gpt-5.6-luna`
+- 最后已知模型：`custom-1/gpt-5.6-luna`，部署前需从 NAS 重新核验
 - 实际 workspace：待从 NAS 重新核验
 - Telegram Bot / account / binding：待从 NAS 重新核验
 - 当前设计来源：本分支当前 `housekeeper-賈南風/` 五个 workspace 文件
@@ -34,13 +34,13 @@
 
 ## 下一步
 
-1. 保留 v1.02 五文件和配置作为回滚基线。
+1. 保留 v1.02 `STABLE` 五文件和配置作为生产回滚基线。
 2. 只读核对 workspace、模型、Bot、account、binding、配置版本、A2A、session visibility 和现有工具。
 3. 独立设计并配置最小范围 A2A 与必要会话能力。
 4. 将完整记忆插件和隔离方案作为单独部署任务设计、审核和测试。
-5. 部署 v1.04 五个 workspace 文件并创建普通正式新会话。
+5. 通过文档继承检查后，部署 v1.04 `CANDIDATE` 五个 workspace 文件并创建普通正式新会话。
 6. 完成治理规则、正反向权限、跨 Agent、外部消息和回滚验收。
-7. 全部通过后才把当前已部署版本更新为 v1.04。
+7. 全部通过后，才可将 v1.04 状态升级为 `STABLE`，并更新当前实际部署版本。
 
 ## 证据原则
 
