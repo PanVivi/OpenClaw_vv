@@ -1,31 +1,29 @@
 # PERMISSIONS.md
 
-本文件是 ops / 魚玄機 v0.03 的建议权限矩阵，不是可直接复制的配置。
+本文件是 ops / 魚玄機 v0.04 的建议权限矩阵，不是可直接复制的配置。
 
 | 权限项 | 建议 | 真实限制 |
 | --- | --- | --- |
-| 任务相关项目与配置读取 | 有限 | 只读优先；限定 Task ID、路径、时间窗口和数据最小化 |
-| 日志与服务状态读取 | 有限 | 仅调查、自检和验收证据范围；输出脱敏 |
-| shell / exec / process | 分级 | 仅已批准命令；绑定 Task ID、授权来源、有效期和去重键 |
-| 普通文件写入与编辑 | 分级 | 明确目标路径、固定基线、备份、diff、回滚和有效期 |
-| 删除、覆盖与迁移 | 高风险分级 | 重要数据或难回退操作必须事前上报 |
-| OpenClaw 配置修改 | 分级 | 方案 Review、执行前 Risk、validate 和回滚齐备 |
-| 服务启动、停止、重启 | 分级 | 明确影响、允许次数、回滚和真实 Smoke Test |
-| 外部网络与依赖下载 | 默认否/临时分级 | 固定可信来源、精确版本、校验值、用途和有效期；禁止未经审查的远程脚本直执行 |
-| 外部发送或发布 | 分级 | 明确接收者、内容和授权；不得代表少主作未授权承诺 |
-| 任务状态与证据记录 | 有限 | 仅写配置指定的任务记录；绑定 Task ID，日志脱敏 |
-| `sessions_list/send/history/status` | 有限 | 仅 housekeeper、coder、reviewer 及当前任务技术会话；命名白名单或受限代理 |
-| `sessions_spawn` | 有限 | 仅 reviewer.Review 通过的技术子 Agent |
-| secret profile 使用 | 有限 | 只引用，不读取或输出明文 |
-| companion 私人会话 | 否 | 不属于工程职责 |
-| 跨任务历史与证据 | 否 | 不得复用其他 Task 的授权、证据或风险结论 |
-| 最终验收判定 | 否 | 由 reviewer.Test |
+| 任务相关读取 | 有限 | Task ID、最新 Generation、路径、时间窗口和最小化 |
+| 日志与服务状态读取 | 有限 | 调查、自检和证据范围；脱敏 |
+| shell / exec / process | 分级 | Active Handler=ops、最新 Generation、已批准命令和操作 ID |
+| 文件写入与编辑 | 分级 | 路径、固定基线、备份、diff、回滚、有效期和 Generation |
+| 删除、覆盖与迁移 | 高风险分级 | 重要或难回退操作事前上报 |
+| 配置修改 | 分级 | 当前 Review/Risk、validate 和回滚齐备 |
+| 服务控制 | 分级 | 明确影响、次数、回滚和 Smoke Test |
+| 外部网络与依赖 | 默认否/临时分级 | 来源、版本、校验值、用途和有效期 |
+| 外部发送 | 分级 | 接收者、内容、授权、Generation 和去重键 |
+| 任务与证据记录 | 有限 | 写所有者、Active Handler、Generation、确认、输入版本和证据 |
+| 会话工具 | 有限 | housekeeper、coder、reviewer 和当前任务技术会话；白名单或受限代理 |
+| `sessions_spawn` | 有限 | 当前 Generation 下经 Review 的技术子 Agent |
+| secret profile | 有限 | 只引用，不读明文 |
+| companion 私人会话 | 否 | 禁止 |
+| 跨任务/旧代次证据 | 否 | 禁止复用 |
+| 最终验收判定 | 否 | reviewer.Test |
 
 ## 强制规则
 
-- “分级”必须转换为精确 allow/deny，而不是仅靠提示词自律。
-- 会话能力无法按名称限制时必须使用专用受限代理，不得开放 `visibility=all` 冒充隔离。
-- 临时生产权限必须记录授予原因、范围、开始时间、失效条件和回收结果。
-- 任务完成、取消、失败、暂停、超时或范围变化后，原临时权限不得继续沿用。
-- 未配置持久化时不得声称任务状态或证据已跨会话保存。
-- 未完成正向与拒绝测试时，只能标记 `partial`、`blocked` 或 `not verified`。
+- 权限必须同时校验 Task ID、Active Handler、Assignment Generation、授权范围和有效期。
+- 新 Generation 生效、取消、重新分派、失败、暂停或超时后，旧权限立即撤销。
+- Review/Risk 的 Generation 或输入哈希不匹配时不能执行。
+- 未完成最新代次允许测试、旧代次拒绝、重新分派撤权和恢复测试时不得标记完整部署。

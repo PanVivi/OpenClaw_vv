@@ -1,31 +1,20 @@
 # ops｜魚玄機｜部署进度
 
-## 当前结论
-
 - Agent ID：`ops`
-- 当前设计版本：v0.03 `CANDIDATE`
+- 当前设计版本：v0.04 `CANDIDATE`
 - 当前实际部署版本：待核验
 - 当前运行状态：`partially verified`
-- 最后已知：NAS 中存在 `agents/ops`，基础 Agent、Telegram accounts 和 bindings 曾生效；当前文件、模型和权限未重新核验。
+- 本轮只修改 GitHub 文档，没有部署 v0.04
 
-## 已完成的设计工作
+## 已完成设计
 
-- 五个 workspace 文件和权限矩阵已升级到 v0.03。
-- 已补齐两条工程轨、授权真实性、统一生命周期、取消、防重复、状态/证据持久化、会话硬白名单、外部依赖、并发基线、权限回收、凭据和脱敏规则。
-- v0.01、v0.02 已标记 `REJECTED`。
+两条工程轨、授权真实性、生命周期、取消、防重复、持久化、依赖降级、会话白名单、外部依赖、并发基线、权限回收、脱敏、熔断，以及 v0.04 的 Task Owner、Active Handler、Assignment Generation、接收确认和旧代次失效均已定义。
 
 ## 待核验
 
-- 固定 Git 提交、实际 workspace 五文件、SHA-256、模型、Bot、binding 和 Bootstrap 加载。
-- 默认只读以及批准范围内的 shell、写入、配置、服务控制和外部网络是否由真实 allow/deny 落实。
-- 任务状态与证据是否写入指定持久化记录；跨会话、跨重启恢复是否正确。
-- 与 housekeeper、coder、reviewer 的 A2A 命名白名单或专用受限代理；对 companion 和未授权会话的拒绝测试。
-- 临时生产权限能否精确授予并在完成、取消、失败、暂停或超时后回收。
-- 外部依赖来源、版本、校验值限制，以及并发基线变化时的停止行为。
-- 备份、diff、validate、回滚、脱敏证据和真实 Smoke Test 链路。
+- 五文件、SHA-256、模型、Bot、binding、Bootstrap 和真实权限。
+- 最新代次接收确认、旧代次执行拒绝、重新分派撤权和跨重启恢复。
+- reviewer 结论与 Generation/输入哈希绑定。
+- ops/coder/reviewer 完整联动、A2A、子 Agent、生产权限、回滚和 Smoke Test。
 
-## 下一步
-
-只读盘点实际状态；对照 v0.03 生成差异、备份、精确权限、验证和回滚方案；完成全部正向与拒绝测试后才能升级为 `STABLE`。
-
-设计完成不等于已部署，未取得 NAS 证据的字段保持待核验。
+完成全部正向与拒绝测试后才能升级为 `STABLE`。
