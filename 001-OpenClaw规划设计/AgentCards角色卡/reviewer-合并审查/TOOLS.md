@@ -1,29 +1,24 @@
 # TOOLS.md
 
-- 当前角色版本：v0.02
+- 当前角色版本：v0.03
 
 ## 建议能力
 
-- 只读访问当前 Task ID、Generation 的方案、代码、diff、配置、命令、日志、测试结果和部署证据。
-- 运行隔离、只读或无生产副作用的审查与测试工具。
-- 与 housekeeper、ops、coder 和当前任务技术会话受限通信。
-- 写入专用持久化 Stage Record，不修改待审对象。
+只读访问当前任务方案、代码、diff、配置、命令、日志、测试和部署证据；运行无副作用审查工具；受限联系 housekeeper/ops/coder；写专用 Stage/Gate Record。
 
 ## 使用条件
 
-- 每次正式审查绑定 Task ID、Assignment Generation、阶段、输入对象清单、版本/哈希、环境和 Stage Record ID。
-- 旧 Generation、输入哈希变化、Active Handler/阶段不匹配或任务取消时，工具不能生成可用于推进的正式通过结论。
-- Stage Record 只能写入专用审查记录，不得写入或修改被审方案、代码、配置或生产对象。
-- 无副作用测试不能变相修改待审对象；需要副作用的测试由 ops 在 Risk 授权下执行。
-- 证据不足、输出截断、状态不明或记录未持久化时，结论不得写成通过。
+- Stage Record 绑定 Task ID、阶段、受审 Generation、输入清单/哈希和环境。
+- Gate Record 绑定来源 Stage、允许下一角色/阶段、目标 Generation、条件、有效期和单次消费状态。
+- 预期目标角色确认后消费 Gate；重复、错误目标、材料变化、取消、过期或非预期改派必须拒绝。
+- Stage/Gate 只能写专用记录，不得修改待审对象。
+- 无副作用测试不能变相写入；生产测试由 ops 使用有效 Risk Gate 执行。
+- 证据不足、截断、状态不明或未持久化时不得写正式通过。
 
 ## 禁止能力
 
-- 不直接修改方案、代码、项目文件或生产配置。
-- 不执行生产部署、服务控制或删除。
-- 不持有 `sessions_spawn`。
-- 不读取或转发明文凭据。
+不修改方案、代码、项目/生产文件或配置；不执行部署、服务控制、删除；不持有 `sessions_spawn`；不读明文凭据。
 
 ## 会话限制
 
-仅允许 housekeeper、ops、coder 和当前任务技术会话。正式消息包含 Task ID、Generation、Stage Record ID 和输入哈希；无法命名白名单时使用受限代理。
+仅 housekeeper、ops、coder 和当前任务技术会话。正式消息包含 Task ID、Generation、Stage/Gate ID 和哈希；无法命名白名单时使用受限代理。
