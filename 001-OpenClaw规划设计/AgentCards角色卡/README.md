@@ -25,15 +25,15 @@
 | Agent ID | 正式角色名 | 当前设计版本 | 成熟度 | 当前实际部署 |
 | --- | --- | --- | --- | --- |
 | `housekeeper` | 賈南風 | v1.04 | `CANDIDATE` | v1.02 `STABLE`，运行状态部分完成 |
-| `ops` | 魚玄機 | v0.01 | `CANDIDATE` | `partially verified`，实际版本待核验 |
-| `coder` | 步非煙 | v0.01 | `CANDIDATE` | `not verified` |
+| `ops` | 魚玄機 | v0.02 | `CANDIDATE` | `partially verified`，实际版本待核验 |
+| `coder` | 步非煙 | v0.02 | `CANDIDATE` | `not verified` |
 | `reviewer` | 合并审查 | v0.01 | `CANDIDATE` | `not verified` |
 | `life` | 蕭觀音 | v0.02 | `CANDIDATE` | 尚未部署，无 `STABLE` 版本 |
 | `companion-dugu` | 獨孤伽羅 | v0.01 | `CANDIDATE` | `not verified` |
 | `companion-wu` | 武曌 | v0.01 | `CANDIDATE` | `not verified` |
 | `companion-lv` | 呂雉 | v0.01 | `CANDIDATE` | `not verified` |
 
-八个常驻 Agent 均已具备当前完整角色卡结构。除賈南風 v1.02 外，其他当前设计均不得在未完成实际部署和验收前标记为 `STABLE`。
+魚玄機与步非煙 v0.01 均为 `REJECTED`，不得部署或作为后续版本底稿。当前 v0.02 已完成设计修正，但仍需 NAS 部署与运行验收后才能升级为 `STABLE`。
 
 ## 目录
 
