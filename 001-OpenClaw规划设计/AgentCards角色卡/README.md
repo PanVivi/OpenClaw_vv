@@ -13,29 +13,27 @@
 
 ## 接手顺序
 
-其他 AI 接手某个 Agent 时，按以下顺序读取：
-
-1. `DeploymentStatus部署状态.md`：先确认当前实际部署、阻塞和下一步。
-2. `VERSION-STATUS版本状态.md`：确认各版本是否可采用。
-3. `README.md`：确认当前设计版本、职责和部署验收要求。
-4. 五个当前 workspace 角色文件。
-5. `PERMISSIONS.md`：核对目标权限与实际配置差异。
-6. `旧文档/`：仅在对比、回滚或复盘时读取；看到 `REJECTED-不可采用.md` 时不得将该目录作为部署源或升级底稿。
+1. `DeploymentStatus部署状态.md`：确认实际部署、阻塞和下一步。
+2. `VERSION-STATUS版本状态.md`：确认版本可采用性。
+3. `README.md`：确认当前设计、职责和验收要求。
+4. 五个 workspace 文件。
+5. `PERMISSIONS.md`：核对目标权限。
+6. `旧文档/`：仅用于对比、回滚和复盘。
 
 ## 当前 Agent 与部署状态
 
 | Agent ID | 正式角色名 | 当前设计版本 | 成熟度 | 当前实际部署 |
 | --- | --- | --- | --- | --- |
 | `housekeeper` | 賈南風 | v1.04 | `CANDIDATE` | v1.02 `STABLE`，运行状态部分完成 |
-| `ops` | 魚玄機 | 待整理 | 待核验 | 以部署状态文档为准 |
-| `coder` | 步非煙 | 待编写 | 待核验 | 待核验 |
-| `reviewer` | 合并审查 | 待编写 | 待核验 | 待核验 |
+| `ops` | 魚玄機 | v0.01 | `CANDIDATE` | `partially verified`，实际版本待核验 |
+| `coder` | 步非煙 | v0.01 | `CANDIDATE` | `not verified` |
+| `reviewer` | 合并审查 | v0.01 | `CANDIDATE` | `not verified` |
 | `life` | 蕭觀音 | v0.02 | `CANDIDATE` | 尚未部署，无 `STABLE` 版本 |
-| `companion-dugu` | 獨孤伽羅 | 待编写 | 待核验 | 待核验 |
-| `companion-wu` | 武曌 | 待编写 | 待核验 | 待核验 |
-| `companion-lv` | 呂雉 | 待编写 | 待核验 | 待核验 |
+| `companion-dugu` | 獨孤伽羅 | v0.01 | `CANDIDATE` | `not verified` |
+| `companion-wu` | 武曌 | v0.01 | `CANDIDATE` | `not verified` |
+| `companion-lv` | 呂雉 | v0.01 | `CANDIDATE` | `not verified` |
 
-详细运行事实分别见各 Agent 根目录的 `DeploymentStatus部署状态.md`。
+八个常驻 Agent 均已具备当前完整角色卡结构。除賈南風 v1.02 外，其他当前设计均不得在未完成实际部署和验收前标记为 `STABLE`。
 
 ## 目录
 
@@ -64,24 +62,16 @@ PERMISSIONS.md
 旧文档/
 ```
 
-- `VERSION-STATUS版本状态.md`：记录各设计版本的成熟度和可采用性。
-- `DeploymentStatus部署状态.md`：唯一的当前实际部署状态入口，不属于某个角色版本，不复制到 workspace。
-- 五个 workspace 文件：`IDENTITY.md`、`SOUL.md`、`AGENTS.md`、`USER.md`、`TOOLS.md`。
-- `PERMISSIONS.md`：实际权限配置参考，不复制为 OpenClaw 配置。
-- `README.md`：当前设计版本、职责和验收要求，不代替部署状态文档。
-- `旧文档/`：稳定基线、已取代版本、已否决草案和版本说明；不保存当前部署状态副本。
+五个 workspace 文件为 `IDENTITY.md`、`SOUL.md`、`AGENTS.md`、`USER.md`、`TOOLS.md`。`PERMISSIONS.md` 是实际权限配置参考；`DeploymentStatus部署状态.md` 是当前运行状态唯一入口。
 
 ## 共同协议加载规则
 
-`共同协议/` 保存全体 Agent 的权威共同协议。由于 OpenClaw 不会自动加载角色目录外的任意文件，每个 Agent 的 `AGENTS.md` 必须内嵌该协议当前版本的完整执行摘要；仅写相对路径不算完成接入。
+共同协议权威源位于 `共同协议/`。每个 Agent 的 `AGENTS.md` 必须内嵌当前协议执行摘要；仅引用路径不算完成接入。
 
 ## 部署原则
 
-1. 先读取目标 Agent 的部署进度和版本状态文档。
-2. 只有标记为 `STABLE` 的版本可以直接作为正式部署源；`CANDIDATE` 必须先完成要求的审查和验收。
-3. `REJECTED` 版本只能用于复盘，禁止部署和作为新版本底稿。
-4. 固定 Git 提交和角色目录作为部署源。
-5. 写入前备份目标 workspace 五文件和实际配置。
-6. 复制五个 workspace 文件，按 `PERMISSIONS.md` 转换真实权限。
-7. 创建正式普通新会话，检查五文件无缺失、无截断，并独立测试允许能力与禁止能力。
-8. 将真实结果写回根目录部署进度文档。
+1. 只有 `STABLE` 可直接作为正式部署源；`CANDIDATE` 必须先审查和验收。
+2. 固定 Git 提交和角色目录，写入前备份实际 workspace 与配置。
+3. 复制五个 workspace 文件，按 `PERMISSIONS.md` 转换真实权限。
+4. 创建正式普通新会话，检查文件完整性并测试允许与禁止能力。
+5. 将真实结果写回对应 `DeploymentStatus部署状态.md`。
