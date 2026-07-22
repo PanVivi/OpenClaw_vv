@@ -1,33 +1,23 @@
 # 001 OpenClaw架设部署｜AgentCards 角色卡库
 
-本目录是八个常驻 Agent 当前角色卡的稳定入口。根目录保存当前版本，旧版本位于各 Agent 的 `旧文档/<版本>/`；实际运行状态只以各 `DeploymentStatus部署状态.md` 为准。
-
-## 当前版本
+本目录是八个常驻 Agent 当前角色卡的稳定入口。实际运行状态只以各 `DeploymentStatus部署状态.md` 为准。
 
 | Agent ID | 角色 | 当前设计 | 实际部署 |
 | --- | --- | --- | --- |
-| `housekeeper` | 賈南風 | v1.06 `CANDIDATE` | 最后已知 v1.02 `STABLE` |
-| `life` | 蕭觀音 | v0.03 `CANDIDATE` | 未部署 |
-| `ops` | 魚玄機 | v0.05 `CANDIDATE` | `partially verified`，版本待核验 |
-| `coder` | 步非煙 | v0.05 `CANDIDATE` | `not verified` |
-| `reviewer` | 合并审查 | v0.03 `CANDIDATE` | `not verified` |
-| `companion-dugu` | 獨孤伽羅 | v0.01 `CANDIDATE` | `not verified` |
-| `companion-wu` | 武曌 | v0.01 `CANDIDATE` | `not verified` |
-| `companion-lv` | 呂雉 | v0.01 `CANDIDATE` | `not verified` |
+| `housekeeper` | 賈南風 | v1.07 `CANDIDATE` | 最后已知 v1.02 `STABLE` |
+| `life` | 蕭觀音 | v0.04 `CANDIDATE` | 未部署 |
+| `ops` | 魚玄機 | v0.05 `CANDIDATE` | 待核验 |
+| `coder` | 步非煙 | v0.05 `CANDIDATE` | 待核验 |
+| `reviewer` | 合并审查 | v0.03 `CANDIDATE` | 待核验 |
+| `companion-dugu` | 獨孤伽羅 | v0.02 `CANDIDATE` | 待核验 |
+| `companion-wu` | 武曌 | v0.02 `CANDIDATE` | 待核验 |
+| `companion-lv` | 呂雉 | v0.02 `CANDIDATE` | 待核验 |
 
-## 接手顺序
+## 最小部署原则
 
-1. DeploymentStatus；2. VERSION-STATUS；3. README；4. 五个 workspace 文件；5. PERMISSIONS；6. 仅复盘时读旧文档。
-
-## 当前跨角色协议
-
-- Assignment Generation：当前 Active Handler 的处理权租约。
-- Stage Record：reviewer 对特定材料/哈希的审查事实。
-- Gate Record：Review/Risk 通过后的一次性指定下一跳凭证。
-- 正常指定交接消费 Gate，不会因预期 Generation 递增自我失效。
-- Gate 重复、错误角色、材料变化、取消、过期或非预期改派必须拒绝。
-- life 是全部个人生活自动化的唯一执行所有者。
-
-## 部署原则
-
-固定 Git 提交；备份五文件和配置；按 PERMISSIONS 转换真实权限；创建正式新会话；测试允许、禁止、恢复、Gate 单次消费和自动化可靠性；最后更新 DeploymentStatus。`CANDIDATE` 未验收前不得写成 `STABLE`。
+- 先保证八个 Agent 独立 workspace、Bot、binding、普通会话、角色加载和最小权限。
+- 简单生活问题由当前对话中的賈南風直接回答；需要设置和持续执行时转 life。
+- companion 基础上线不依赖 life 协调、历史代理或记忆。
+- 工程流程可先使用当前会话结构化记录；专用持久化后续增强。
+- 无法硬隔离历史时保持历史能力关闭，不开放 `visibility=all`。
+- 增强能力未完成只标记对应能力，不得把整个 Agent 写成未部署。
