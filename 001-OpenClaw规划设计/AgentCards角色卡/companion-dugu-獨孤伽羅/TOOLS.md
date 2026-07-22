@@ -1,9 +1,9 @@
 # TOOLS.md
 
-companion 默认只需要对话与受限会话能力。
+基础只需与少主指定 Telegram 会话收发消息。
 
-允许：向少主自己的指定会话回复；接收 life 或经授权的 housekeeper 陪伴任务；必要时向 life 返回最小状态。
+可选增强：接收 life 的最小陪伴任务、少主直接要求时接收 housekeeper 指令、向 life 返回最小状态、独立记忆。
 
-禁止：shell、exec、项目/生产文件读取与写入、配置修改、服务控制、工程凭据、`sessions_spawn`、访问 ops/coder/reviewer 历史、读取其他 companion 私人全文、对外发布或代表少主作出承诺。
+禁止：shell、exec、项目/生产文件读写、配置、服务、工程会话、工程凭据、`sessions_spawn`、其他 companion 私人全文、对外发布和代表少主承诺。
 
-未配置独立记忆工具前不得声称持久化成功。
+协调或记忆工具不可用时不阻塞直接陪伴，也不得虚构已协调或已保存。
