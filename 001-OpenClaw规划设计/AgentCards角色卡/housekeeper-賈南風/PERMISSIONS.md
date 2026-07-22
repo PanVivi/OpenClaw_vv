@@ -1,30 +1,30 @@
 # PERMISSIONS.md
 
-本文件是 housekeeper / 賈南風 v1.06 的建议权限矩阵，不是可直接复制的配置。
+本文件是 housekeeper / 賈南風 v1.07 的建议权限矩阵，不是可直接复制的配置。
 
-| 权限项 | 建议 | 说明 |
+| 权限项 | 基础部署 | 说明 |
 | --- | --- | --- |
+| 普通问答与简单生活回答 | 是 | 无工具、无未来投递、无持续状态时直接处理 |
 | 任务相关读取 | 有限 | 明确文档/目录，只读；生产读取临时最小开放 |
-| 任务状态写入 | 有限 | Task ID、Owner、Handler、Generation、输入哈希、状态、去重键和证据 |
-| Gate Record 管理 | 有限 | 记录、验证、单次消费和失效；不能自行伪造 reviewer 通过结论 |
+| 当前会话任务状态 | 有限 | 可使用结构化消息维护；未持久化须明确标记 |
+| 专用 Task/Stage/Gate 持久化 | 后续增强 | 不作为八 Agent 基础上线前置 |
 | shell / exec / process | 否 | 委派 ops |
 | 项目/生产写入、删除、配置、服务控制 | 否 | 禁止 |
-| `sessions_list/status` | 是 | 查看状态，不代表完成 |
-| `sessions_send` | 分级 | 结构化任务；下一跳必须符合有效 Gate Record |
-| `sessions_history` | 有限 | 专业任务必要历史；companion 元数据优先、最小历史 |
-| `sessions_spawn` | 否 | 禁止 |
+| `sessions_send` | 有限 | 向明确 Agent 发送结构化任务；生活设置转 life |
+| `sessions_list/status` | 可选 | 非基础上线前置；状态不等于完成 |
+| `sessions_history` | 默认否/可选有限 | companion 元数据优先；无硬隔离时不开放 |
+| `sessions_spawn` | 否 | 最小部署关闭；技术子 Agent 后续再评估 |
 | companion 直接联系 | 有限 | 仅少主直接要求 |
-| 生活自动化 | 否 | life 唯一执行所有者 |
-| 项目/工程协调自动化 | 有限 | housekeeper 唯一所有者 |
-| 跨域编排 | 有限 | 仅父任务，专业子任务分属对应 Agent |
+| 生活提醒、日历、Cron | 否 | life 唯一执行所有者；housekeeper 只能请求 |
+| 项目/工程协调自动化 | 有限 | housekeeper 可拥有 |
 | 外部消息 | 分级 | 既有关系低风险状态通知；重大公开行为上报 |
 | 长期记忆 | 待单独部署 | 未配置前不得声称可用 |
 | 明文凭据 | 否 | 只引用 secret profile |
 
 ## 强制规则
 
-- Assignment Generation 管理处理权；Gate Record 管理一次指定门控过渡，两者不得混为一谈。
-- 正常的 Gate 指定交接可以递增 Generation 并消费凭证；不得因该预期递增自动否定凭证。
-- 同一 Gate ID 只能消费一次，且只能给指定角色/阶段；已消费、过期、材料变化或非预期改派必须拒绝。
-- housekeeper 只能消费 reviewer 真实生成的 Gate Record，不得自行构造通过结论。
-- 实际配置必须完成错误下一跳、旧代次、重复消费、输入变化和取消后的拒绝测试。
+- 生活问题可直接回答不等于可以直接创建生活自动化。
+- life 转交失败或工具不可用时不得虚构设置成功。
+- 最小部署中的 Review/Risk 记录只在当前可核对会话内有效；上下文丢失后不得自动复用。
+- 不得为了开放跨 Agent 历史而使用 `visibility=all`；无法精确隔离时保持历史能力关闭。
+- 实际配置必须验证 housekeeper 无工程副作用工具、不会重复创建 life 自动化，并能正确区分直接回答与转交。

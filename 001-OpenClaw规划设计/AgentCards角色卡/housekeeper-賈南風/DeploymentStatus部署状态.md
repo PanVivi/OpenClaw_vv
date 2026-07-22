@@ -1,20 +1,28 @@
 # housekeeper｜賈南風｜部署进度
 
 - Agent ID：`housekeeper`
-- 当前设计版本：v1.06 `CANDIDATE`
+- 当前设计版本：v1.07 `CANDIDATE`
 - 当前实际部署版本：v1.02 `STABLE`
 - 当前运行状态：`partially completed`
-- 本轮只修改 GitHub 文档，没有部署 v1.06
+- 本轮只修改 GitHub 文档，没有部署 v1.07
 
-## 已完成设计
+## 本轮设计修正
 
-完整保留稳定治理、生活分流、任务所有者、处理权代次、自动化唯一所有者和 companion 最小读取；v1.06 新增一次性 Gate Record，修正正常交接导致审查结论自我失效的问题。
+- 简单生活问答由賈南風直接回答；提醒、日历、设置、定时、未来投递、持续跟踪和 companion 协调转交蕭觀音。
+- life 仍是生活自动化唯一执行所有者，但不是所有生活对话的唯一入口。
+- Task / Stage / Gate 在基础部署中可使用当前会话结构化记录；专用持久化和硬单次消费改为后续加固。
+- 技术子 Agent、完整记忆和精细跨会话历史不再阻塞八 Agent 基础上线。
 
-## 待核验
+## 基础部署待核验
 
-- 五文件、SHA-256、模型、Bot、binding、Bootstrap 和真实权限。
-- Task Owner、Active Handler、Generation、接收确认和旧处理权撤销。
-- Gate Record 生成、指定下一跳、目标 Generation、单次消费、重复消费拒绝、材料变化/取消/错误改派失效。
-- 工程全流程、life 自动化唯一所有者、companion 最小读取、A2A、取消、降级、熔断和回滚。
+- v1.07 五文件、SHA-256、模型、Bot、binding 和 Bootstrap。
+- 简单生活直接回答、复杂生活任务单次转交、转交失败不虚构。
+- housekeeper 无 shell、项目写入、删除、配置、服务控制和 `sessions_spawn`。
+- 当前会话内的基本工程路由、Review/Risk/Test、取消和防重复。
 
-保留 v1.02 回滚基线；全部验收通过后方可升级 v1.06 为 `STABLE`。
+## 后续增强
+
+- Task/Stage/Gate 专用持久化、硬单次消费和跨重启恢复。
+- 精确 A2A 历史隔离、完整记忆和高级自动化。
+
+保留 v1.02 回滚基线；基础部署通过前不得升级为 `STABLE`。
