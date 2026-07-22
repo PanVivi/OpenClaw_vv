@@ -1,29 +1,28 @@
 # life｜蕭觀音｜部署进度
 
-## 当前结论
-
 - Agent ID：`life`
-- 当前设计版本：v0.03 `CANDIDATE`
+- 当前设计版本：v0.04 `CANDIDATE`
 - 当前部署版本：无
 - 当前运行状态：`not deployed`
 - 本轮只修改 GitHub 文档，没有部署到 NAS
 
-## 已完成的设计工作
+## 本轮设计修正
 
-- 生活事务、companion 管理、提醒和每日 06:00 消息职责完整。
-- 新增生活自动化唯一所有者、Task/Automation Generation、接收确认和旧代次失效。
-- 新增持久化恢复、IANA/DST、misfire、重试、幂等 occurrence、Telegram 状态和失败通知。
-- 保持 life 会话只暴露 housekeeper 与三位 companion。
+- 简单生活问题可由賈南風直接回答；需要设置、定时、未来投递、持续跟踪、生活工具和 companion 协调时由 life 接手。
+- life 仍是生活自动化唯一执行所有者，但不垄断全部生活对话。
+- 角色基础上线与自动化高级可靠性拆分。
+- life 和三位 companion 的独立直接会话不再依赖受限历史代理或完整 A2A 先行完成。
 
-## 尚未完成
+## 基础部署待核验
 
-- workspace、五文件 SHA-256、模型、Bot、binding、chat ID 和权限未核验。
-- weather、calendar、提醒、Telegram、Cron 和受限会话代理未配置。
-- 自动化持久化、重启恢复、重复投递拒绝、DST、漏跑、重试、取消和失败通知未测试。
-- housekeeper 请求与 life 唯一所有者去重、所有权转移和旧 Generation 拒绝未测试。
-- companion 任务代次、并行发送和最小上下文未测试。
-- 完整记忆另立任务。
+- v0.04 五文件、模型、Bot、account、binding 和普通新会话。
+- 直接生活交流和 housekeeper 转交接收。
+- 现有 reminder/calendar/cron/Telegram 工具的真实可用项；不可用时正确 `blocked`。
+- shell、文件、配置、服务和工程历史拒绝。
 
-## 下一步
+## 后续增强
 
-只读盘点 NAS；固定提交部署 v0.03，先验证权限和会话拒绝，再验证提醒可靠性、Telegram 投递、companion 协同和回滚。全部通过后方可升级为 `STABLE`。
+- 自动化专用持久化、DST/misfire、幂等、重试、失败通知和跨重启恢复。
+- life 命名白名单会话代理、companion 主动协调和完整记忆。
+
+基础 Agent 可运行不等于全部增强能力完成；未完成项分别记录，不阻塞 life 先上线。
