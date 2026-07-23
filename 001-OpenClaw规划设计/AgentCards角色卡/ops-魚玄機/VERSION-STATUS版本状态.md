@@ -8,6 +8,7 @@
 | v0.06 | `CANDIDATE` | NAS 当前回滚基线 | 2026-07-23 从固定提交完成五文件部署，角色包一致性已验证 |
 | v0.07 | `CANDIDATE` | 暂否 | 完整继承 v0.06，追加 A2A 传输/历史隔离和个人记忆来源隔离 |
 | v0.08 | `CANDIDATE` | NAS 回滚基线 | 接受 housekeeper 正式委派包承载的既有授权；普通转述仍不授权 |
-| v0.09 | `CANDIDATE` | NAS 当前部署 | 增加仅限 ops 的 Telegram account/binding 专用工具；固定目标、secret、owner allowlist、备份、校验、probe 与回滚 |
+| v0.09 | `CANDIDATE` | NAS 回滚基线 | 增加仅限 ops 的 Telegram account/binding 专用工具；固定目标、secret、owner allowlist、备份、校验、probe 与回滚 |
+| v0.10 | `CANDIDATE` | NAS 当前部署 | 补齐 workspace 文件工具与经 `mode=auto` 单次审查的 NAS Gateway `exec/process`；保留 Risk、回滚和危险工具拒绝 |
 
-当前没有 `STABLE` 版本。v0.09 是当前设计与 NAS 部署版本；首次真实账号新增仍等待少主重新发送完整 Token。
+当前没有 `STABLE` 版本。v0.10 是当前设计与 NAS 部署版本；首次真实账号新增已由 coder account/binding 与通道 probe 验收。

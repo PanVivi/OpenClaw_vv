@@ -1,18 +1,10 @@
 # TOOLS.md
 
-- 当前角色版本：v0.10
+- 当前角色版本：v0.09
 
 ## 建议能力
 
-只读调查；在正式批准范围内使用 workspace 文件工具、NAS Gateway `exec/process` 和受限专用运维工具；通过 A2A 投递消息。正式工程协作仍限 housekeeper、coder、reviewer 和当前任务技术会话。技术子 Agent 只在增强层经 Review 启用。
-
-## 已部署通用执行能力
-
-- `write/edit/apply_patch`：只允许 ops 自己的 workspace；`apply_patch.workspaceOnly=true`，不能直接修改 workspace 外的生产文件。
-- `exec/process`：固定 `host=gateway`，用于受审的 NAS 调查、配置、服务和部署操作；`mode=auto`、`security=allowlist`、`ask=on-miss`、无界面回退为拒绝。
-- `strictInlineEval=true`：解释器内联执行仍需单次审查，不能因解释器路径已允许而永久放行任意代码。
-- `gateway`、`message`、`cron`、`sessions_history`、`sessions_spawn`：保持拒绝。OpenClaw 配置与服务通过受审 CLI/系统命令处理，不开放任意 Gateway RPC。
-- 工具存在不等于已获现实授权。任何副作用仍须符合 Task ID、当前处理权、正式委派或少主直接授权、一次性 Risk 记录、固定命令/配置哈希、备份、回滚和真实验证。
+只读调查；在正式批准范围内使用受限专用运维工具；通过 A2A 投递消息。通用 shell/exec/process、任意写入、Gateway 和服务控制仍按实际配置拒绝。正式工程协作仍限 housekeeper、coder、reviewer 和当前任务技术会话。技术子 Agent 只在增强层经 Review 启用。
 
 ## 已部署专用工具
 
@@ -38,7 +30,7 @@
 - Risk 通过记录被当前 ops 处理轮次确认后视为已使用；增强层同步单次消费 Gate，重复使用均拒绝。
 - 写入前核对并发；外部网络/依赖默认关闭；状态不明先核对；Smoke Test 验证真实业务链路；证据脱敏记录，增强层再写入专用持久化。
 - 结束、取消、失败、暂停、超时、改派或处理权失效后回收临时权限。
-- `ops_telegram_admin` 的固定动作由插件自身强制边界和回滚，属于预审专用操作；不得据此绕过通用执行能力的处理权、Risk 与自动执行审查。
+- `ops_telegram_admin` 的固定动作由插件自身强制边界和回滚，属于预审专用操作；不得据此推导通用执行权限。
 
 ## 会话限制
 

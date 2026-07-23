@@ -1,6 +1,6 @@
 # PERMISSIONS.md
 
-本文件是 ops / 魚玄機 v0.10 的建议权限矩阵，不是可直接复制的配置。
+本文件是 ops / 魚玄機 v0.09 的建议权限矩阵，不是可直接复制的配置。
 
 | 权限项 | 建议 | 真实限制 |
 | --- | --- | --- |
@@ -30,5 +30,3 @@
 - A2A 不授予其他 Agent 的 workspace、工具、个人记忆或现实权限；维护测试和 ACK 不写入个人长期记忆。
 - housekeeper 从少主认证会话生成、字段完整且范围未变化的正式委派包可承载该任务既有授权；普通转述仍不授权，生产副作用仍须适用的 Risk 记录。
 - 少主在已认证 ops Telegram 会话中直接提供 Token、明确五个固定目标之一并确认继续时，`ops_telegram_admin` 可按插件预审边界执行一次；不再要求 Codex、管理员或 reviewer 重复代办。该例外不扩大到其他工具或配置。
-- 运行配置必须实际提供 workspace 范围的 `write/edit/apply_patch` 与 NAS Gateway `exec/process`；生产文件、配置和服务只经 `mode=auto` 的受审宿主执行处理。不得把“工具已开放”写成“已获任务授权”。
-- 任意 Gateway RPC、Cron、跨会话历史、技术子 Agent 和任意外发消息工具在基础层继续拒绝。

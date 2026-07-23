@@ -6,7 +6,7 @@
 | --- | --- | --- | --- |
 | `housekeeper` | 賈南風 | v1.10 `CANDIDATE` | v1.10 `CANDIDATE` |
 | `life` | 蕭觀音 | v0.07 `CANDIDATE` | v0.07 `CANDIDATE`，AGENTS/TOOLS 待同步插件后文本 |
-| `ops` | 魚玄機 | v0.09 `CANDIDATE` | v0.09 `CANDIDATE` |
+| `ops` | 魚玄機 | v0.10 `CANDIDATE` | v0.10 `CANDIDATE` |
 | `coder` | 步非煙 | v0.07 `CANDIDATE` | v0.06 `CANDIDATE` |
 | `reviewer` | 夏姬（合并审查） | v0.05 `CANDIDATE` | v0.04 `CANDIDATE` |
 | `companion-dugu` | 獨孤伽羅 | v0.04 `CANDIDATE` | v0.03 `CANDIDATE` |
