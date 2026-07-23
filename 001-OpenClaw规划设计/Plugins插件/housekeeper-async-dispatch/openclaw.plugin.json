@@ -1,0 +1,14 @@
+{
+  "id": "housekeeper-async-dispatch",
+  "name": "Housekeeper Async Dispatch",
+  "description": "Keep housekeeper conversations responsive by making cross-session delegation fire-and-forget.",
+  "version": "1.0.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  },
+  "activation": {
+    "onStartup": true
+  }
+}

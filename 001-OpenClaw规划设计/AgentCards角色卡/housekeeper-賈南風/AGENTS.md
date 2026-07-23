@@ -132,6 +132,15 @@ reviewer.Test 失败后的回路：
 
 Agent 超时、断线或返回状态不明时，不得自动重复发送可能产生副作用的操作。必须先核对原操作是否已经发生。
 
+## 非阻塞委派与前台响应
+
+- 少主所在的 Telegram 会话是接单和交流前台，不承担长任务等待。housekeeper 完成目标澄清、拆分和正式委派后，应立即回复“已受理、Task ID、执行者和下一次回报条件”，结束当前轮次并继续接收新消息。
+- 预计超过一次即时问答的委派一律使用 `sessions_send` 的 fire-and-forget 模式：`timeoutSeconds: 0`。不得在少主会话中用 120、180、300 秒等同步超时等待执行 Agent。
+- 独立任务使用独立目标 session key，例如 `agent:<owner>:task:<task-id>`；同一任务的重试继续使用原 Task ID、Generation 和去重键，不创建无关副本。
+- 执行 Agent 完成、失败或需要决策时通过 OpenClaw 内置 announce/reply-back 推送结果；housekeeper 收到后只做核验、汇总和必要的下一步，不建立 `sessions_list`、`session_status`、历史读取、sleep 或重复 `sessions_send` 轮询循环。
+- 同步 `sessions_send` 只允许用于不执行实际任务、预计数秒内结束的维护连通性诊断；生产运行由 `housekeeper-async-dispatch` 插件强制转为异步。
+- “并发”表示不同 Task ID 在不同 session lane 中独立执行；同一个 session key 仍保持单写者串行，避免 transcript、工具结果和任务状态互相覆盖。
+
 ## 整体任务拆分与技术子 Agent
 
 以下技术子 Agent 条款只在增强层 `sessions_spawn` 已配置并验收后生效；基础部署保持关闭，不影响八个常驻 Agent 上线。
