@@ -1,0 +1,40 @@
+{
+  "id": "life-automation",
+  "name": "Life Automation",
+  "description": "Give only the life agent constrained CRUD access to life-owned scheduled agent tasks.",
+  "version": "1.0.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "agentId": {
+        "type": "string",
+        "default": "life"
+      },
+      "timezone": {
+        "type": "string",
+        "default": "Asia/Taipei"
+      },
+      "ownerChatId": {
+        "type": "string"
+      },
+      "telegramAccountId": {
+        "type": "string",
+        "default": "life"
+      }
+    }
+  },
+  "activation": {
+    "onStartup": true
+  },
+  "contracts": {
+    "tools": [
+      "life_automation"
+    ]
+  },
+  "toolMetadata": {
+    "life_automation": {
+      "optional": true
+    }
+  }
+}

@@ -15,10 +15,11 @@
 9. [部署方案 v0.09](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.09.md)
 10. [无损内容更新任务 v0.01](002-OpenClaw部署进度/LosslessContentUpdate无损内容更新任务-v0.01.md)
 11. [实施路线 v0.09](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.09.md)
-12. [当前进度 v0.12](002-OpenClaw部署进度/CurrentProgress当前进度-v0.12.md)
+12. [当前进度 v0.13](002-OpenClaw部署进度/CurrentProgress当前进度-v0.13.md)
 13. [委派自动化修复报告 v0.01](002-OpenClaw部署进度/DelegatedAutomation委派自动化修复报告-v0.01.md)
-14. [部署后故障与修复 v0.01](003-OpenClaw事故经验/PostDeploymentRecovery部署后故障与修复-v0.01.md)
-15. [来源索引 v0.11](000-OpenClaw文档管理/SourceIndex来源索引-v0.11.md)
+14. [萧观音自动化插件部署报告 v0.01](002-OpenClaw部署进度/LifeAutomationPlugin萧观音自动化插件部署报告-v0.01.md)
+15. [部署后故障与修复 v0.01](003-OpenClaw事故经验/PostDeploymentRecovery部署后故障与修复-v0.01.md)
+16. [来源索引 v0.12](000-OpenClaw文档管理/SourceIndex来源索引-v0.12.md)
 
 ## 当前角色版本
 
@@ -37,6 +38,8 @@ companion-lv      呂雉 v0.04
 
 八 Agent 五文件已完成基础部署。当前目标是按无损内容更新任务升级角色卡，同时保留 transcript、session、个人记忆和三条既有 Telegram routing。其余五个 Bot 等待真实 token 后逐个增量绑定。
 
-賈南風可直接回答简单生活问题；需要设置、定时、未来投递、持续跟踪、生活工具或 companion 协调时转蕭觀音。字段完整的正式委派包可承载少主既有授权，接收 Agent 不要求少主重复指令；life 仍是生活自动化唯一业务所有者。
+賈南風可直接回答简单生活问题；需要设置、定时、未来投递、持续跟踪、生活工具或 companion 协调时转蕭觀音。字段完整的正式委派包可承载少主既有授权，接收 Agent 不要求少主重复指令；life 仍是生活自动化唯一业务所有者。`life-automation` 已让萧观音直接执行受限自动化，不依赖 Codex、ops 或管理员在线。
 
 全员 A2A 消息投递已启用，但 `sessions_history` 保持拒绝。GitHub 设计不等于 NAS 已部署；基础角色状态与增强能力状态分别记录。
+
+故障排查、兼容性、权限和安全判断必须遵守根目录 `AGENTS.md`：先检索当前网络资料，再结合现场证据判断和验证，不得只凭记忆猜测。
