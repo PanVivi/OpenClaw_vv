@@ -11,7 +11,7 @@
 - v0.05 五个 workspace 文件来自固定提交 `cfb4edad793be6df0fb2a690dc5185bb1c1b44ba`。
 - 模型：primary `custom-2/grok-4.5`；fallback 配置存在。
 - Telegram：account `life` → Agent `life`，实际收发已通过。
-- 工具：web、Cron、message、`sessions_list/send/status` 可用；工程文件读写、执行、Gateway、spawn 与 `sessions_history` 拒绝。
+- 工具：web fetch、Cron、message、`sessions_list/send/status` 可用；Clash Fake-IP 环境已开启官方 RFC2544 兼容项并通过 `codexreset.org` 与 X 实测。A2A 接收轮次不能直接创建 owner-only Cron，管理面可创建 `agentId=life` 的持久任务；工程文件读写、执行、Gateway、spawn 与 `sessions_history` 拒绝。
 - A2A：八个固定 Agent 可互发，life 作为发送方已验证；life 仍是生活自动化唯一执行所有者。
 - Sandbox：关闭。
 - 连续性：专属恢复包存在；维护测试已明确标注为非个人记忆，原 `MEMORY.md` 未被错误改写。

@@ -11,7 +11,7 @@
 - v1.08 五个 workspace 文件来自固定提交 `cfb4edad793be6df0fb2a690dc5185bb1c1b44ba`，部署报告和 40 文件一致性校验通过。
 - 模型：primary `custom-2/grok-4.5`；fallback 配置存在。
 - Telegram：account `housekeeper` → Agent `housekeeper`，实际收发已通过。
-- 工具：workspace 内 `read`、`sessions_list/send/status` 和 memory 查询可用；写入、执行、Gateway、Cron、message、spawn 与 `sessions_history` 拒绝。
+- 工具：workspace 内 `read`、`sessions_list/send/status`、memory 查询与 owner Telegram 会话内的 Cron 协调能力可用；写入、执行、Gateway、message、spawn 与 `sessions_history` 拒绝。A2A 接收轮次受 OpenClaw owner-only 规则限制，不能直接创建 Cron，需由管理面持久化或由 housekeeper 的 owner 会话创建同 Agent 调度壳。
 - A2A：八个固定 Agent 可互发，housekeeper 作为发送方已验证；`visibility=all` 只用于目标解析，历史仍关闭。
 - Sandbox：关闭。
 - 连续性：专属恢复包存在；个人聊天恢复索引由 housekeeper 自己的 9 段 transcript 派生并校验，通用运维摘要与个人记忆已分离。

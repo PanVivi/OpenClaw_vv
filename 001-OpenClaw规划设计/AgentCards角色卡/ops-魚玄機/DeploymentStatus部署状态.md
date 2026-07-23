@@ -11,7 +11,7 @@
 - v0.06 五个 workspace 文件来自固定提交 `cfb4edad793be6df0fb2a690dc5185bb1c1b44ba`。
 - 模型：primary `custom-1/gpt-5.6-terra`；fallback 配置存在。
 - Telegram：account `default` → Agent `ops`，实际收发已通过。
-- 工具：workspace 内只读、web、memory 查询和 `sessions_list/send/status` 可用；写入、执行、Gateway、message、Cron、spawn 与 `sessions_history` 拒绝。
+- 工具：workspace 内只读、web、memory 查询和 `sessions_list/send/status` 可用；写入、执行、Gateway、message、Cron、spawn 与 `sessions_history` 拒绝。该限制是当前部署策略，不改变 ops 的角色职责；需要生产副作用时，由 housekeeper 的正式委派包承载少主既有授权，再由受控管理面执行，不要求少主重复下令。
 - A2A：八个固定 Agent 可互发，ops 作为发送方已验证；传输不扩大工程执行权限。
 - Sandbox：关闭。
 - 连续性：专属恢复包存在；旧 transcript 保留，维护测试已与个人记忆分离。
