@@ -4,14 +4,14 @@
 
 | Agent ID | 角色 | 当前设计 | 实际部署 |
 | --- | --- | --- | --- |
-| `housekeeper` | 賈南風 | v1.07 `CANDIDATE` | 最后已知 v1.02 `STABLE` |
-| `life` | 蕭觀音 | v0.04 `CANDIDATE` | 未部署 |
-| `ops` | 魚玄機 | v0.05 `CANDIDATE` | 待核验 |
-| `coder` | 步非煙 | v0.05 `CANDIDATE` | 待核验 |
-| `reviewer` | 合并审查 | v0.03 `CANDIDATE` | 待核验 |
-| `companion-dugu` | 獨孤伽羅 | v0.02 `CANDIDATE` | 待核验 |
-| `companion-wu` | 武曌 | v0.02 `CANDIDATE` | 待核验 |
-| `companion-lv` | 呂雉 | v0.02 `CANDIDATE` | 待核验 |
+| `housekeeper` | 賈南風 | v1.08 `CANDIDATE` | 最后已知 v1.02 `STABLE` |
+| `life` | 蕭觀音 | v0.05 `CANDIDATE` | 未部署 |
+| `ops` | 魚玄機 | v0.06 `CANDIDATE` | 待核验 |
+| `coder` | 步非煙 | v0.06 `CANDIDATE` | 待核验 |
+| `reviewer` | 夏姬（合并审查） | v0.04 `CANDIDATE` | 待核验 |
+| `companion-dugu` | 獨孤伽羅 | v0.03 `CANDIDATE` | 待核验 |
+| `companion-wu` | 武曌 | v0.03 `CANDIDATE` | 待核验 |
+| `companion-lv` | 呂雉 | v0.03 `CANDIDATE` | 待核验 |
 
 ## 最小部署原则
 

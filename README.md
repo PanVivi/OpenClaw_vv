@@ -4,28 +4,30 @@
 
 ## 当前阅读顺序
 
-1. [快速简报 v1.05](001-OpenClaw规划设计/QuickBrief快速简报-v1.05.md)
-2. [最终设计 v1.06](001-OpenClaw规划设计/FinalDesign最终设计-v1.06.md)
-3. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
-4. 对应 Agent 的 DeploymentStatus、VERSION-STATUS 和五个 workspace 文件
-5. [共同协议 v0.02](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
-6. [工作流程 v0.08](001-OpenClaw规划设计/Workflows工作流程-v0.08.md)
-7. [部署方案 v0.07](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.07.md)
-8. [实施路线 v0.07](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.07.md)
-9. [当前进度 v0.05](002-OpenClaw部署进度/CurrentProgress当前进度-v0.05.md)
-10. [来源索引 v0.04](000-OpenClaw文档管理/SourceIndex来源索引-v0.04.md)
+1. [文档与版本规则 v1.04](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.04.md)
+2. [快速简报 v1.06](001-OpenClaw规划设计/QuickBrief快速简报-v1.06.md)
+3. [最终设计 v1.06](001-OpenClaw规划设计/FinalDesign最终设计-v1.06.md)
+4. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
+5. [角色卡审核 v0.06](001-OpenClaw规划设计/RoleCardAudit角色卡审核-v0.06.md)
+6. 对应 Agent 的 DeploymentStatus、VERSION-STATUS 和五个 workspace 文件
+7. [共同协议 v0.02](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
+8. [工作流程 v0.08](001-OpenClaw规划设计/Workflows工作流程-v0.08.md)
+9. [部署方案 v0.08](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.08.md)
+10. [实施路线 v0.08](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.08.md)
+11. [当前进度 v0.10](002-OpenClaw部署进度/CurrentProgress当前进度-v0.10.md)
+12. [来源索引 v0.09](000-OpenClaw文档管理/SourceIndex来源索引-v0.09.md)
 
 ## 当前角色版本
 
 ```text
-housekeeper       賈南風 v1.07
-life              蕭觀音 v0.04
-ops               魚玄機 v0.05
-coder             步非煙 v0.05
-reviewer          合并审查 v0.03
-companion-dugu    獨孤伽羅 v0.02
-companion-wu      武曌 v0.02
-companion-lv      呂雉 v0.02
+housekeeper       賈南風 v1.08
+life              蕭觀音 v0.05
+ops               魚玄機 v0.06
+coder             步非煙 v0.06
+reviewer          夏姬（合并审查）v0.04
+companion-dugu    獨孤伽羅 v0.03
+companion-wu      武曌 v0.03
+companion-lv      呂雉 v0.03
 ```
 
 ## 当前目标

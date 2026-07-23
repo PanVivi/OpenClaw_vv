@@ -1,3 +1,3 @@
 # CANDIDATE 候选版
 
-当前根目录为 v0.03 候选版。未经 Stage/Gate 分离、正常交接、单次消费、重复/错误目标、材料变化失效、Review/Risk/Test、A2A、生产拒绝、返工和熔断验收，不得标记 `STABLE`。
+夏姬使用固定 Agent ID `reviewer`。当前根目录为 v0.04 候选版。基础部署先验收当前会话 Stage/Review/Risk 记录、错误目标/重复/材料变化拒绝、Review/Risk/Test、生产拒绝、返工和熔断；专用持久化、目标 Generation、硬单次消费和精确 A2A 后续独立验收。

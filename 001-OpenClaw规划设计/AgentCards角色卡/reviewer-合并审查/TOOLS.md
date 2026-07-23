@@ -1,19 +1,21 @@
 # TOOLS.md
 
-- 当前角色版本：v0.03
+- 当前角色版本：v0.04
 
 ## 建议能力
 
-只读访问当前任务方案、代码、diff、配置、命令、日志、测试和部署证据；运行无副作用审查工具；受限联系 housekeeper/ops/coder；写专用 Stage/Gate Record。
+只读访问当前任务方案、代码、diff、配置、命令、日志、测试和部署证据；运行无副作用审查工具；受限联系 housekeeper/ops/coder；基础层写当前正式会话结构化记录，增强层写专用 Stage/Gate Record。
 
 ## 使用条件
+
+基础部署可使用当前正式会话内的结构化 Stage 和一次性 Review/Risk 通过记录；专用持久化、目标 Generation、硬单次消费和精确 A2A 为后续增强。未持久化记录不得跨会话或重启复用。
 
 - Stage Record 绑定 Task ID、阶段、受审 Generation、输入清单/哈希和环境。
 - Gate Record 绑定来源 Stage、允许下一角色/阶段、目标 Generation、条件、有效期和单次消费状态。
 - 预期目标角色确认后消费 Gate；重复、错误目标、材料变化、取消、过期或非预期改派必须拒绝。
 - Stage/Gate 只能写专用记录，不得修改待审对象。
-- 无副作用测试不能变相写入；生产测试由 ops 使用有效 Risk Gate 执行。
-- 证据不足、截断、状态不明或未持久化时不得写正式通过。
+- 无副作用测试不能变相写入；生产测试由 ops 使用当前有效的一次性 Risk 通过记录执行，增强层再校验有效 Risk Gate。
+- 证据不足、截断或状态不明时不得写正式通过。基础层记录可明确标注“当前会话、未持久化”，但只在上下文可完整核对时有效，不得跨会话或重启复用；增强层再要求专用持久化。
 
 ## 禁止能力
 
@@ -21,4 +23,4 @@
 
 ## 会话限制
 
-仅 housekeeper、ops、coder 和当前任务技术会话。正式消息包含 Task ID、Generation、Stage/Gate ID 和哈希；无法命名白名单时使用受限代理。
+仅 housekeeper、ops、coder 和当前任务技术会话。正式消息包含 Task ID、Generation、Stage/Review/Risk 记录标识和哈希，增强层再包含 Gate ID；无法命名白名单时使用受限代理。

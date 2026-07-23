@@ -1,0 +1,28 @@
+# 000 OpenClaw文档管理｜SourceIndex 来源索引｜v0.09
+
+## 当前权威入口
+
+- 根目录：`README.md`
+- 文档与版本规则：`000-OpenClaw文档管理/DocumentRules文档编号规则-v1.04.md`
+- 快速简报：`001-OpenClaw规划设计/QuickBrief快速简报-v1.06.md`
+- 最终设计：`001-OpenClaw规划设计/FinalDesign最终设计-v1.06.md`
+- 工作流程：`001-OpenClaw规划设计/Workflows工作流程-v0.08.md`
+- 部署方案：`001-OpenClaw规划设计/DeploymentPlan部署方案-v0.08.md`
+- 实施路线：`001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.08.md`
+- 当前进度：`002-OpenClaw部署进度/CurrentProgress当前进度-v0.10.md`
+- 角色卡库：`001-OpenClaw规划设计/AgentCards角色卡/`
+- 共同协议：`001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md`
+- 角色卡审核：`001-OpenClaw规划设计/RoleCardAudit角色卡审核-v0.06.md`
+- 賈南風 v1.02 继承与批准矩阵：`001-OpenClaw规划设计/RoleCardAudit角色卡审核-v0.03.md`
+
+## 当前角色版本
+
+賈南風 v1.08、蕭觀音 v0.05、魚玄機 v0.06、步非煙 v0.06、夏姬 / reviewer v0.04、三位 companion v0.03。
+
+## 当前部署原则
+
+先部署八 Agent 基础层，再增加持久化、A2A 历史代理、自动化可靠性、技术子 Agent 和完整记忆。增强未完成不得虚构，但不阻塞基础上线。
+
+工程基础层使用当前正式会话内可核对的一次性 Review/Risk/Stage 记录；Assignment Generation 表示处理权。专用持久化、Gate ID、目标 Generation 硬绑定和硬单次消费属于增强层。
+
+每个 Agent 的实际运行事实只以其根目录 `DeploymentStatus部署状态.md` 为准；设计版本、实际部署版本和增强能力状态分开记录。
