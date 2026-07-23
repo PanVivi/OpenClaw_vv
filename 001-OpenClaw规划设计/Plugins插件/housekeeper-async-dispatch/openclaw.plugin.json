@@ -2,13 +2,40 @@
   "id": "housekeeper-async-dispatch",
   "name": "Housekeeper Async Dispatch",
   "description": "Keep housekeeper conversations responsive by making cross-session delegation fire-and-forget.",
-  "version": "1.0.0",
+  "version": "1.2.2",
   "configSchema": {
     "type": "object",
     "additionalProperties": false,
-    "properties": {}
+    "properties": {
+      "agentId": {
+        "type": "string",
+        "default": "housekeeper"
+      },
+      "ownerChatId": {
+        "type": "string"
+      },
+      "stallMinutes": {
+        "type": "integer",
+        "minimum": 2,
+        "maximum": 1440,
+        "default": 10
+      }
+    },
+    "required": [
+      "ownerChatId"
+    ]
   },
   "activation": {
     "onStartup": true
+  },
+  "contracts": {
+    "tools": [
+      "housekeeper_task_watch"
+    ]
+  },
+  "toolMetadata": {
+    "housekeeper_task_watch": {
+      "optional": true
+    }
   }
 }

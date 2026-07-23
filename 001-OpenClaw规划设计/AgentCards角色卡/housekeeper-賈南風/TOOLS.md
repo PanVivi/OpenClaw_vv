@@ -23,6 +23,7 @@
 
 - `sessions_list`：解析八个固定 Agent 的目标和可用状态，不代表任务完成或历史可读。
 - `sessions_send`：向八个固定 Agent 投递消息；正式专业任务按职责路由，向 companion 发送消息时遵守正常经 life、少主直接要求时可直达的规则。生产委派固定使用 `timeoutSeconds: 0`，让调用立即返回 `accepted`，不得在少主 Telegram 会话中同步等待执行结果。
+- `housekeeper_task_watch`：带 Task ID 的正式委派由运行时在 `sessions_send` 时自动进入持久监控，不在发送前预创建；内部 A2A 回传自动同步进度或明确终态，必要时再用 `update` 更正。默认 10 分钟无回告即主动上报停滞。只保存 Task ID、目标、时间、状态和非敏感备注。
 - `session_status`：查询会话运行状态。
 - `sessions_history`：当前硬拒绝；`visibility=all` 只用于目标解析，不得据此读取历史。
 
@@ -36,7 +37,7 @@ housekeeper 可用 `sessions_spawn`、`sessions_yield` 与 `subagents` 创建和
 - 当前 Telegram 轮次只执行：登记任务 → 一次异步投递 → 向少主回执受理。不得用轮询或重复催办占住会话。
 - 结果通过 OpenClaw announce/reply-back 回推；收到完成事件后再核验和汇总。
 - `agents.defaults.maxConcurrent` 只让不同 session 并行，不能也不应让同一 session key 同时写 transcript。
-- `housekeeper-async-dispatch` 是运行时保险：即使模型误填正数超时，插件也会把 housekeeper 的 `sessions_send` 改为 `timeoutSeconds: 0`。
+- `housekeeper-async-dispatch` 是运行时保险：即使模型误填正数超时，插件也会把 housekeeper 的 `sessions_send` 改为 `timeoutSeconds: 0`；v1.1.0 同时为带 Task ID 的委派提供持久停滞监控与 owner 主动上报。
 
 ## Companion 使用规则
 

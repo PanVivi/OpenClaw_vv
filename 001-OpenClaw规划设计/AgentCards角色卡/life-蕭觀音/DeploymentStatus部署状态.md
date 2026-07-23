@@ -1,5 +1,10 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-07-23 职责权限实测
+
+- 正式 housekeeper 委派包承载同范围生活自动化授权；周期任务继续由 `life_automation` 持久化，主会话不充当定时器。
+- 生产实际调用 `life_automation list`：1 call / 0 failures；无重复索权。
+
 ## 2026-07-23 v0.08 实际状态
 
 - 五件套已部署；一次性同一 life 子 Agent实测成功。

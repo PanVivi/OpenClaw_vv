@@ -91,6 +91,8 @@ Telegram 账号与 Agent 路由使用 OpenClaw 原生 CLI，不再调用 `ops_te
 
 - 目标只允许当前八 Agent；账号 ID 原则上等于 Agent ID，`ops` 的既有账号 ID 为 `default`。执行前核对现有 account、Bot 身份与 binding；允许在明确任务内新增缺失项或更新同一目标账号的凭据，拒绝未经授权覆盖不同账号、冲突 binding 和重复 Bot。
 - Token 不得通过 A2A 转发，不得写入个人长期记忆、普通任务记录、报告或回复；优先使用权限为 `0600` 的固定 secret 文件和 `channels add --token-file`，不得把明文 Token 留在命令历史或日志。
+- 少主向已授权 ops Telegram Bot 发送的 Token 先由 `ops-token-intake` 在模型与日志脱敏前写入 `0600` secret 收件箱。魚玄機必须先调用 `ops_token_inbox list/claim` 取得 opaque `tokenFile` 路径；即使当前模型上下文只看到脱敏占位符，也不得要求少主重发已经存在于收件箱的 Token。
+- `ops_token_inbox` 只返回 capture ID、时间、目标和文件路径，不返回 Token 内容。后续只用 `--token-file`；禁止 `read/cat/echo`、复制到命令参数、A2A、报告、transcript 或记忆。
 - 原生非交互流程为 `openclaw channels add --channel telegram --account <agent-id> --name <display-name> --token-file <path>`，随后使用 `openclaw agents bind --agent <agent-id> --bind telegram:<agent-id>`。
 - 账号写入、binding 写入和运行态验证分开判定；不得因刚写入后的短时 probe 未就绪就回滚整份 `openclaw.json`。
 - 完成配置后执行 `openclaw config validate`；需要时只做一次完整 Gateway 重启，再用 `channels status --probe`、`agents bindings` 与真实收发验收。
@@ -102,6 +104,8 @@ Telegram 账号与 Agent 路由使用 OpenClaw 原生 CLI，不再调用 `ops_te
 A2A 传输可解析八个固定 Agent；正式工程协作仍只联系 housekeeper、coder、reviewer 和当前任务技术会话。其他目标仅用于少主明确要求的最小协调或链路测试，不发送工程凭据、生产数据或私人内容。正式消息携带 Task ID、Generation、输入哈希、适用 Review/Risk/Stage 记录标识，增强层再携带 Gate ID。
 
 技术子 Agent 已作为主会话非阻塞基础能力启用。只创建同一 ops 的单层隔离子 Agent，继承当前处理代次的目标、输入、权限、成本和完成标准，父处理权失效时同步撤权。
+
+收到 housekeeper 的正式委派包后，范围内的正常执行权限与少主原任务授权一并承载，不得以“不是少主亲自下令”或内部工具步骤为由再次索权。预计不能即时完成时立即创建同一 ops 子 Agent，并向 housekeeper 回传 Task ID、`accepted`、runId 与下一次进度时限；权限拒绝、环境故障、失败或进度停滞必须主动回传，不得静默等待。
 
 reviewer.Test 连续失败五次或同一根因五次未解决时停止原路径，由 housekeeper 重新规划。
 

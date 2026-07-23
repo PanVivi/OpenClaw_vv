@@ -20,6 +20,7 @@
 - 使用 `openclaw channels add` 新增 Telegram account，使用 `openclaw agents bind` 建立 account-scoped binding。
 - 绑定前读取现有账号与 binding，固定 Agent ID、账号 ID 和正式显示名；拒绝覆盖、冲突或重复 Bot。
 - Token 优先写入权限为 `0600` 的固定 secret 文件并通过 `--token-file` 引用；不得复述、经 A2A 转发、写入报告或长期记忆。
+- `ops_token_inbox`：列出并领取由 owner 在 ops Telegram 会话发送、已于脱敏前安全落盘的 Token；只返回 opaque capture ID 和 `0600 tokenFile` 路径。模型看到脱敏占位符时先查收件箱，不得要求重发，不得读取或展开文件内容。
 - 配置写入与运行态恢复分开验收；短时 probe 未就绪不触发整份配置自动回滚。
 - 完成后校验配置，必要时只重启一次 Gateway，再检查 binding、polling、probe 与真实收发。
 - 原生 CLI 经 ops 专用的 `exec.mode=full` 执行，但仍受既有处理权、任务级 Risk、固定目标、备份、回滚和 Test 规则约束，不形成任意 Gateway RPC 权限。

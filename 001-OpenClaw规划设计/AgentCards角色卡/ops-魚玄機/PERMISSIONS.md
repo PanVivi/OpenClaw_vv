@@ -15,6 +15,7 @@
 | `sessions_history` | 否 | 目标可见不等于历史可读 |
 | `sessions_spawn` / `sessions_yield` / `subagents` | 同角色有限 | 当前处理代次内创建同一 `ops` 的单层隔离子 Agent；不得扩大父权限 |
 | secret profile | 有限 | 只引用不读明文 |
+| `ops_token_inbox` | 有限 | 仅 owner→ops Telegram 入站捕获；只列/领取 opaque `0600 tokenFile`，不返回明文、不改 Gateway |
 | Telegram 原生 CLI | 分级 | 经受审 `exec` 使用 `channels add` 与 `agents bind`；固定目标、`0600` secret、备份、校验和真实收发，拒绝覆盖与冲突 |
 | companion、跨任务或旧代次证据 | 否 | 禁止 |
 | 最终验收 | 否 | reviewer.Test |

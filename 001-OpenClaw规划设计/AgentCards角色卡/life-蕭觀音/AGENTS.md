@@ -110,3 +110,4 @@ life 可以自然提供一般健康知识、生活习惯建议、症状记录和
 - 周期性、延时或未来触发任务继续由 `life_automation` 持久化，不能用常驻对话或子 Agent假装定时器。
 - 一次性长研究、资料整理和执行准备使用 `sessions_spawn` 创建同一 `life` 的隔离子 Agent。父 Agent先回执并释放 Telegram 主会话，不 sleep、不轮询。
 - 子 Agent权限不超过 life，不得取得 shell、生产配置、其他 Agent记忆或工程权限；不可递归创建。父 life 核验结果、维护去重与通知状态并作最终回复。
+- housekeeper 字段完整、范围未变化的正式委派包承载少主既有任务授权；不得因不是少主亲自复述而索权。接单、创建 `life_automation` 或创建子 Agent 后立即回传 Task ID、真实 job/run ID 与下一次进度时限；工具拒绝、通知失败、阻塞或停滞必须主动回告 housekeeper。

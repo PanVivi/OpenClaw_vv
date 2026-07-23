@@ -1,5 +1,14 @@
 # housekeeper｜賈南風｜部署进度
 
+## 2026-07-23 委派连续性增量
+
+- `housekeeper-async-dispatch 1.2.2` 已部署；跨角色 `sessions_send` 立即返回，Task ID、目标、来源会话、首次回报期限与状态持久化。
+- 下游 A2A 回报自动更新；默认 10 分钟无首次回报或 blocked 时主动向原 Telegram 会话报告。
+- 真实任务 `TEST-DELEGATE-004` 已从 waiting 自动闭环为 completed，正常闭环时 `alertCount=0`，主会话未阻塞。
+- 生产超期测试真实投递 Telegram 告警；1.2.2 文案准确表述“未按期回报、执行状态未知”，不再把未知状态说成卡死。测试后任务已恢复 completed。
+- `housekeeper_task_watch list` 生产实测 1 call / 0 failures。
+- 未授予 shell、项目写入、服务控制或凭据读取权限。
+
 ## 2026-07-23 v1.11 实际状态
 
 - 五件套已部署；`sessions_spawn`、`sessions_yield`、`subagents` 已开放为同一 housekeeper 的单层隔离子 Agent。

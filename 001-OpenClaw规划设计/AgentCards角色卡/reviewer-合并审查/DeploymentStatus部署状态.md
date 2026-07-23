@@ -1,5 +1,10 @@
 # reviewer｜夏姬（合并审查）｜部署进度
 
+## 2026-07-23 职责权限实测
+
+- 正式 housekeeper 委派包承载同范围审查授权；同角色子 Agent只做只读材料搜集，最终 Review/Risk/Test 仍由父 reviewer 决定。
+- 生产实际调用 `read AGENTS.md`：1 call / 0 failures；未开放写入、shell 或生产执行。
+
 ## 2026-07-23 v0.06 实际状态
 
 - 五件套、低/中/高 Risk 分类和只读子 Agent规则已部署。

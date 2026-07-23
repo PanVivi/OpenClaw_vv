@@ -1,0 +1,39 @@
+{
+  "id": "ops-token-intake",
+  "name": "Ops Token Intake",
+  "description": "Capture owner-supplied Telegram Bot Tokens before model/log redaction and expose only opaque token-file handles to ops.",
+  "version": "1.0.1",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "agentId": {
+        "type": "string",
+        "default": "ops"
+      },
+      "accountId": {
+        "type": "string",
+        "default": "default"
+      },
+      "ownerUserId": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "ownerUserId"
+    ]
+  },
+  "activation": {
+    "onStartup": true
+  },
+  "contracts": {
+    "tools": [
+      "ops_token_inbox"
+    ]
+  },
+  "toolMetadata": {
+    "ops_token_inbox": {
+      "optional": true
+    }
+  }
+}

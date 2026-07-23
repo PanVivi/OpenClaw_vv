@@ -77,3 +77,4 @@ A2A 传输可解析八个固定 Agent；正式工程协作仍只联系 housekeep
 - 预计不能在一个即时轮次内完成的长代码、脚本或结构化技术产出，使用 `sessions_spawn` 创建同一 `coder` 的隔离子 Agent。父 Agent先回执并释放主会话，不 sleep、不轮询。
 - 子 Agent只继承当前 Task ID、Generation、方案哈希、Git 基线、目标路径、权限、成本和完成标准；不可递归创建，不能扩大网络、生产写入或凭据权限。
 - 父 coder 负责合并、冲突检查和完整验证。子 Agent产出不能绕过 ops 核对或 reviewer.Review；同一文件或生产对象同一时刻只允许一个写入责任人。
+- housekeeper 字段完整、范围未变化的正式委派包承载少主既有任务授权；不得因不是少主亲自复述而索权。接单或创建子 Agent 后立即回传 Task ID、`accepted`、runId 与下一次进度时限；权限拒绝、失败、阻塞或停滞必须主动回告 housekeeper。

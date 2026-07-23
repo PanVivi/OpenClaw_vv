@@ -1,6 +1,6 @@
 {
-  "name": "openclaw-plugin-housekeeper-async-dispatch",
-  "version": "1.2.2",
+  "name": "openclaw-plugin-ops-token-intake",
+  "version": "1.0.1",
   "type": "module",
   "private": true,
   "scripts": {

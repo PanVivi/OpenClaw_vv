@@ -1,5 +1,13 @@
 # ops｜魚玄機｜部署进度
 
+## 2026-07-23 凭据与任务授权增量
+
+- `ops-token-intake 1.0.1` 已部署；只接受 ops Telegram account 中少主 sender 的 Bot Token，原文只落 `0600 tokenFile`。
+- ops 只取得 opaque handle；不从 transcript、日志、A2A 或 `config get` 恢复秘密，不因脱敏再次要求少主发送同一 Token。
+- 正式 housekeeper 委派包承载既有任务授权；低/中风险职责内步骤不得逐步索权，高风险或范围变化才集中询问一次。
+- 生产实测 `ops_token_inbox list` 与 `exec openclaw --version` 共 2 calls / 0 failures / 0 permission request。
+- 旧 `ops-telegram-admin` 已从生产配置登记移除，原生 Telegram account/binding 路径不变。
+
 ## 2026-07-23 v0.14 实际状态
 
 - 五件套、三档风险、一次任务授权和任务必需临时依赖规则已部署。

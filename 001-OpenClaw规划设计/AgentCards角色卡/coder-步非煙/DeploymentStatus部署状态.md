@@ -1,5 +1,10 @@
 # coder｜步非煙｜部署进度
 
+## 2026-07-23 职责权限实测
+
+- 正式 housekeeper 委派包承载同范围任务授权；具体长任务使用同角色子 Agent，主会话不长时间占用。
+- 生产 Sandbox 内实际 `read AGENTS.md` 与 `exec pwd`：2 calls / 0 failures，`pwd=/workspace`，无重复索权。
+
 ## 2026-07-23 v0.08 实际状态
 
 - 五件套已部署；同一 coder 子 Agent实测成功并产生完成证据。

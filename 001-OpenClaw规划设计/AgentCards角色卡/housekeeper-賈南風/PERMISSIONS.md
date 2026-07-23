@@ -22,6 +22,7 @@
 | `session_status` | 可选/有限 | 用于查询会话运行状态，不得当作项目完成状态。 |
 | `sessions_history` | 否 | 当前保持硬拒绝；`visibility=all` 只用于目标解析。 |
 | `sessions_spawn` / `sessions_yield` / `subagents` | 同角色有限 | 仅创建和管理同一 `housekeeper` 的单层隔离子 Agent；不得借此取得专业执行权。 |
+| `housekeeper_task_watch` | 有限 | 只记录 Task ID、目标、回报期限和状态；默认 10 分钟无回告主动上报，不读历史、不保存凭据。 |
 | companion 会话读取 | 可选/有限 | 元数据/摘要优先；历史仅少主要求或已登记协调任务必要时最小读取。 |
 | companion 直接联系与下令 | 有限 | 正常流程经 life；只有少主直接要求时，才绕过 life 联系并向指定 companion 下令。 |
 | 生活自动化 | 调度有限/业务否 | life 是提醒、日历、Cron、未来投递和持续跟踪的唯一业务执行所有者；housekeeper 只负责正式委派与状态汇总，持久化由 life 自己通过 `life_automation` 完成。 |
