@@ -10,7 +10,5 @@
 | v0.08 | `CANDIDATE` | NAS 回滚基线 | 接受 housekeeper 正式委派包承载的既有授权；普通转述仍不授权 |
 | v0.09 | `CANDIDATE` | NAS 回滚基线 | 增加仅限 ops 的 Telegram account/binding 专用工具；固定目标、secret、owner allowlist、备份、校验、probe 与回滚 |
 | v0.10 | `CANDIDATE` | NAS 当前部署 | 补齐 workspace 文件工具与经 `mode=auto` 单次审查的 NAS Gateway `exec/process`；保留 Risk、回滚和危险工具拒绝 |
-| v0.11 | `CANDIDATE` | 尚未部署 | 停用 `ops_telegram_admin` 后改用 OpenClaw 原生 Telegram account/binding CLI；配置结果与运行态验证分离 |
-| v0.12 | `CANDIDATE` | NAS 当前部署 | 标准运维使用一个任务级授权包；取消授权包内逐步骤索权，收紧 OpenClaw CLI 精确参数白名单 |
 
-当前没有 `STABLE` 版本。v0.12 是当前设计版本；NAS 实际部署状态以根目录 `DeploymentStatus部署状态.md` 为准。
+当前没有 `STABLE` 版本。v0.10 是当前设计与 NAS 部署版本；首次真实账号新增已由 coder account/binding 与通道 probe 验收。

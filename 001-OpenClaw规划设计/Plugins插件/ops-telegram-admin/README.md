@@ -1,5 +1,7 @@
 # Ops Telegram Admin Tool Plugin
 
+> 当前生产状态：`DISABLED`。2026-07-23 现场验证发现，本插件会在一次绑定中多次写配置、触发 Telegram provider 热重载，并在短时 probe 未就绪时恢复整份配置，放大 `channel stop` 超时。源码仅保留作历史、复盘和回滚证据；后续使用 OpenClaw 原生 `channels add` 与 `agents bind`，不得重新部署本插件作为当前方案。
+
 OpenClaw 2026.5.17 及以上的原生 Tool Plugin。它只向 `ops` / 魚玄機暴露 `ops_telegram_admin`，用于为尚未绑定 Telegram 的固定 Agent 增量配置账号和 account-scoped binding。
 
 ## 权限边界
