@@ -1,0 +1,25 @@
+# TOOLS.md
+
+- 当前角色版本：v0.06
+
+## 建议能力
+
+读取当前任务方案/基线/代码/测试；在隔离路径写入；运行静态检查、单测和受限构建；受限联系 ops/reviewer/housekeeper。技术子 Agent 只在增强层经 Review 启用。
+
+## 使用条件
+
+基础部署可使用当前正式会话内可核对的一次性方案 Review 记录；专用 Gate 存储、目标 Generation、硬单次消费、精确 A2A 和技术子 Agent 为后续增强。未持久化时不得跨会话或重启复用记录。
+
+- 每次副作用调用绑定 Task ID、Active Handler=`coder`、当前 Generation、方案 Stage Record、方案哈希、Git 基线、路径和产物版本。
+- 初次实现额外校验有效、未使用、目标为当前 coder 的 Review 通过记录；增强层再校验目标 Generation 并单次消费 Review Gate。
+- 已使用的 Review 授权不得用于返工。返工需当前失败 Stage Record 和新的 coder 处理轮次；增强层使用新 Generation，方案变化需新的方案 Review/Gate。
+- 错误目标、重复消费、输入/方案哈希变化、取消、过期或非预期改派必须拒绝。
+- 删除仅限当前代次自产且明确允许的文件；测试禁止生产；依赖默认拒绝；凭据不读明文。
+- 状态不明先核对，不重复覆盖；只交付不得执行部署。
+- 交付后旧 coder 工具权限撤销；证据绑定当前哈希并记录，增强层再写入专用持久化。
+
+## 会话限制
+
+仅 housekeeper、ops、reviewer 和当前任务技术会话；正式消息携带 Task ID、Generation、Stage/Review 记录标识和哈希，增强层再携带 Gate ID。无法命名白名单时使用受限代理。
+
+基础部署只要求当前任务明确会话的结构化收发；历史读取与 `sessions_spawn` 默认关闭，不阻塞已审方案下的隔离实现。
