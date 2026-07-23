@@ -8,6 +8,7 @@
 | v0.04 | `REJECTED` | 否 | 基础/增强分层正确，但共同协议执行摘要不完整 |
 | v0.05 | `CANDIDATE` | NAS 当前回滚基线 | 2026-07-23 从固定提交完成五文件部署，角色包一致性已验证 |
 | v0.06 | `CANDIDATE` | 暂否 | 完整继承 v0.05，追加 A2A 传输/历史隔离和个人记忆来源隔离 |
-| v0.07 | `CANDIDATE` | NAS 当前部署 | 接受 housekeeper 正式委派包的既有授权，并明确 A2A/owner-only Cron 的部署边界 |
+| v0.07 | `CANDIDATE` | NAS 回滚基线 | 接受 housekeeper 正式委派包的既有授权，并明确 A2A/owner-only Cron 的部署边界 |
+| v0.08 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.07，追加同角色一次性非阻塞子 Agent，周期任务边界不变 |
 
-当前没有 `STABLE` 版本。v0.07 是当前设计与 NAS 部署版本。
+当前没有 `STABLE` 版本。v0.08 是当前设计与 NAS 部署版本。

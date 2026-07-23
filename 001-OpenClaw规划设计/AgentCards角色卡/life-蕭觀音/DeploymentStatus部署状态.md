@@ -1,8 +1,14 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-07-23 v0.08 实际状态
+
+- 五件套已部署；一次性同一 life 子 Agent实测成功。
+- `life-automation` 保持 enabled，周期/延时任务继续由插件持久化；子 Agent不替代 Cron。
+- shell、工程写入、Gateway 与 history 仍拒绝。Telegram connected/probe 正常。
+
 - Agent ID：`life`
-- 当前设计版本：v0.07 `CANDIDATE`
-- 当前实际部署版本：v0.07 `CANDIDATE`
+- 当前设计版本：v0.08 `CANDIDATE`
+- 当前实际部署版本：v0.08 `CANDIDATE`
 - 当前运行状态：`completed`
 - 最后核验：2026-07-23 16:00 +08:00
 
@@ -11,7 +17,7 @@
 - v0.05 五个 workspace 文件来自固定提交 `cfb4edad793be6df0fb2a690dc5185bb1c1b44ba`。
 - 模型：primary `custom-2/grok-4.5`；fallback 配置存在。
 - Telegram：account `life` → Agent `life`，实际收发已通过。
-- 工具：web fetch、message、`sessions_list/send/status` 和仅向 life 暴露的 `life_automation` 可用；Clash Fake-IP 环境已开启官方 RFC2544 兼容项并通过 `codexreset.org` 与 X 实测。life 可直接创建、查询、更新、暂停、恢复、立即运行和删除自动化，不依赖 ops、Codex 或管理员在线；工程文件读写、shell、Gateway、spawn 与 `sessions_history` 继续拒绝。
+- 工具：web fetch、message、`sessions_list/send/status`、同角色 spawn/yield/subagents 和仅向 life 暴露的 `life_automation` 可用；Clash Fake-IP 环境已开启官方 RFC2544 兼容项并通过 `codexreset.org` 与 X 实测。life 可直接管理自动化，不依赖 ops、Codex 或管理员在线；工程文件读写、shell、Gateway 与 `sessions_history` 继续拒绝。
 - A2A：八个固定 Agent 可互发，life 作为发送方已验证；life 仍是生活自动化唯一执行所有者。
 - 委派：housekeeper → life 正式委派、完整生命周期、Gateway 重启恢复和真实定时触发均已通过。
 - Sandbox：关闭。

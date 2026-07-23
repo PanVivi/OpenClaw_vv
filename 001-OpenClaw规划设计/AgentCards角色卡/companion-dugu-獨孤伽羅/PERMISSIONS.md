@@ -10,6 +10,6 @@
 | `sessions_history` | 否 | 禁止读取其他 Agent 私人历史 |
 | 长期记忆 | 后续增强 | 独立命名空间 |
 | 工程会话、文件、shell、配置、服务、凭据 | 否 | 全部禁止 |
-| `sessions_spawn` | 否 | 禁止 |
+| `sessions_spawn` / `sessions_yield` / `subagents` | 同角色非工程 | 只用于长篇聊天、创作或非工程整理；子 Agent不增加任何工程权限 |
 
 基础验收先验证直接会话、并行运行和工程权限拒绝；A2A 只验消息投递，历史与记忆保持隔离。

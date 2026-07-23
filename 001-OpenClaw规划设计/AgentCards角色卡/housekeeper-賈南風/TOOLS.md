@@ -1,6 +1,6 @@
 # TOOLS.md
 
-- 当前角色版本：v1.10
+- 当前角色版本：v1.11
 
 本文件说明 housekeeper / 賈南風应如何使用工具。它不控制实际权限；部署者必须用当前 OpenClaw 版本支持的工具策略落实限制。
 
@@ -26,7 +26,7 @@
 - `session_status`：查询会话运行状态。
 - `sessions_history`：当前硬拒绝；`visibility=all` 只用于目标解析，不得据此读取历史。
 
-housekeeper 不持有 `sessions_spawn`。临时技术子 Agent 由 ops 或 coder 按正式流程申请和创建。
+housekeeper 可用 `sessions_spawn`、`sessions_yield` 与 `subagents` 创建和管理同一 `housekeeper` 的单层隔离子 Agent，只用于长规划、材料整理和汇总；跨角色执行仍由常驻 Agent 通过 A2A 完成。
 
 会话状态只表示 Agent 会话运行信息，不等同于项目任务完成状态。
 
@@ -107,4 +107,4 @@ housekeeper 不持有 `sessions_spawn`。临时技术子 Agent 由 ops 或 coder
 
 - 基础部署可使用当前正式会话中的 Task/Stage/Gate 结构化记录，绑定输入版本/哈希、唯一下一角色、范围和使用状态。
 - 当前会话内只使用一次；上下文丢失、重启、材料变化或记录不明时重新审查，不自动续跑。
-- 专用持久化、硬单次消费、精确历史代理和 `sessions_spawn` 属于后续增强，不是基础上线前置。
+- 专用持久化、硬单次消费和精确历史代理属于后续增强；同角色 `sessions_spawn` 已作为主会话非阻塞基础能力启用。

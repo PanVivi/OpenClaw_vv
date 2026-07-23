@@ -1,17 +1,18 @@
 # TOOLS.md
 
-- 当前角色版本：v0.12
+- 当前角色版本：v0.13
 
 ## 建议能力
 
-只读调查；在正式批准范围内使用 workspace 文件工具和 NAS Gateway `exec/process`，并通过 OpenClaw 原生 CLI 完成配置、服务、部署及 Telegram 账号绑定；通过 A2A 投递消息。正式工程协作仍限 housekeeper、coder、reviewer 和当前任务技术会话。技术子 Agent 只在增强层经 Review 启用。
+只读调查；在正式批准范围内使用 workspace 文件工具和 NAS Gateway `exec/process`，并通过 OpenClaw 原生 CLI 完成配置、服务、部署及 Telegram 账号绑定；通过 A2A 投递消息；使用同一 `ops` 的隔离子 Agent 承接具体长工程任务。正式工程协作仍限 housekeeper、coder、reviewer 和当前任务技术会话。
 
 ## 已部署通用执行能力
 
 - `write/edit/apply_patch`：只允许 ops 自己的 workspace；`apply_patch.workspaceOnly=true`，不能直接修改 workspace 外的生产文件。
 - `exec/process`：固定 `host=gateway`，用于受审的 NAS 调查、配置、服务和部署操作；`mode=auto`、`security=allowlist`、`ask=on-miss`、无界面回退为拒绝。
 - `strictInlineEval=true`：解释器内联执行仍需单次审查，不能因解释器路径已允许而永久放行任意代码。
-- `gateway`、`message`、`cron`、`sessions_history`、`sessions_spawn`：保持拒绝。OpenClaw 配置与服务通过受审 CLI/系统命令处理，不开放任意 Gateway RPC。
+- `gateway`、`message`、`cron`、`sessions_history`：保持拒绝。OpenClaw 配置与服务通过受审 CLI/系统命令处理，不开放任意 Gateway RPC。
+- `sessions_spawn`、`sessions_yield`、`subagents`：允许同一 `ops` 的单层隔离子 Agent；不得指定其他 Agent ID，不得递归创建。
 - 工具存在不等于已获现实授权。任何副作用仍须符合 Task ID、当前处理权、正式委派或少主直接授权、任务级 Risk 记录、固定目标/命令边界、备份、回滚和真实验证。同一任务授权包内的连续步骤不逐条向少主索权。
 
 ## Telegram 原生绑定
@@ -26,7 +27,7 @@
 
 ## 工具条件
 
-基础部署可使用当前正式会话内可核对的一次性 Review/Risk 记录；专用 Gate 存储、硬单次消费、精细 A2A 路由与历史授权、技术子 Agent 为后续增强。未持久化时不得跨会话或重启复用记录。
+基础部署可使用当前正式会话内可核对的一次性 Review/Risk 记录；专用 Gate 存储、硬单次消费、精细 A2A 路由与历史授权为后续增强。同角色技术子 Agent 已启用；未持久化时不得跨会话或重启复用记录。
 
 - 每次调用绑定 Task ID、Active Handler、当前 Generation、目标、授权、基线、有效期和操作去重键。
 - 授权可来自少主对 ops 的直接指令，或 housekeeper 从少主已认证会话生成、字段完整且范围未变化的正式委派包；后者无需少主重复下令。普通转述不适用。
@@ -43,4 +44,4 @@
 
 A2A 可解析八个固定 Agent；正式工程消息只发给 housekeeper、coder、reviewer 和当前任务技术会话，并携带 Task ID、Generation、Review/Risk/Stage 记录标识和输入哈希，增强层再携带 Gate ID。其他目标只用于少主明确要求的最小协调或维护测试。
 
-`sessions_history` 与 `sessions_spawn` 保持关闭；目标可见不等于历史可读。A2A 不授予其他 Agent 的 workspace、工具、个人记忆或现实权限。
+`sessions_history` 保持关闭；目标可见不等于历史可读。`sessions_spawn` 仅能创建同一 ops 的隔离子 Agent。A2A 不授予其他 Agent 的 workspace、工具、个人记忆或现实权限。

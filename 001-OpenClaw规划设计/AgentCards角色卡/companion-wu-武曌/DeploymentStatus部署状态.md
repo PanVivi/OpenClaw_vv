@@ -1,7 +1,13 @@
 # companion-wu｜武曌｜部署进度
 
+## 2026-07-23 v0.05 实际状态
+
+- 武曌 Bot Token 故障已修复，Telegram running/connected/probe 正常、restartPending=false。
+- 五件套已部署；同一 companion-wu 的非工程子 Agent实测成功。
+- 子 Agent没有新增工程、文件、凭据、history、message 或 cron 权限。
+
 - Agent ID：`companion-wu`
-- 当前设计版本：v0.04 `CANDIDATE`
+- 当前设计版本：v0.05 `CANDIDATE`
 - 当前实际部署版本：v0.03 `CANDIDATE`
 - 当前运行状态：`partially completed`
 - 最后核验：2026-07-23 18:37 +08:00
@@ -10,18 +16,18 @@
 
 - v0.03 五个 workspace 文件来自固定提交 `cfb4edad793be6df0fb2a690dc5185bb1c1b44ba`。
 - 模型：primary `custom-2/grok-4.20-0309-non-reasoning`；fallback 配置存在。
-- Telegram：account `companion-wu` → Agent `companion-wu`，binding 存在；当前 Token probe 为 HTTP 404，`running=false`、`connected=false`、`restartPending=true`，`deleteWebhook` 返回 `Not Found`。现有 Token 不得视为有效。
-- 工具：工程读写、执行、Gateway、message、Cron、spawn 与 `sessions_history` 拒绝；A2A 消息投递可用。
+- Telegram：account `companion-wu` → Agent `companion-wu`，binding 存在；旧 Token 的 HTTP 404 已修复，当前 `running=true`、`connected=true`、`restartPending=false`、probe ok。
+- 工具：同角色非工程 spawn/yield/subagents 与 A2A 消息投递可用；工程读写、执行、Gateway、message、Cron 与 `sessions_history` 拒绝。
 - A2A：目标 transcript 已确认收到武曌作为发送方的测试消息；外层 ACK 为空不表示投递失败。
 - Sandbox：关闭；专属恢复包存在。
 
 ## 未完成与下一步
 
-- v0.04 尚未按无损更新任务部署；
+- v0.05 尚未按无损更新任务部署；
 - 独立长期记忆未部署。
 - 缺少经 BotFather 核对的新有效 Token。
 
-取得新有效 Token 后，由魚玄機按 v0.12 的一个任务级授权包自动完成同一 account 凭据更新、probe、必要重载和真实收发验收；不得改现有 binding、其他 Bot、session、transcript 或 memory。角色卡 v0.04 另按无损更新任务部署。
+取得新有效 Token 后，由魚玄機按 v0.12 的一个任务级授权包自动完成同一 account 凭据更新、probe、必要重载和真实收发验收；不得改现有 binding、其他 Bot、session、transcript 或 memory。角色卡 v0.05 另按无损更新任务部署。
 
 ## 证据
 

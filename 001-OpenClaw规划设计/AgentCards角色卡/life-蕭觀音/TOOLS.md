@@ -1,6 +1,6 @@
 # TOOLS.md
 
-- 当前角色版本：v0.07
+- 当前角色版本：v0.08
 
 实际权限由 OpenClaw 配置落实。
 
@@ -29,7 +29,7 @@
 
 ## 禁止能力
 
-life 不直接持有 shell、exec、process、普通项目或生产文件写入、编辑和删除、OpenClaw 核心配置修改、Gateway 与服务控制、工程凭据和 `sessions_spawn`。插件也不接受 shell、脚本、Webhook 或任意 Agent ID。
+life 不直接持有 shell、exec、process、普通项目或生产文件写入、编辑和删除、OpenClaw 核心配置修改、Gateway 与服务控制或工程凭据。`sessions_spawn`、`sessions_yield`、`subagents` 仅用于同一 life 的一次性非工程长任务；插件也不接受 shell、脚本、Webhook 或任意 Agent ID。
 
 ## 使用要求
 

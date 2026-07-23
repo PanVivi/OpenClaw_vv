@@ -1,8 +1,8 @@
-# ops｜魚玄機｜当前角色卡 v0.12｜CANDIDATE 候选版
+# ops｜魚玄機｜当前角色卡 v0.13｜CANDIDATE 候选版
 
 ## 版本状态
 
-- 当前设计版本：v0.12；NAS 实际部署版本以 `DeploymentStatus部署状态.md` 为准。
+- 当前设计版本：v0.13；NAS 实际部署版本以 `DeploymentStatus部署状态.md` 为准。
 - v0.01—v0.05：`REJECTED`，不得部署或作为后续底稿。
 - v0.06：`CANDIDATE`，NAS 当前部署与回滚基线。
 - v0.07：`CANDIDATE`，A2A 与记忆隔离设计基线。
@@ -10,7 +10,7 @@
 - v0.09：`CANDIDATE`，增加 ops 专用 Telegram account/binding 管理能力。
 - v0.10：`CANDIDATE`，NAS 当前部署版本；补齐工程总管所需的 workspace 写入和受审 NAS 宿主执行能力。
 - v0.11：`CANDIDATE`，停用高频热重载的专用 Telegram 插件，改用 OpenClaw 原生 `channels add` 与 `agents bind`。
-- v0.12：`CANDIDATE`，标准运维改为任务级授权；同一任务包内不逐步骤索权，只在严重例外暂停上报。
+- v0.13：`CANDIDATE`，标准运维改为任务级授权；同一任务包内不逐步骤索权，只在严重例外暂停上报。
 - 当前没有 `STABLE` 版本。
 
 ## 定位
@@ -33,4 +33,4 @@
 
 专用 Task/Stage/Gate 持久化、目标 Generation、硬单次消费、跨重启自动续跑、精细 A2A 路由与历史授权、技术子 Agent 分别验收。未完成项不得虚构，但不阻塞基础 ops 上线。
 
-v0.12 不改变人物属性或工程职责。它修正 v0.11 将同一运维目标拆成逐命令 Risk/确认的问题：少主直接任务或 housekeeper 正式委派形成一个任务级授权包，内部 Review/Risk 自动处理，授权包内的核对、备份、最小写入、一次必要重启、验证和同范围可回退修复连续执行。只有目标/身份不明、覆盖冲突、不可逆或记忆损失、范围扩大、基线漂移、连续失败可能扩大故障时暂停上报。任意 Gateway RPC、Cron、跨会话历史、技术子 Agent 和任意外发消息仍不开放。
+v0.13 不改变人物属性或工程职责。它修正 v0.11 将同一运维目标拆成逐命令 Risk/确认的问题：少主直接任务或 housekeeper 正式委派形成一个任务级授权包，内部 Review/Risk 自动处理，授权包内的核对、备份、最小写入、一次必要重启、验证和同范围可回退修复连续执行。只有目标/身份不明、覆盖冲突、不可逆或记忆损失、范围扩大、基线漂移、连续失败可能扩大故障时暂停上报。任意 Gateway RPC、Cron、跨会话历史、技术子 Agent 和任意外发消息仍不开放。

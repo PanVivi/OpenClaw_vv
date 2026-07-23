@@ -1,6 +1,6 @@
 # PERMISSIONS.md
 
-本文件是 coder / 步非煙 v0.07 的建议权限矩阵，不是可直接复制的配置。
+本文件是 coder / 步非煙 v0.08 的建议权限矩阵，不是可直接复制的配置。
 
 | 权限项 | 建议 | 真实限制 |
 | --- | --- | --- |
@@ -14,7 +14,7 @@
 | 生产 shell、文件、配置、数据库、服务、部署、外部发布 | 否 | 全部禁止 |
 | `sessions_list/send/status` | 有限 | 可解析八个固定 Agent；正式工程路由仍限 housekeeper、ops、reviewer 和当前任务技术会话 |
 | `sessions_history` | 否 | 目标可见不等于历史可读 |
-| `sessions_spawn` | 基础否/增强有限 | 基础上线关闭；增强层在当前 coder 处理权下经 Review 创建子 Agent |
+| `sessions_spawn` / `sessions_yield` / `subagents` | 同角色有限 | 当前 coder 处理权下创建同一 `coder` 的单层隔离子 Agent；不得扩大父权限 |
 | companion、跨任务或旧代次历史 | 否 | 禁止 |
 
 ## 强制规则
@@ -25,5 +25,5 @@
 - 返工必须有新 coder 处理轮次和当前失败记录；增强层再建立新 Generation；方案改变必须重新方案 Review。
 - 未完成硬单次消费、重复/错误目标拒绝、返工不复用、旧处理权和生产拒绝测试时，不得把对应增强能力标记为已完成。
 - 基础部署可用当前会话结构化方案 Review 记录授权一次隔离实现；上下文丢失、方案变化、错误目标或重复使用时必须重新 Review。
-- 专用持久化、目标 Generation、硬单次消费、精细 A2A 路由与历史授权、技术子 Agent 的未完成只限制增强状态，不阻塞基础角色上线。
+- 专用持久化、目标 Generation、硬单次消费、精细 A2A 路由与历史授权的未完成只限制增强状态，不阻塞基础角色上线；同角色技术子 Agent 已启用。
 - A2A 不授予其他 Agent 的 workspace、工具、个人记忆或现实权限；维护测试和 ACK 不写入个人长期记忆。

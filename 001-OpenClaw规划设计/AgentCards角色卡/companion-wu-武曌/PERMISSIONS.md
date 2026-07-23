@@ -10,6 +10,6 @@
 | `sessions_history` | 否 |
 | 独立长期记忆 | 后续增强 |
 | 工程会话、文件、shell、配置、服务、凭据 | 否 |
-| `sessions_spawn` | 否 |
+| `sessions_spawn` / `sessions_yield` / `subagents` | 同角色非工程 | 只用于长篇聊天、创作或非工程整理；子 Agent不增加任何工程权限 |
 
 基础验收与协调/记忆增强分开；A2A 目标可见不等于历史可读。

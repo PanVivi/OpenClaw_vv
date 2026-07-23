@@ -1,0 +1,109 @@
+[
+  {
+    "path": "agents.defaults.subagents",
+    "value": {
+      "maxConcurrent": 8,
+      "maxChildrenPerAgent": 3,
+      "maxSpawnDepth": 1,
+      "runTimeoutSeconds": 1800,
+      "archiveAfterMinutes": 60,
+      "delegationMode": "prefer"
+    }
+  },
+  {
+    "path": "agents.list[0].tools.allow",
+    "value": ["read", "write", "edit", "apply_patch", "exec", "process", "web_search", "web_fetch", "session_status", "sessions_list", "memory_search", "memory_get", "sessions_send", "sessions_spawn", "sessions_yield", "subagents"]
+  },
+  {
+    "path": "agents.list[0].tools.deny",
+    "value": ["sessions_history", "gateway", "message", "cron"]
+  },
+  {
+    "path": "agents.list[0].subagents",
+    "value": {"allowAgents": ["ops"]}
+  },
+  {
+    "path": "agents.list[1].tools.allow",
+    "value": ["cron", "memory_get", "memory_search", "read", "session_status", "sessions_list", "sessions_send", "sessions_spawn", "sessions_yield", "subagents"]
+  },
+  {
+    "path": "agents.list[1].tools.deny",
+    "value": ["sessions_history", "exec", "process", "write", "edit", "apply_patch", "gateway", "message"]
+  },
+  {
+    "path": "agents.list[1].subagents",
+    "value": {"allowAgents": ["housekeeper"]}
+  },
+  {
+    "path": "agents.list[2].tools.allow",
+    "value": ["read", "write", "edit", "apply_patch", "exec", "process", "session_status", "sessions_list", "sessions_send", "sessions_spawn", "sessions_yield", "subagents"]
+  },
+  {
+    "path": "agents.list[2].tools.deny",
+    "value": ["sessions_history", "gateway", "message", "cron", "web_search", "web_fetch"]
+  },
+  {
+    "path": "agents.list[2].subagents",
+    "value": {"allowAgents": ["coder"]}
+  },
+  {
+    "path": "agents.list[3].tools.allow",
+    "value": ["read", "session_status", "sessions_list", "sessions_send", "sessions_spawn", "sessions_yield", "subagents"]
+  },
+  {
+    "path": "agents.list[3].tools.deny",
+    "value": ["sessions_history", "exec", "process", "write", "edit", "apply_patch", "gateway", "message", "cron"]
+  },
+  {
+    "path": "agents.list[3].subagents",
+    "value": {"allowAgents": ["reviewer"]}
+  },
+  {
+    "path": "agents.list[4].tools.allow",
+    "value": ["web_search", "web_fetch", "cron", "message", "sessions_list", "sessions_send", "session_status", "life_automation", "sessions_spawn", "sessions_yield", "subagents"]
+  },
+  {
+    "path": "agents.list[4].tools.deny",
+    "value": ["sessions_history", "exec", "process", "read", "write", "edit", "apply_patch", "gateway"]
+  },
+  {
+    "path": "agents.list[4].subagents",
+    "value": {"allowAgents": ["life"]}
+  },
+  {
+    "path": "agents.list[5].tools.allow",
+    "value": ["sessions_spawn", "sessions_yield", "subagents"]
+  },
+  {
+    "path": "agents.list[5].tools.deny",
+    "value": ["sessions_history", "exec", "process", "read", "write", "edit", "apply_patch", "gateway", "message", "cron"]
+  },
+  {
+    "path": "agents.list[5].subagents",
+    "value": {"allowAgents": ["companion-dugu"]}
+  },
+  {
+    "path": "agents.list[6].tools.allow",
+    "value": ["sessions_spawn", "sessions_yield", "subagents"]
+  },
+  {
+    "path": "agents.list[6].tools.deny",
+    "value": ["sessions_history", "exec", "process", "read", "write", "edit", "apply_patch", "gateway", "message", "cron"]
+  },
+  {
+    "path": "agents.list[6].subagents",
+    "value": {"allowAgents": ["companion-wu"]}
+  },
+  {
+    "path": "agents.list[7].tools.allow",
+    "value": ["sessions_spawn", "sessions_yield", "subagents"]
+  },
+  {
+    "path": "agents.list[7].tools.deny",
+    "value": ["sessions_history", "exec", "process", "read", "write", "edit", "apply_patch", "gateway", "message", "cron"]
+  },
+  {
+    "path": "agents.list[7].subagents",
+    "value": {"allowAgents": ["companion-lv"]}
+  }
+]

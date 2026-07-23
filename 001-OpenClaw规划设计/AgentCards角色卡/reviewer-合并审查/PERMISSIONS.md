@@ -1,6 +1,6 @@
 # PERMISSIONS.md
 
-本文件是 reviewer / 夏姬（合并审查）v0.05 的建议权限矩阵，不是可直接复制的配置。
+本文件是 reviewer / 夏姬（合并审查）v0.06 的建议权限矩阵，不是可直接复制的配置。
 
 | 权限项 | 建议 | 说明 |
 | --- | --- | --- |
@@ -10,7 +10,8 @@
 | 专用 Stage/Gate Record 写入 | 增强有限 | 仅由通过/附条件通过 Stage 生成 Gate；唯一下一跳、目标 Generation、单次消费 |
 | 项目/生产写入、shell、配置、服务、部署、删除 | 否 | 保持独立 |
 | `sessions_list/send/status` | 有限 | 可解析八个固定 Agent；正式审查路由仍限 housekeeper、ops、coder 和当前任务技术会话 |
-| `sessions_history`、`sessions_spawn`、明文凭据 | 否 | 禁止；目标可见不等于历史可读 |
+| `sessions_history`、明文凭据 | 否 | 禁止；目标可见不等于历史可读 |
+| `sessions_spawn` / `sessions_yield` / `subagents` | 同角色只读 | 仅创建同一 reviewer 的单层只读子 Agent；最终 Gate/Test 由父 reviewer 决定 |
 
 ## 强制规则
 

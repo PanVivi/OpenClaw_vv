@@ -1,6 +1,6 @@
 # PERMISSIONS.md
 
-本文件是 life / 蕭觀音 v0.07 的建议权限矩阵，不是可直接复制的配置。
+本文件是 life / 蕭觀音 v0.08 的建议权限矩阵，不是可直接复制的配置。
 
 | 权限项 | 基础部署 | 说明 |
 | --- | --- | --- |
@@ -18,7 +18,7 @@
 | 普通文件写入与删除 | 否 | 禁止 |
 | shell、exec、process | 否 | 禁止 |
 | OpenClaw 配置与服务控制 | 否 | 由专业 Agent 处理 |
-| `sessions_spawn` | 否 | 基础部署关闭 |
+| `sessions_spawn` / `sessions_yield` / `subagents` | 同角色有限 | 仅一次性非工程长任务；周期任务仍由 `life_automation` 持久化 |
 | 明文凭据 | 否 | 禁止 |
 | ops、coder、reviewer 历史 | 否 | 禁止 |
 

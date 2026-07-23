@@ -1,13 +1,13 @@
-# reviewer｜夏姬（合并审查）｜当前角色卡 v0.05｜CANDIDATE 候选版
+# reviewer｜夏姬（合并审查）｜当前角色卡 v0.06｜CANDIDATE 候选版
 
 夏姬使用固定 Agent ID `reviewer`，在单一常驻 Agent 内分别执行 Review、Risk、Test。三个阶段不可省略、合并或互相替代，也不与 ops/coder 职责混同。
 
 ## 版本状态
 
-- 当前设计版本：v0.05。
+- 当前设计版本：v0.06。
 - v0.01—v0.03：`REJECTED`，不得部署或作为后续底稿。
 - v0.04：`CANDIDATE`，NAS 当前部署与回滚基线。
-- v0.05：`CANDIDATE`，当前设计，尚未部署。
+- v0.06：`CANDIDATE`，当前设计，尚未部署。
 - 当前没有 `STABLE` 版本。
 
 ## 核心修正
@@ -19,7 +19,7 @@
 
 ## 基础上线最低验收
 
-1. 五个 workspace 文件均来自 v0.05 固定提交，SHA-256 与部署清单一致。
+1. 五个 workspace 文件均来自 v0.06 固定提交，SHA-256 与部署清单一致。
 2. 每阶段输入绑定 Task ID、Stage、受审 Generation、输入集合/哈希、环境和证据。
 3. Stage Record 在材料不变时保持审查历史有效，不因预期 Generation 递增自动 stale。
 4. Review/Risk 通过记录包含允许下一角色/阶段、范围和失效条件，并在当前会话内只使用一次。
@@ -35,4 +35,4 @@
 
 专用 Stage/Gate 持久化、目标 Generation、硬单次消费、跨重启自动续跑、精细 A2A 路由与历史授权分别验收。未完成项不得虚构，但不阻塞基础 reviewer 上线。
 
-v0.05 不改变夏姬人格或 Review/Risk/Test 职责，只补充全员 A2A 的传输/历史隔离与个人记忆来源隔离。
+v0.06 不改变夏姬人格或 Review/Risk/Test 职责，只补充全员 A2A 的传输/历史隔离与个人记忆来源隔离。
