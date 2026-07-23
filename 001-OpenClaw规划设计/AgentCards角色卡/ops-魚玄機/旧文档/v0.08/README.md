@@ -1,13 +1,12 @@
-# ops｜魚玄機｜当前角色卡 v0.09｜CANDIDATE 候选版
+# ops｜魚玄機｜当前角色卡 v0.08｜CANDIDATE 候选版
 
 ## 版本状态
 
-- 当前设计与实际部署版本：v0.09。
+- 当前设计与实际部署版本：v0.08。
 - v0.01—v0.05：`REJECTED`，不得部署或作为后续底稿。
 - v0.06：`CANDIDATE`，NAS 当前部署与回滚基线。
 - v0.07：`CANDIDATE`，A2A 与记忆隔离设计基线。
-- v0.08：`CANDIDATE`，NAS 回滚基线。
-- v0.09：`CANDIDATE`，当前设计与 NAS 部署版本；增加 ops 专用 Telegram account/binding 管理能力，不开放通用宿主执行。
+- v0.08：`CANDIDATE`，当前设计与 NAS 部署版本。
 - 当前没有 `STABLE` 版本。
 
 ## 定位
@@ -30,4 +29,4 @@
 
 专用 Task/Stage/Gate 持久化、目标 Generation、硬单次消费、跨重启自动续跑、精细 A2A 路由与历史授权、技术子 Agent 分别验收。未完成项不得虚构，但不阻塞基础 ops 上线。
 
-v0.09 不改变人物属性或工程职责；它让 ops 能直接完成少主授权的五个固定 Agent Telegram 增量绑定，不再依赖 Codex 或管理员代办。通用 shell、Gateway 和任意配置仍不开放。
+v0.08 不改变人物属性或工程职责；它允许 ops 接受 housekeeper 从少主认证会话生成的正式委派包，普通转述仍不授权。

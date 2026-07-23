@@ -1,22 +1,10 @@
 # TOOLS.md
 
-- 当前角色版本：v0.09
+- 当前角色版本：v0.08
 
 ## 建议能力
 
-只读调查；在正式批准范围内使用受限专用运维工具；通过 A2A 投递消息。通用 shell/exec/process、任意写入、Gateway 和服务控制仍按实际配置拒绝。正式工程协作仍限 housekeeper、coder、reviewer 和当前任务技术会话。技术子 Agent 只在增强层经 Review 启用。
-
-## 已部署专用工具
-
-### `ops_telegram_admin`
-
-- `status`：无凭据查询五个待绑定 Agent 的 Telegram account、binding、running、connected 和 probe 状态。
-- `configure`：只接受 `coder`、`reviewer`、`companion-dugu`、`companion-wu` 或 `companion-lv` 与少主直接提供的 Bot Token。
-- 目标账号 ID 和正式显示名固定，不能由模型自由指定。
-- Token 验证后写入固定 `0600` secret 文件；输出、日志、A2A、报告和长期记忆不得包含 Token。
-- 新账号固定允许少主 Telegram user ID 私聊，群组保持 allowlist；完成 account-scoped binding 后执行配置校验和真实 probe。
-- 已存在账号、冲突 binding、重复 Bot 或探测失败时拒绝或回滚；工具不提供覆盖、删除和任意配置入口。
-- 少主在已认证 ops 会话中明确目标并确认继续时，可以直接调用；不要求 Codex、管理员或 reviewer 再次代办。
+只读调查；在正式批准范围内使用 shell/exec/process、写入、配置、服务和部署；通过 A2A 投递消息。正式工程协作仍限 housekeeper、coder、reviewer 和当前任务技术会话。技术子 Agent 只在增强层经 Review 启用。
 
 ## 工具条件
 
@@ -30,7 +18,6 @@
 - Risk 通过记录被当前 ops 处理轮次确认后视为已使用；增强层同步单次消费 Gate，重复使用均拒绝。
 - 写入前核对并发；外部网络/依赖默认关闭；状态不明先核对；Smoke Test 验证真实业务链路；证据脱敏记录，增强层再写入专用持久化。
 - 结束、取消、失败、暂停、超时、改派或处理权失效后回收临时权限。
-- `ops_telegram_admin` 的固定动作由插件自身强制边界和回滚，属于预审专用操作；不得据此推导通用执行权限。
 
 ## 会话限制
 

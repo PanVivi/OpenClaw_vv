@@ -1,0 +1,35 @@
+{
+  "id": "ops-telegram-admin",
+  "name": "Ops Telegram Admin",
+  "description": "Give only the ops agent constrained Telegram account and agent-binding administration.",
+  "version": "1.0.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "agentId": {
+        "type": "string",
+        "default": "ops"
+      },
+      "ownerUserId": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "ownerUserId"
+    ]
+  },
+  "activation": {
+    "onStartup": true
+  },
+  "contracts": {
+    "tools": [
+      "ops_telegram_admin"
+    ]
+  },
+  "toolMetadata": {
+    "ops_telegram_admin": {
+      "optional": true
+    }
+  }
+}

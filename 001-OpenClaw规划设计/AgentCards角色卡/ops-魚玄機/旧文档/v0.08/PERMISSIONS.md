@@ -1,6 +1,6 @@
 # PERMISSIONS.md
 
-本文件是 ops / 魚玄機 v0.09 的建议权限矩阵，不是可直接复制的配置。
+本文件是 ops / 魚玄機 v0.08 的建议权限矩阵，不是可直接复制的配置。
 
 | 权限项 | 建议 | 真实限制 |
 | --- | --- | --- |
@@ -15,7 +15,6 @@
 | `sessions_history` | 否 | 目标可见不等于历史可读 |
 | `sessions_spawn` | 基础否/增强有限 | 基础上线关闭；增强层在当前处理代次下经 Review 创建技术子 Agent |
 | secret profile | 有限 | 只引用不读明文 |
-| `ops_telegram_admin` | 有限/已部署 | 只新增五个固定 Agent 的 Telegram account 与 binding；Token 写固定 `0600` secret，拒绝覆盖、删除和任意配置 |
 | companion、跨任务或旧代次证据 | 否 | 禁止 |
 | 最终验收 | 否 | reviewer.Test |
 
@@ -29,4 +28,3 @@
 - 专用持久化、硬单次消费、精细 A2A 路由与历史授权、技术子 Agent 的未完成只限制增强状态，不阻塞基础角色上线。
 - A2A 不授予其他 Agent 的 workspace、工具、个人记忆或现实权限；维护测试和 ACK 不写入个人长期记忆。
 - housekeeper 从少主认证会话生成、字段完整且范围未变化的正式委派包可承载该任务既有授权；普通转述仍不授权，生产副作用仍须适用的 Risk 记录。
-- 少主在已认证 ops Telegram 会话中直接提供 Token、明确五个固定目标之一并确认继续时，`ops_telegram_admin` 可按插件预审边界执行一次；不再要求 Codex、管理员或 reviewer 重复代办。该例外不扩大到其他工具或配置。
