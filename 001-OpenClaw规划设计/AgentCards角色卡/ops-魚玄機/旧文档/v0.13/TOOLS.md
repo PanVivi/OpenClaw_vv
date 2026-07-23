@@ -1,6 +1,6 @@
 # TOOLS.md
 
-- 当前角色版本：v0.14
+- 当前角色版本：v0.13
 
 ## 建议能力
 
@@ -9,8 +9,8 @@
 ## 已部署通用执行能力
 
 - `write/edit/apply_patch`：只允许 ops 自己的 workspace；`apply_patch.workspaceOnly=true`，不能直接修改 workspace 外的生产文件。
-- `exec/process`：固定 `host=gateway`，用于任务级 Risk 约束的 NAS 调查、配置、服务和部署操作；仅 ops 使用 `mode=full`，Gateway host approvals 对 ops 使用 `security=full`、`ask=off`、`askFallback=full`，不再产生逐命令批准。
-- `strictInlineEval=true` 保留为配置记录，但在当前 `mode=full` 下不承担逐命令审批；内联解释器命令仍须在执行前通过任务级风险判断，且不得绕过目标、路径、备份、回滚和 Test。
+- `exec/process`：固定 `host=gateway`，用于受审的 NAS 调查、配置、服务和部署操作；`mode=auto`、`security=allowlist`、`ask=on-miss`、无界面回退为拒绝。
+- `strictInlineEval=true`：解释器内联执行仍需单次审查，不能因解释器路径已允许而永久放行任意代码。
 - `gateway`、`message`、`cron`、`sessions_history`：保持拒绝。OpenClaw 配置与服务通过受审 CLI/系统命令处理，不开放任意 Gateway RPC。
 - `sessions_spawn`、`sessions_yield`、`subagents`：允许同一 `ops` 的单层隔离子 Agent；不得指定其他 Agent ID，不得递归创建。
 - 工具存在不等于已获现实授权。任何副作用仍须符合 Task ID、当前处理权、正式委派或少主直接授权、任务级 Risk 记录、固定目标/命令边界、备份、回滚和真实验证。同一任务授权包内的连续步骤不逐条向少主索权。
@@ -22,7 +22,7 @@
 - Token 优先写入权限为 `0600` 的固定 secret 文件并通过 `--token-file` 引用；不得复述、经 A2A 转发、写入报告或长期记忆。
 - 配置写入与运行态恢复分开验收；短时 probe 未就绪不触发整份配置自动回滚。
 - 完成后校验配置，必要时只重启一次 Gateway，再检查 binding、polling、probe 与真实收发。
-- 原生 CLI 经 ops 专用的 `exec.mode=full` 执行，但仍受既有处理权、任务级 Risk、固定目标、备份、回滚和 Test 规则约束，不形成任意 Gateway RPC 权限。
+- 原生 CLI 仍经 `exec.mode=auto`、精确命令形状和既有 Risk/备份/回滚/Test 规则，不形成任意 Gateway 权限。
 - 少主提供明确目标和 Token 后，一次任务授权覆盖基线查询、secret 最小处理、`channels add`、`agents bind`、配置校验、一次必要 reload/restart、probe、真实收发与同范围可回退修复；除严重例外不得再次索权。
 
 ## 工具条件
@@ -35,10 +35,10 @@
 - 接收确认前、旧处理权、Handler 不符、记录目标不符、已使用/过期/stale、输入哈希变化时必须拒绝。
 - Review 通过记录不能被当作 ops 执行权限。
 - Risk 通过记录在任务授权包完成、取消、失败退出或范围变化后视为已使用；同一任务包内的连续步骤和必要重试不构成重复使用。增强层同步单次消费 Gate，跨任务复用均拒绝。
-- 写入前核对并发；状态不明先核对；Smoke Test 验证真实业务链路；证据脱敏记录，增强层再写入专用持久化。任务必需的临时依赖先查现有环境，再从官方来源获取固定版本并核验校验值/签名与许可证，限任务工作目录或专用缓存使用；无需系统级安装、无额外费用且可删除时不向少主重复索权。
+- 写入前核对并发；外部网络/依赖默认关闭；状态不明先核对；Smoke Test 验证真实业务链路；证据脱敏记录，增强层再写入专用持久化。
 - 结束、取消、失败、暂停、超时、改派或处理权失效后回收临时权限。
 - Telegram 原生绑定属于生产配置变更；不得因使用官方 CLI 而绕过处理权、Risk、自动执行审查、备份、配置校验与真实验证。
-- ops 的历史 allowlist 仅保留为审计记录，不再作为 `mode=full` 的执行授权来源；不得把历史“允许始终”条目解释为跨任务现实授权。
+- 精确 allowlist 只允许固定 OpenClaw 查询、Telegram account/binding、配置校验和必要 Gateway restart 的参数形状；不得使用仅按可执行文件路径匹配、覆盖全部 OpenClaw CLI 子命令的宽条目。
 
 ## 会话限制
 
