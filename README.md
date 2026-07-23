@@ -4,36 +4,38 @@
 
 ## 当前阅读顺序
 
-1. [文档与版本规则 v1.04](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.04.md)
-2. [快速简报 v1.06](001-OpenClaw规划设计/QuickBrief快速简报-v1.06.md)
-3. [最终设计 v1.06](001-OpenClaw规划设计/FinalDesign最终设计-v1.06.md)
+1. [文档与版本规则 v1.05](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.05.md)
+2. [快速简报 v1.07](001-OpenClaw规划设计/QuickBrief快速简报-v1.07.md)
+3. [最终设计 v1.07](001-OpenClaw规划设计/FinalDesign最终设计-v1.07.md)
 4. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
-5. [角色卡审核 v0.06](001-OpenClaw规划设计/RoleCardAudit角色卡审核-v0.06.md)
+5. [角色卡审核 v0.07](001-OpenClaw规划设计/RoleCardAudit角色卡审核-v0.07.md)
 6. 对应 Agent 的 DeploymentStatus、VERSION-STATUS 和五个 workspace 文件
-7. [共同协议 v0.02](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
-8. [工作流程 v0.08](001-OpenClaw规划设计/Workflows工作流程-v0.08.md)
-9. [部署方案 v0.08](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.08.md)
-10. [实施路线 v0.08](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.08.md)
-11. [当前进度 v0.10](002-OpenClaw部署进度/CurrentProgress当前进度-v0.10.md)
-12. [来源索引 v0.09](000-OpenClaw文档管理/SourceIndex来源索引-v0.09.md)
+7. [共同协议 v0.03](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
+8. [工作流程 v0.09](001-OpenClaw规划设计/Workflows工作流程-v0.09.md)
+9. [部署方案 v0.09](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.09.md)
+10. [无损内容更新任务 v0.01](002-OpenClaw部署进度/LosslessContentUpdate无损内容更新任务-v0.01.md)
+11. [实施路线 v0.09](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.09.md)
+12. [当前进度 v0.11](002-OpenClaw部署进度/CurrentProgress当前进度-v0.11.md)
+13. [部署后故障与修复 v0.01](003-OpenClaw事故经验/PostDeploymentRecovery部署后故障与修复-v0.01.md)
+14. [来源索引 v0.10](000-OpenClaw文档管理/SourceIndex来源索引-v0.10.md)
 
 ## 当前角色版本
 
 ```text
-housekeeper       賈南風 v1.08
-life              蕭觀音 v0.05
-ops               魚玄機 v0.06
-coder             步非煙 v0.06
-reviewer          夏姬（合并审查）v0.04
-companion-dugu    獨孤伽羅 v0.03
-companion-wu      武曌 v0.03
-companion-lv      呂雉 v0.03
+housekeeper       賈南風 v1.09
+life              蕭觀音 v0.06
+ops               魚玄機 v0.07
+coder             步非煙 v0.07
+reviewer          夏姬（合并审查）v0.05
+companion-dugu    獨孤伽羅 v0.04
+companion-wu      武曌 v0.04
+companion-lv      呂雉 v0.04
 ```
 
 ## 当前目标
 
-先最小化部署完整八 Agent 集合，让各 Agent 拥有独立 workspace、Bot、binding、普通会话和正确最小权限。专用持久化、精细 A2A、自动化可靠性、技术子 Agent 与完整记忆分阶段增强，不再阻塞基础上线。
+八 Agent 五文件已完成基础部署。当前目标是按无损内容更新任务升级角色卡，同时保留 transcript、session、个人记忆和三条既有 Telegram routing。其余五个 Bot 等待真实 token 后逐个增量绑定。
 
 賈南風可直接回答简单生活问题；需要设置、定时、未来投递、持续跟踪、生活工具或 companion 协调时转蕭觀音。life 是生活自动化唯一执行所有者。
 
-GitHub 设计不等于 NAS 已部署；基础角色状态与增强能力状态分别记录。
+全员 A2A 消息投递已启用，但 `sessions_history` 保持拒绝。GitHub 设计不等于 NAS 已部署；基础角色状态与增强能力状态分别记录。

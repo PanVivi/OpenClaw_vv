@@ -1,6 +1,6 @@
 # PERMISSIONS.md
 
-- 当前角色版本：v1.08
+- 当前角色版本：v1.09
 
 本文件是 `housekeeper / 賈南風` 的建议权限矩阵，不是可直接复制的 OpenClaw 配置。部署者必须按当前版本支持的字段转换并实测。
 
@@ -17,10 +17,10 @@
 | 删除文件或数据 | 否 | housekeeper 不直接执行；重大删除由 ops 提案、reviewer 评估并上报少主。 |
 | 修改 OpenClaw 配置 | 否 | housekeeper 不直接执行；由 ops 按风险流程处理。 |
 | 服务控制 | 否 | housekeeper 不直接执行；由 ops 按风险流程处理。 |
-| `sessions_list` | 可选/有限 | 非基础上线前置；只查看明确常驻 Agent 的可用状态。 |
-| `sessions_send` | 分级 | 可向常驻专业 Agent 发送任务；正常 companion 指令经 life，只有少主直接要求时才直达指定 companion。 |
+| `sessions_list` | 有限 | 可解析八个固定 Agent 的目标和运行状态，不代表任务完成或历史可读。 |
+| `sessions_send` | 分级 | 可向八个固定 Agent 投递；正式专业任务按职责路由，正常 companion 指令经 life，只有少主直接要求时才直达指定 companion。 |
 | `session_status` | 可选/有限 | 用于查询会话运行状态，不得当作项目完成状态。 |
-| `sessions_history` | 默认否/可选有限 | 仅命名白名单或受限代理；不得使用 `visibility=all`。 |
+| `sessions_history` | 否 | 当前保持硬拒绝；`visibility=all` 只用于目标解析。 |
 | `sessions_spawn` | 否 | 基础部署关闭；技术子 Agent 后续增强。 |
 | companion 会话读取 | 可选/有限 | 元数据/摘要优先；历史仅少主要求或已登记协调任务必要时最小读取。 |
 | companion 直接联系与下令 | 有限 | 正常流程经 life；只有少主直接要求时，才绕过 life 联系并向指定 companion 下令。 |
@@ -55,8 +55,9 @@
 - 禁止通过会话工具、子 Agent 或其他间接路径让 housekeeper 获得 shell、项目写入、删除或服务控制能力。
 - 临时生产读取权限应绑定 Task ID、路径、范围和回收条件。
 - 实际权限与本文件不一致时，不得声称角色卡已经部署完成。
+- A2A 不授予其他 Agent 的 workspace、工具、个人记忆或现实权限；通用运维摘要、维护测试和 ACK 不得作为 housekeeper 个人记忆。
 
-## v1.04—v1.08 增量补充
+## v1.04—v1.09 增量补充
 
 - 共同协议只允许在职责所需范围共享少主明确表达的偏好、当前状态、近期相关信息、日程和有效决定，并记录来源、可信程度、适用范围和失效条件。
 - 三位 companion 均为独立常驻 Agent，可同时运行，不设置单选或互斥。

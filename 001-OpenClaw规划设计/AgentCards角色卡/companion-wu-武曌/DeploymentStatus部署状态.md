@@ -1,28 +1,29 @@
 # companion-wu｜武曌｜部署进度
 
 - Agent ID：`companion-wu`
-- 当前设计版本：v0.03 `CANDIDATE`
-- 当前实际部署版本：待核验
-- 当前运行状态：`not verified`
+- 当前设计版本：v0.04 `CANDIDATE`
+- 当前实际部署版本：v0.03 `CANDIDATE`
+- 当前运行状态：`partially completed`
+- 最后核验：2026-07-23 11:06 +08:00
 
-基础待核验：v0.03 workspace 五文件、模型、Bot/binding、直接会话、人物权威感、共同协议加载、并行、停止口令和工程权限拒绝。
+## 已验证
 
-life/housekeeper 协调、跨会话状态和记忆为后续增强，不阻塞基础上线。
+- v0.03 五个 workspace 文件来自固定提交 `cfb4edad793be6df0fb2a690dc5185bb1c1b44ba`。
+- 模型：primary `custom-2/grok-4.20-0309-non-reasoning`；fallback 配置存在。
+- Telegram：未配置；对应 Bot token、account 和 binding 从未建立。
+- 工具：工程读写、执行、Gateway、message、Cron、spawn 与 `sessions_history` 拒绝；A2A 消息投递可用。
+- A2A：目标 transcript 已确认收到武曌作为发送方的测试消息；外层 ACK 为空不表示投递失败。
+- Sandbox：关闭；专属恢复包存在。
 
-## 当前运行要素
+## 未完成与下一步
 
-- 模型：待核验。
-- Telegram Bot、account、binding：待核验。
-- 工具与 allow/deny：待核验；工程会话、文件、shell、配置、服务和凭据必须拒绝。
-- A2A、会话与历史可见性：直接会话、并行能力和受限协调均待核验；历史默认关闭。
-- 记忆：独立记忆未验收，不得声称已持久化。
-- 自动化：不属于基础职责；没有已验收自动化记录。
-- 已知限制：没有 NAS 运行证据，不能确认当前角色卡或人物权威感已加载。
+- v0.04 尚未按无损更新任务部署；
+- Telegram Bot 缺 token；
+- 独立长期记忆未部署。
 
-## 下一步与证据
+先无损部署 v0.04；Bot token 到位后另立增量绑定，不改动其他 Bot 或旧 transcript。
 
-1. 只读盘点现有 Agent、workspace、模型、Bot/account/binding、会话和权限。
-2. 固定提交并核对五文件 SHA-256 后，验证直接会话、并行、停止口令和工程权限拒绝。
+## 证据
 
-- 证据来源：来源提交 `90cb37404f575a39d97230f3342e8c2afc597b24` 与本地候选文档；本轮未连接 NAS。
-- 最后文档核验时间：2026-07-23（Asia/Taipei）；运行环境仍待核验。
+- NAS 部署报告：`/Volume3/OpenClaw/backups/EIGHT-AGENT-BASE-20260723T084610+0800/deployment-report.txt`
+- 恢复包：`/Volume3/OpenClaw/home/.openclaw/agents/companion-wu/recovery/session-continuity-20260723T095812+0800`

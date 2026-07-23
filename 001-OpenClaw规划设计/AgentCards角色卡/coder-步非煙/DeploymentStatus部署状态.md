@@ -1,36 +1,32 @@
 # coder｜步非煙｜部署进度
 
 - Agent ID：`coder`
-- 当前设计版本：v0.06 `CANDIDATE`
-- 当前实际部署版本：待核验
-- 当前运行状态：`not verified`
-- 本轮只修改 GitHub 文档，没有部署 v0.06
+- 当前设计版本：v0.07 `CANDIDATE`
+- 当前实际部署版本：v0.06 `CANDIDATE`
+- 当前运行状态：`partially completed`
+- 最后核验：2026-07-23 11:06 +08:00
 
-## 已完成设计
+## 已验证
 
-已定义隔离实现、返工不复用、产物交接、测试、依赖、取消和熔断；基础层可使用当前会话 Review 记录，硬 Gate、持久化、精确 A2A 和技术子 Agent 保留为增强层。
+- v0.06 五个 workspace 文件来自固定提交 `cfb4edad793be6df0fb2a690dc5185bb1c1b44ba`。
+- 模型：primary `custom-1/gpt-5.6-sol`；fallback 配置存在。
+- Telegram：未配置；对应 Bot token、account 和 binding 从未建立。
+- 工具：workspace 内 read/write/edit/apply_patch/exec/process 与 `sessions_list/send/status` 可用；Gateway、message、Cron、web、spawn 与 `sessions_history` 拒绝。
+- Sandbox：`mode=all`；镜像 `openclaw-sandbox:bookworm-slim` 和 hardened Docker/集成 Smoke Test 已通过。
+- A2A：八个固定 Agent 可互发，coder 作为发送方已验证；Sandbox session tool visibility 已单独设置。
+- 连续性：专属恢复包存在；未部署完整长期记忆。
 
-## 待核验
+## 未完成
 
-基础待核验：v0.06 五文件与 sandbox、当前会话 Review 记录、重复/错误目标拒绝、返工不复用、方案变化重新 Review、交付撤权、生产拒绝和只交付停止。
+- v0.07 尚未按无损更新任务部署；
+- Telegram Bot 缺 token，不能创建真实 account/binding；
+- 专用 Gate 持久化、硬单次消费、跨重启自动续跑和技术子 Agent 未部署。
 
-增强待核验：专用持久化、目标 Generation、硬单次消费、精确 A2A、跨重启恢复和技术子 Agent。
+## 下一步
 
-## 当前运行要素
+先无损部署 v0.07 并保持 Sandbox；Bot token 由用户提供后另立最小增量，仅添加 coder account/binding。
 
-- 模型：待核验。
-- Telegram Bot、account、binding：待核验。
-- 工具、sandbox、allow/deny：待核验；不得因角色卡存在而视为已配置。
-- A2A、会话与历史可见性：待核验；基础部署只要求当前任务结构化收发，历史默认关闭。
-- 记忆与自动化：无已验收能力记录，不属于 coder 基础上线前置。
-- 已知限制：没有 NAS 运行证据，不能确认当前是否已加载本候选版。
+## 证据
 
-## 下一步与证据
-
-1. 只读盘点现有 coder、workspace、模型、Bot/account/binding、工具和权限。
-2. 固定提交并核对五文件 SHA-256 后，执行隔离实现与生产拒绝测试。
-
-- 证据来源：来源提交 `90cb37404f575a39d97230f3342e8c2afc597b24` 与本地候选文档；本轮未连接 NAS。
-- 最后文档核验时间：2026-07-23（Asia/Taipei）；运行环境仍待核验。
-
-全部通过后才能升级为 `STABLE`。
+- NAS 部署报告：`/Volume3/OpenClaw/backups/EIGHT-AGENT-BASE-20260723T084610+0800/deployment-report.txt`
+- 恢复包：`/Volume3/OpenClaw/home/.openclaw/agents/coder/recovery/session-continuity-20260723T095812+0800`

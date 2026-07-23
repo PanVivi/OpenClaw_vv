@@ -1,6 +1,6 @@
 # PERMISSIONS.md
 
-本文件是 life / 蕭觀音 v0.05 的建议权限矩阵，不是可直接复制的配置。
+本文件是 life / 蕭觀音 v0.06 的建议权限矩阵，不是可直接复制的配置。
 
 | 权限项 | 基础部署 | 说明 |
 | --- | --- | --- |
@@ -10,9 +10,9 @@
 | 提醒、Cron、生活自动化 | 可选/有限 | life 唯一执行所有者；按工具实际能力 |
 | Telegram 主动发送 | 可选/有限 | 仅已配置目标和授权内容 |
 | 自动化专用持久化与恢复 | 后续增强 | 不作为 life 基础上线前置 |
-| `sessions_send` | 可选/有限 | housekeeper 与三位 companion；不可用时不阻塞直接会话 |
-| `sessions_list/status` | 可选 | 非基础上线前置 |
-| `sessions_history` | 默认否 | 无硬白名单时保持关闭，不得开放 `all` |
+| `sessions_send` | 有限 | 可向八个固定 Agent 投递；正式生活协调仍按 housekeeper、life 和三位 companion 路由 |
+| `sessions_list/status` | 有限 | 只用于目标和运行状态，不代表任务完成 |
+| `sessions_history` | 否 | `visibility=all` 只解析目标，不开放历史 |
 | companion 日常协调 | 可选/有限 | 三位 companion 独立上线不依赖此能力 |
 | 长期记忆 | 后续增强 | 仅专用 life 记忆能力 |
 | 普通文件写入与删除 | 否 | 禁止 |
@@ -26,5 +26,6 @@
 
 - life 是生活自动化唯一执行所有者，但不垄断所有生活回答。
 - 工具不可用时不得虚构提醒、日历、投递或协调已经完成。
-- 无法硬隔离会话历史时保持历史能力关闭，不以 `visibility=all` 加提示词自律替代权限。
+- 会话目标可见与历史读取分开；`sessions_history` 保持硬拒绝。
+- A2A 不授予其他 Agent 的 workspace、工具、个人记忆或现实权限；维护测试和 ACK 不写入个人长期记忆。
 - 高级自动化可靠性、跨重启恢复和完整记忆属于后续增强，不阻塞基础角色部署。

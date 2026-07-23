@@ -1,14 +1,14 @@
 # TOOLS.md
 
-- 当前角色版本：v0.04
+- 当前角色版本：v0.05
 
 ## 建议能力
 
-只读访问当前任务方案、代码、diff、配置、命令、日志、测试和部署证据；运行无副作用审查工具；受限联系 housekeeper/ops/coder；基础层写当前正式会话结构化记录，增强层写专用 Stage/Gate Record。
+只读访问当前任务方案、代码、diff、配置、命令、日志、测试和部署证据；运行无副作用审查工具；通过 A2A 投递消息，正式审查协作仍限 housekeeper/ops/coder 和当前任务技术会话；基础层写当前正式会话结构化记录，增强层写专用 Stage/Gate Record。
 
 ## 使用条件
 
-基础部署可使用当前正式会话内的结构化 Stage 和一次性 Review/Risk 通过记录；专用持久化、目标 Generation、硬单次消费和精确 A2A 为后续增强。未持久化记录不得跨会话或重启复用。
+基础部署可使用当前正式会话内的结构化 Stage 和一次性 Review/Risk 通过记录；专用持久化、目标 Generation、硬单次消费、精细 A2A 路由与历史授权为后续增强。未持久化记录不得跨会话或重启复用。
 
 - Stage Record 绑定 Task ID、阶段、受审 Generation、输入清单/哈希和环境。
 - Gate Record 绑定来源 Stage、允许下一角色/阶段、目标 Generation、条件、有效期和单次消费状态。
@@ -23,4 +23,4 @@
 
 ## 会话限制
 
-仅 housekeeper、ops、coder 和当前任务技术会话。正式消息包含 Task ID、Generation、Stage/Review/Risk 记录标识和哈希，增强层再包含 Gate ID；无法命名白名单时使用受限代理。
+A2A 可解析八个固定 Agent。正式审查消息只发给 housekeeper、ops、coder 和当前任务技术会话，并包含 Task ID、Generation、Stage/Review/Risk 记录标识和哈希，增强层再包含 Gate ID。其他目标只用于少主明确要求的最小协调或维护测试；`sessions_history` 保持关闭。

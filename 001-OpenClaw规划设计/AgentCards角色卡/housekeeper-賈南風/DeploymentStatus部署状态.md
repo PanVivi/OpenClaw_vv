@@ -1,47 +1,33 @@
 # housekeeper｜賈南風｜部署进度
 
 - Agent ID：`housekeeper`
-- 当前设计版本：v1.08 `CANDIDATE`
-- 当前实际部署版本：v1.02 `STABLE`
+- 当前设计版本：v1.09 `CANDIDATE`
+- 当前实际部署版本：v1.08 `CANDIDATE`
 - 当前运行状态：`partially completed`
-- 本轮只修改 GitHub 文档，没有部署 v1.08
+- 最后核验：2026-07-23 11:06 +08:00
 
-## 本轮设计修正
+## 已验证
 
-- 简单生活问答由賈南風直接回答；提醒、日历、设置、定时、未来投递、持续跟踪和 companion 协调转交蕭觀音。
-- life 仍是生活自动化唯一执行所有者，但不是所有生活对话的唯一入口。
-- Task / Stage / Gate 在基础部署中可使用当前会话结构化记录；专用持久化和硬单次消费改为后续加固。
-- 技术子 Agent、完整记忆和精细跨会话历史不再阻塞八 Agent 基础上线。
-- 已恢复 v1.02 稳定基线中不应删减的治理条款，并内嵌共同协议 v0.02 完整执行摘要。
+- v1.08 五个 workspace 文件来自固定提交 `cfb4edad793be6df0fb2a690dc5185bb1c1b44ba`，部署报告和 40 文件一致性校验通过。
+- 模型：primary `custom-2/grok-4.5`；fallback 配置存在。
+- Telegram：account `housekeeper` → Agent `housekeeper`，实际收发已通过。
+- 工具：workspace 内 `read`、`sessions_list/send/status` 和 memory 查询可用；写入、执行、Gateway、Cron、message、spawn 与 `sessions_history` 拒绝。
+- A2A：八个固定 Agent 可互发，housekeeper 作为发送方已验证；`visibility=all` 只用于目标解析，历史仍关闭。
+- Sandbox：关闭。
+- 连续性：专属恢复包存在；个人聊天恢复索引由 housekeeper 自己的 9 段 transcript 派生并校验，通用运维摘要与个人记忆已分离。
 
-## 基础部署待核验
+## 未完成
 
-- v1.08 五文件、SHA-256、模型、Bot、binding 和 Bootstrap。
-- 简单生活直接回答、复杂生活任务单次转交、转交失败不虚构。
-- housekeeper 无 shell、项目写入、删除、配置、服务控制和 `sessions_spawn`。
-- 当前会话内的基本工程路由、Review/Risk/Test、取消和防重复。
+- v1.09 尚未按无损更新任务部署；
+- 自动长期记忆、任务持久化和跨重启自动续跑仍未部署；
+- v1.08 仍是当前 NAS 角色文件回滚基线，v1.02 是最近 `STABLE` 角色基线。
 
-## 后续增强
+## 下一步
 
-- Task/Stage/Gate 专用持久化、硬单次消费和跨重启恢复。
-- 精确 A2A 历史隔离、完整记忆和高级自动化。
+按 `LosslessContentUpdate无损内容更新任务-v0.01.md` 备份后，只替换五个 workspace 文件并验证原 Telegram 会话、个人记忆和 A2A 不受影响；通过前不得将 v1.09 标记为已部署或 `STABLE`。
 
-## 当前运行要素
+## 证据
 
-- 模型：v1.02 最后已知运行模型与当前模型均待只读核验。
-- Telegram Bot、account、binding：最后已知存在 housekeeper 入口，具体 Bot/account/binding 待核验。
-- 工具与 allow/deny：v1.08 实际配置待核验；不得由 v1.02 运行事实推定新权限已生效。
-- A2A、会话与历史可见性：待核验；命名白名单或受限代理未验收前历史保持关闭。
-- 记忆：完整记忆未验收，不得声称已持久化。
-- 自动化：生活自动化归 life；housekeeper 项目协调自动化的现有状态待核验。
-- 已知限制：只有 v1.02 `STABLE` 的最后已知部署事实，没有 v1.08 NAS 运行证据。
-
-## 下一步与证据
-
-1. 只读盘点当前 housekeeper workspace、模型、Bot/account/binding、工具、权限和实际五文件哈希。
-2. 保留 v1.02 回滚源，固定 v1.08 提交后再部署并执行正向/拒绝测试。
-
-- 证据来源：v1.02 稳定记录、来源提交 `90cb37404f575a39d97230f3342e8c2afc597b24` 与本地候选文档；本轮未连接 NAS。
-- 最后文档核验时间：2026-07-23（Asia/Taipei）；v1.08 运行环境仍待核验。
-
-保留 v1.02 回滚基线；基础部署通过前不得升级为 `STABLE`。
+- NAS 部署报告：`/Volume3/OpenClaw/backups/EIGHT-AGENT-BASE-20260723T084610+0800/deployment-report.txt`
+- 恢复包：`/Volume3/OpenClaw/home/.openclaw/agents/housekeeper/recovery/session-continuity-20260723T095812+0800`
+- 修复备份：`/Volume3/OpenClaw/home/.openclaw/backups/housekeeper-personal-memory-a2a-all-20260723T103858+0800`

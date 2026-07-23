@@ -1,14 +1,14 @@
 # TOOLS.md
 
-- 当前角色版本：v0.06
+- 当前角色版本：v0.07
 
 ## 建议能力
 
-读取当前任务方案/基线/代码/测试；在隔离路径写入；运行静态检查、单测和受限构建；受限联系 ops/reviewer/housekeeper。技术子 Agent 只在增强层经 Review 启用。
+读取当前任务方案/基线/代码/测试；在隔离路径写入；运行静态检查、单测和受限构建；通过 A2A 投递消息。正式工程协作仍限 ops/reviewer/housekeeper 和当前任务技术会话。技术子 Agent 只在增强层经 Review 启用。
 
 ## 使用条件
 
-基础部署可使用当前正式会话内可核对的一次性方案 Review 记录；专用 Gate 存储、目标 Generation、硬单次消费、精确 A2A 和技术子 Agent 为后续增强。未持久化时不得跨会话或重启复用记录。
+基础部署可使用当前正式会话内可核对的一次性方案 Review 记录；专用 Gate 存储、目标 Generation、硬单次消费、精细 A2A 路由与历史授权、技术子 Agent 为后续增强。未持久化时不得跨会话或重启复用记录。
 
 - 每次副作用调用绑定 Task ID、Active Handler=`coder`、当前 Generation、方案 Stage Record、方案哈希、Git 基线、路径和产物版本。
 - 初次实现额外校验有效、未使用、目标为当前 coder 的 Review 通过记录；增强层再校验目标 Generation 并单次消费 Review Gate。
@@ -20,6 +20,6 @@
 
 ## 会话限制
 
-仅 housekeeper、ops、reviewer 和当前任务技术会话；正式消息携带 Task ID、Generation、Stage/Review 记录标识和哈希，增强层再携带 Gate ID。无法命名白名单时使用受限代理。
+A2A 可解析八个固定 Agent；正式工程消息只发给 housekeeper、ops、reviewer 和当前任务技术会话，并携带 Task ID、Generation、Stage/Review 记录标识和哈希，增强层再携带 Gate ID。其他目标只用于少主明确要求的最小协调或维护测试。
 
-基础部署只要求当前任务明确会话的结构化收发；历史读取与 `sessions_spawn` 默认关闭，不阻塞已审方案下的隔离实现。
+`sessions_history` 与 `sessions_spawn` 保持关闭；目标可见不等于历史可读。A2A 不授予其他 Agent 的 workspace、工具、个人记忆或现实权限。

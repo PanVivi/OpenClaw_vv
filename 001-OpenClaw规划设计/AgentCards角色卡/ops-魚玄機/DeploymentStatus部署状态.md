@@ -1,36 +1,32 @@
 # ops｜魚玄機｜部署进度
 
 - Agent ID：`ops`
-- 当前设计版本：v0.06 `CANDIDATE`
-- 当前实际部署版本：待核验
-- 当前运行状态：`not verified`
-- 本轮只修改 GitHub 文档，没有部署 v0.06
+- 当前设计版本：v0.07 `CANDIDATE`
+- 当前实际部署版本：v0.06 `CANDIDATE`
+- 当前运行状态：`partially completed`
+- 最后核验：2026-07-23 11:06 +08:00
 
-## 已完成设计
+## 已验证
 
-已定义调查、方案、执行、自检、取消、降级、依赖、基线、权限回收和熔断；基础层可使用当前会话 Review/Risk 记录，硬 Gate、持久化、精确 A2A 和技术子 Agent 保留为增强层。
+- v0.06 五个 workspace 文件来自固定提交 `cfb4edad793be6df0fb2a690dc5185bb1c1b44ba`。
+- 模型：primary `custom-1/gpt-5.6-terra`；fallback 配置存在。
+- Telegram：account `default` → Agent `ops`，实际收发已通过。
+- 工具：workspace 内只读、web、memory 查询和 `sessions_list/send/status` 可用；写入、执行、Gateway、message、Cron、spawn 与 `sessions_history` 拒绝。
+- A2A：八个固定 Agent 可互发，ops 作为发送方已验证；传输不扩大工程执行权限。
+- Sandbox：关闭。
+- 连续性：专属恢复包存在；旧 transcript 保留，维护测试已与个人记忆分离。
 
-## 待核验
+## 未完成
 
-基础待核验：v0.06 五文件与真实权限、当前会话 Risk 记录、Review 不能执行、错误目标/重复/材料变化拒绝、完整工程流、回滚和 Smoke Test。
+- v0.07 尚未按无损更新任务部署；
+- 专用 Task/Stage/Gate 持久化和跨重启自动续跑未部署；
+- 当前 ops 仍是只读运行配置，不因 A2A 开启取得执行权限。
 
-增强待核验：专用持久化、目标 Generation、硬单次消费、精确 A2A、跨重启恢复和技术子 Agent。
+## 下一步
 
-## 当前运行要素
+无损部署 v0.07，并核对原 Telegram session、恢复入口、只读权限和 A2A/history 拒绝均保持。
 
-- 模型：待核验。
-- Telegram Bot、account、binding：待核验。
-- 工具、shell/exec、文件与服务 allow/deny：待核验；不得因角色卡存在而视为已配置。
-- A2A、会话与历史可见性：待核验；基础部署只要求当前任务结构化收发，历史默认关闭。
-- 记忆与自动化：无已验收能力记录，不属于 ops 基础上线前置。
-- 已知限制：没有 NAS 运行证据，不能确认当前权限、现有副作用或候选版加载状态。
+## 证据
 
-## 下一步与证据
-
-1. 只读盘点现有 ops、workspace、模型、Bot/account/binding、工具和权限。
-2. 固定提交并核对五文件 SHA-256 后，先验证只读调查，再验证受审执行、回滚和生产证据。
-
-- 证据来源：来源提交 `90cb37404f575a39d97230f3342e8c2afc597b24` 与本地候选文档；本轮未连接 NAS。
-- 最后文档核验时间：2026-07-23（Asia/Taipei）；运行环境仍待核验。
-
-全部通过后才能升级为 `STABLE`。
+- NAS 部署报告：`/Volume3/OpenClaw/backups/EIGHT-AGENT-BASE-20260723T084610+0800/deployment-report.txt`
+- 恢复包：`/Volume3/OpenClaw/home/.openclaw/agents/ops/recovery/session-continuity-20260723T095812+0800`
