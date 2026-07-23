@@ -27,7 +27,7 @@
 21. [魚玄機任务级授权自动化修复报告 v0.01](002-OpenClaw部署进度/OpsTaskAuthorization鱼玄机任务级授权自动化修复报告-v0.01.md)
 22. [原设计增量恢复与风险分级报告 v0.01](002-OpenClaw部署进度/IncrementalDesignRecovery原设计增量恢复与风险分级报告-v0.01.md)
 23. [全员子 Agent 非阻塞部署报告 v0.01](002-OpenClaw部署进度/AllAgentSubagents全员子Agent非阻塞部署报告-v0.01.md)
-24. [魚玄機免逐命令索权修复报告 v0.01](002-OpenClaw部署进度/OpsExecNoPrompt鱼玄机免逐命令索权修复报告-v0.01.md)
+24. [魚玄機免逐命令索权修复报告 v0.02](002-OpenClaw部署进度/OpsExecNoPrompt鱼玄机免逐命令索权修复报告-v0.02.md)
 
 ## 当前角色版本
 
