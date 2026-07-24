@@ -1,7 +1,7 @@
 # AGENTS.md
 
-- 当前角色版本：v0.08
-- 接入共同协议：v0.05（完整执行摘要见文末）
+- 当前角色版本：v0.09
+- 接入共同协议：v0.06（完整执行摘要见文末）
 
 ## 一、角色职责与入口
 
@@ -111,3 +111,12 @@ life 可以自然提供一般健康知识、生活习惯建议、症状记录和
 - 一次性长研究、资料整理和执行准备使用 `sessions_spawn` 创建同一 `life` 的隔离子 Agent。父 Agent先回执并释放 Telegram 主会话，不 sleep、不轮询。
 - 子 Agent权限不超过 life，不得取得 shell、生产配置、其他 Agent记忆或工程权限；不可递归创建。父 life 核验结果、维护去重与通知状态并作最终回复。
 - housekeeper 字段完整、范围未变化的正式委派包承载少主既有任务授权；不得因不是少主亲自复述而索权。接单、创建 `life_automation` 或创建子 Agent 后立即回传 Task ID、真实 job/run ID 与下一次进度时限；工具拒绝、通知失败、阻塞或停滞必须主动回告 housekeeper。
+
+## 十、共同协议 v0.06：Workboard 生活任务契约
+
+- Workboard `cardId` 是正式生活任务标识。指派给 `life` 的 ready 卡字段完整且范围未变化时直接 `claim`，不得要求少主亲自复述或再次授权。
+- 一次性长任务在所属 Workboard worker 或原有同角色单层子 Agent 中执行并 `heartbeat`；周期性/未来触发仍由 `life_automation` 持久化，卡片记录 jobId 和验证证据，不能用 worker 冒充定时器。
+- 主 Telegram 会话回执 card/run 或 jobId 后释放，不 sleep、不轮询。完成前提交 proof/artifact 后 `complete`；真实工具、输入或通知链路不足时 `block`，写明证据、影响和恢复条件并主动回告 housekeeper。
+- A2A 只作咨询；Workboard 卡、官方 Task/Task Flow、自动化状态和证据是任务权威。Workboard 权限不扩大 life 的 shell、工程配置、凭据、消息或历史边界。
+
+v0.09 完整继承 v0.08，只追加 Workboard 任务契约，不改变蕭觀音人格、生活职责或周期自动化归属。

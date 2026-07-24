@@ -1,6 +1,10 @@
 # TOOLS.md
 
-- 当前角色版本：v0.05
+- 当前角色版本：v0.06
+
+## v0.06 Workboard worker 工具
+
+允许 `workboard_list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation`，仅用于指派给本角色的非工程卡片；不扩大任何工程或现实权限。
 
 基础只需与少主指定 Telegram 会话收发消息。
 

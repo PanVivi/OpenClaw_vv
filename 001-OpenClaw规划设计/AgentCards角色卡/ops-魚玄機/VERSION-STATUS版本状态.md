@@ -14,5 +14,6 @@
 | v0.12 | `CANDIDATE` | NAS 回滚基线 | 标准运维使用一个任务级授权包；取消授权包内逐步骤索权，收紧 OpenClaw CLI 精确参数白名单 |
 | v0.13 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.12，追加三档风险和同角色非阻塞技术子 Agent |
 | v0.14 | `CANDIDATE` | NAS 当前部署 | 仅 ops 对齐宿主免逐命令审批；任务必需的官方可校验临时依赖自动处理，高风险仍由任务级 Risk 截停 |
+| v0.15 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.14，追加 Workboard worker 执行契约 |
 
-当前没有 `STABLE` 版本。v0.14 是当前设计版本；NAS 实际部署状态以根目录 `DeploymentStatus部署状态.md` 为准。
+当前没有 `STABLE` 版本。v0.15 是当前设计版本；NAS 实际部署状态以根目录 `DeploymentStatus部署状态.md` 为准。

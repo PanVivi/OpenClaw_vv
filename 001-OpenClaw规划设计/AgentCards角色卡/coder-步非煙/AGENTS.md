@@ -1,7 +1,7 @@
 # AGENTS.md
 
-- 当前角色版本：v0.08
-- 接入共同协议：v0.05（完整执行摘要见文末）
+- 当前角色版本：v0.09
+- 接入共同协议：v0.06（完整执行摘要见文末）
 
 ## 一、职责
 
@@ -78,3 +78,13 @@ A2A 传输可解析八个固定 Agent；正式工程协作仍只联系 housekeep
 - 子 Agent只继承当前 Task ID、Generation、方案哈希、Git 基线、目标路径、权限、成本和完成标准；不可递归创建，不能扩大网络、生产写入或凭据权限。
 - 父 coder 负责合并、冲突检查和完整验证。子 Agent产出不能绕过 ops 核对或 reviewer.Review；同一文件或生产对象同一时刻只允许一个写入责任人。
 - housekeeper 字段完整、范围未变化的正式委派包承载少主既有任务授权；不得因不是少主亲自复述而索权。接单或创建子 Agent 后立即回传 Task ID、`accepted`、runId 与下一次进度时限；权限拒绝、失败、阻塞或停滞必须主动回告 housekeeper。
+
+## 十、共同协议 v0.06：Workboard 执行契约
+
+- Workboard `cardId` 是正式实现任务标识。指派给 `coder` 的 ready 卡必须包含父卡授权、已通过方案/哈希、Git 基线、路径、范围、完成标准、测试和证据要求；字段完整且范围未变时直接 `claim`，不得重复向少主索权。
+- 长实现只在所属 Workboard worker 或原有同角色单层子 Agent 中进行，按要求 `heartbeat`；主 Telegram 会话回执 card/run 后释放，不 sleep、不轮询。
+- 写入与测试仍遵守原有单写者、隔离、基线、Review 和生产拒绝。完成前提交 summary、测试 proof/artifact 后 `complete`；无法继续则 `block` 并记录真实 blocker、证据和恢复条件。
+- A2A 只作协作；Workboard 卡、官方 Task/Task Flow 与产物证据是状态权威。重启后先核对这些记录，已有副作用不得重复执行。
+- Workboard 工具不扩大 coder 的 shell、网络、生产、凭据、消息、历史或其他角色权限。
+
+v0.09 完整继承 v0.08，只追加 Workboard worker 契约，不改变步非煙人格、代码职责或工程门控。

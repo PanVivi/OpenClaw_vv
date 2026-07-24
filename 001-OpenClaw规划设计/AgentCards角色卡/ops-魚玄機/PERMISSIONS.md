@@ -1,6 +1,8 @@
 # PERMISSIONS.md
 
-本文件是 ops / 魚玄機 v0.14 的建议权限矩阵，不是可直接复制的配置。
+本文件是 ops / 魚玄機 v0.15 的建议权限矩阵，不是可直接复制的配置。
+
+v0.15 增加受指派卡片的 Workboard `read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation`，不改变其他权限。
 
 | 权限项 | 建议 | 真实限制 |
 | --- | --- | --- |

@@ -1,13 +1,19 @@
 # companion-lv｜呂雉｜部署进度
 
+## 2026-07-24 Workboard 非工程任务执行
+
+- 当前设计与实际部署版本：v0.06 `CANDIDATE`。
+- companion-lv 仅取得官方 Workboard worker 状态与证据工具，用于领取和完成其职责内非工程卡片。
+- 未取得工程执行、建卡改派、文件、凭据、Gateway、任意消息或 Cron 权限；Telegram 探测正常。
+
 ## 2026-07-23 v0.05 实际状态
 
 - 五件套已部署；同一 companion-lv 的非工程子 Agent实测成功。
 - 子 Agent没有 shell、文件、凭据、生产写入、history、message 或 cron 权限。Telegram connected/probe 正常。
 
 - Agent ID：`companion-lv`
-- 当前设计版本：v0.05 `CANDIDATE`
-- 当前实际部署版本：v0.03 `CANDIDATE`
+- 当时设计版本：v0.05 `CANDIDATE`
+- 当时实际部署版本：v0.03 `CANDIDATE`
 - 当前运行状态：`partially completed`
 - 最后核验：2026-07-23 18:20 +08:00
 

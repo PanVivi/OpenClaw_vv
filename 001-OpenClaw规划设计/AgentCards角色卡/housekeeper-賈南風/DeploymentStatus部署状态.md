@@ -1,6 +1,16 @@
 # housekeeper｜賈南風｜部署进度
 
-## 2026-07-23 委派连续性增量
+## 2026-07-24 Workboard 正式任务控制
+
+- 当前设计与实际部署版本：v1.12 `CANDIDATE`；最近 `STABLE` 角色基线仍为 v1.02。
+- 官方 Workboard 板 `production` 已启用；正式任务以卡片、官方 Task、run、worker session、proof 与 artifact 为事实源。
+- `WorkboardDispatchPump` 每分钟派发 ready 卡；`WorkboardNotificationPump` 消费 completed、failed、stale 等可重放事件并向少主 Telegram 主动报告。
+- `housekeeper-workboard-control 1.0.3` 只提供固定官方派发与按 UUID 查询，不开放任意命令、路径、环境变量、文件、配置或消息能力。
+- `housekeeper-async-dispatch` 已停用，`housekeeper_task_watch` 已移出 allow；旧插件目录和历史状态只读保留，两条历史任务已迁移成 Workboard 卡。
+- 已真实通过：完整成功、受控阻塞、两任务并发、父子依赖自动推进、超时阻塞与告警、Gateway 重启续跑、Telegram 完成通知、A2A 双向抽测、负向权限和八 Bot 探测。
+- housekeeper 仍拒绝 `exec/process/write/edit/apply_patch/gateway/message/sessions_history`，本次未扩大角色职责或工程执行权限。
+
+## 2026-07-23 委派连续性历史状态（已由 Workboard 取代）
 
 - `housekeeper-async-dispatch 1.2.2` 已部署；跨角色 `sessions_send` 立即返回，Task ID、目标、来源会话、首次回报期限与状态持久化。
 - 下游 A2A 回报自动更新；默认 10 分钟无首次回报或 blocked 时主动向原 Telegram 会话报告。
@@ -17,10 +27,10 @@
 - 旧文“spawn 拒绝/管理面持久化”由本节取代；生活持久任务由 life 自己通过 `life_automation` 完成。
 
 - Agent ID：`housekeeper`
-- 当前设计版本：v1.11 `CANDIDATE`
-- 当前实际部署版本：v1.11 `CANDIDATE`
-- 当前运行状态：`partially completed`
-- 最后核验：2026-07-23 16:25 +08:00
+- 当时设计版本：v1.11 `CANDIDATE`
+- 当时实际部署版本：v1.11 `CANDIDATE`
+- 历史运行状态：`superseded`
+- 当时核验：2026-07-23 16:25 +08:00
 
 ## 已验证
 
@@ -33,10 +43,10 @@
 - Sandbox：关闭。
 - 连续性：专属恢复包存在；个人聊天恢复索引由 housekeeper 自己的 9 段 transcript 派生并校验，通用运维摘要与个人记忆已分离。
 
-## 未完成
+## 本次范围外仍未完成
 
-- 自动长期记忆、任务持久化和跨重启自动续跑仍未部署；
-- v1.08 仍是当前 NAS 角色文件回滚基线，v1.02 是最近 `STABLE` 角色基线。
+- 自动长期记忆仍未部署；这不影响 Workboard 正式任务持久化、跨重启核对和续办。
+- v1.02 是最近 `STABLE` 角色基线；v1.12 为当前实际部署候选版。
 
 ## 下一步
 

@@ -1,14 +1,19 @@
-# housekeeper｜賈南風｜当前角色卡 v1.11｜CANDIDATE 候选版
+# housekeeper｜賈南風｜当前角色卡 v1.12｜CANDIDATE 候选版
 
 本目录保存当前设计版本。历史版本位于 `旧文档/`；当前实际运行状态以 `DeploymentStatus部署状态.md` 为准。
 
 ## 版本状态
 
-- 当前设计与实际部署版本：v1.11 `CANDIDATE`；v1.02 为最近 `STABLE` 角色基线。
+- 当前设计与实际部署版本：v1.12 `CANDIDATE`；v1.02 为最近 `STABLE` 角色基线。
 - v1.03—v1.07：`REJECTED`，不得部署或作为后续底稿。
-- v1.08：`CANDIDATE`，NAS 当前部署与回滚基线。
+- v1.08：`CANDIDATE`，NAS 历史部署与回滚基线。
 - v1.09：`CANDIDATE`，A2A 与记忆隔离设计基线。
-- v1.11：`CANDIDATE`，当前设计与 NAS 部署版本。
+- v1.11：`CANDIDATE`，历史设计与部署版本。
+- v1.12：`CANDIDATE`，增量接入官方 Workboard 正式任务控制。
+
+## v1.12 增量
+
+完整继承 v1.11 与 v1.02 不可删减基线，只把任务合同、分解、派发、状态、证据、通知和重启恢复接入官方 Workboard、Tasks 与 Task Flow。新任务不再依赖私有看门狗；人格、总管职责、路由和风险边界不变。
 
 ## v1.08—v1.09 修正
 
@@ -27,6 +32,6 @@
 1. 五个 workspace 文件完整加载，人物和治理基线无回退。
 2. 简单生活问答由賈南風直接处理；设置、定时、持续追踪和生活工具任务正确转交蕭觀音。
 3. housekeeper 不重复创建 life 已拥有的生活自动化。
-4. 当前会话中的结构化 Task / Review / Risk 记录能支撑一次完整工程流程；上下文丢失时停止并重新核对。
-5. housekeeper 无 shell、项目写入、删除、配置、服务控制和 `sessions_spawn`。
-6. 其余高级持久化、跨重启恢复、精细历史读取和自动化可靠性分别记录为后续增强，不阻塞基础 Agent 部署。
+4. 正式任务由 Workboard、Tasks 与 Task Flow 持久化；上下文丢失或重启后先核对卡片、run、proof 与 artifact。
+5. housekeeper 无 shell、项目写入、删除、配置和服务控制；同角色 `sessions_spawn` 只用于自身规划与材料整理。
+6. 精细历史读取、完整长期记忆和其他未部署增强分别记录，不阻塞正式任务控制。

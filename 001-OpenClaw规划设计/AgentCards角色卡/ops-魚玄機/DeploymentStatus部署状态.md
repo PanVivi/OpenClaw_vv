@@ -1,5 +1,12 @@
 # ops｜魚玄機｜部署进度
 
+## 2026-07-24 Workboard 工程任务执行
+
+- 当前设计与实际部署版本：v0.15 `CANDIDATE`。
+- ops 已取得官方 Workboard worker 的 list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation 能力；不取得 housekeeper 的建卡、改派或全局控制权。
+- 真实卡片已完成 heartbeat、proof、complete；并行、父子依赖、超时阻塞、Gateway 重启续跑和 housekeeper→ops A2A 均已通过。
+- 正式任务授权继续由少主原指令或 housekeeper 完整委派包承载；本次未放宽高风险授权边界。
+
 ## 2026-07-23 凭据与任务授权增量
 
 - `ops-token-intake 1.0.1` 已部署；只接受 ops Telegram account 中少主 sender 的 Bot Token，原文只落 `0600 tokenFile`。
@@ -15,8 +22,8 @@
 - 仅 ops 的 Gateway exec 已改为配置层与 host approvals 双层免逐命令提示；Gateway RPC/cron/history/message 仍拒绝。Telegram connected/probe 正常。
 
 - Agent ID：`ops`
-- 当前设计版本：v0.14 `CANDIDATE`
-- 当前实际部署版本：v0.14 `CANDIDATE`
+- 当时设计版本：v0.14 `CANDIDATE`
+- 当时实际部署版本：v0.14 `CANDIDATE`
 - 当前运行状态：`partially completed`
 - 最后核验：2026-07-23 21:49 +08:00
 

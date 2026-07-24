@@ -1,14 +1,17 @@
-# life｜蕭觀音｜当前角色卡 v0.08｜CANDIDATE 候选版
+# life｜蕭觀音｜当前角色卡 v0.09｜CANDIDATE 候选版
 
 本目录保存当前设计版本。历史版本位于 `旧文档/`；实际运行状态以 `DeploymentStatus部署状态.md` 为准。
 
 ## 版本状态
 
-- 当前设计与实际部署版本：v0.08。
+- 当前设计与实际部署版本：v0.09。
 - v0.01—v0.04：`REJECTED`，不得部署或作为后续底稿。
 - v0.05：`CANDIDATE`，NAS 当前部署与回滚基线。
 - v0.06：`CANDIDATE`，A2A 与记忆隔离设计基线。
 - v0.08：`CANDIDATE`，当前设计与 NAS 部署版本。
+- v0.09：`CANDIDATE`，完整继承 v0.08，新增 Workboard 任务契约。
+
+v0.09 不改变角色属性与职责归属。一次性长任务接入 Workboard，周期性/未来触发仍由 `life_automation` 持久化。
 - 当前没有 `STABLE` 版本。
 
 ## 角色定位

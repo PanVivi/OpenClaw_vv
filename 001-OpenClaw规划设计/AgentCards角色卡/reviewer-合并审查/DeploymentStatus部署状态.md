@@ -1,5 +1,11 @@
 # reviewer｜夏姬（合并审查）｜部署进度
 
+## 2026-07-24 Workboard 审查任务执行
+
+- 当前设计与实际部署版本：v0.07 `CANDIDATE`。
+- reviewer 已取得官方 Workboard worker 的 list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation 能力，用于提交 Review/Risk/Test 结论及证据。
+- 负向权限实测确认 reviewer 不能写文件；本次没有扩大审查人格、执行职责或生产写权限。
+
 ## 2026-07-23 职责权限实测
 
 - 正式 housekeeper 委派包承载同范围审查授权；同角色子 Agent只做只读材料搜集，最终 Review/Risk/Test 仍由父 reviewer 决定。
@@ -12,8 +18,8 @@
 - exec/write/history/Gateway/message/cron 仍拒绝。Telegram connected/probe 正常。
 
 - Agent ID：`reviewer`
-- 当前设计版本：v0.06 `CANDIDATE`
-- 当前实际部署版本：v0.04 `CANDIDATE`
+- 当时设计版本：v0.06 `CANDIDATE`
+- 当时实际部署版本：v0.04 `CANDIDATE`
 - 当前运行状态：`partially completed`
 - 最后核验：2026-07-23 18:17 +08:00
 

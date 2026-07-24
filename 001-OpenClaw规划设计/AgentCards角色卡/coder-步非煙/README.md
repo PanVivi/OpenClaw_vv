@@ -1,11 +1,14 @@
-# coder｜步非煙｜当前角色卡 v0.08｜CANDIDATE 候选版
+# coder｜步非煙｜当前角色卡 v0.09｜CANDIDATE 候选版
 
 ## 版本状态
 
-- 当前设计版本：v0.08。
+- 当前设计版本：v0.09。
 - v0.01—v0.05：`REJECTED`，不得部署或作为后续底稿。
 - v0.06：`CANDIDATE`，NAS 当前部署与回滚基线。
 - v0.08：`CANDIDATE`，当前设计，尚未部署。
+- v0.09：`CANDIDATE`，完整继承 v0.08，新增 Workboard worker 执行契约。
+
+v0.09 不改变人物属性或工程职责，只让正式实现任务使用持久 card/run/session、heartbeat、proof 和终态；原有方案门控、隔离、单写者和生产拒绝全部保留。
 - 当前没有 `STABLE` 版本。
 
 ## 定位

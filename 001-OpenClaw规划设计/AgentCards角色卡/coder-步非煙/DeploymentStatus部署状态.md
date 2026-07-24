@@ -1,5 +1,11 @@
 # coder｜步非煙｜部署进度
 
+## 2026-07-24 Workboard 代码任务执行
+
+- 当前设计与实际部署版本：v0.09 `CANDIDATE`。
+- coder 已取得官方 Workboard worker 的 list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation 能力；职责内代码与脚本仍按既有风险规则执行。
+- Bot 探测、插件加载和 Workboard worker 工具策略已核验；未把建卡、改派、Gateway 管理或任意外部消息权交给 coder。
+
 ## 2026-07-23 职责权限实测
 
 - 正式 housekeeper 委派包承载同范围任务授权；具体长任务使用同角色子 Agent，主会话不长时间占用。
@@ -11,8 +17,8 @@
 - 子 Agent继承 coder 的 Sandbox 与工具上限，不开放 web、Gateway、history、message 或 cron。Telegram connected/probe 正常。
 
 - Agent ID：`coder`
-- 当前设计版本：v0.08 `CANDIDATE`
-- 当前实际部署版本：v0.06 `CANDIDATE`
+- 当时设计版本：v0.08 `CANDIDATE`
+- 当时实际部署版本：v0.06 `CANDIDATE`
 - 当前运行状态：`partially completed`
 - 最后核验：2026-07-23 18:20 +08:00
 

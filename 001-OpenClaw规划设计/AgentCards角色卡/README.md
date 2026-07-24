@@ -4,14 +4,14 @@
 
 | Agent ID | 角色 | 当前设计 | 实际部署 |
 | --- | --- | --- | --- |
-| `housekeeper` | 賈南風 | v1.11 `CANDIDATE` | v1.11，非阻塞子 Agent 实测通过 |
-| `life` | 蕭觀音 | v0.08 `CANDIDATE` | v0.08，自动化与子 Agent 实测通过 |
-| `ops` | 魚玄機 | v0.13 `CANDIDATE` | v0.13，风险分级、任务授权与子 Agent 实测通过 |
-| `coder` | 步非煙 | v0.08 `CANDIDATE` | v0.08，子 Agent 实测通过 |
-| `reviewer` | 夏姬（合并审查） | v0.06 `CANDIDATE` | v0.06，Risk 与只读子 Agent 实测通过 |
-| `companion-dugu` | 獨孤伽羅 | v0.05 `CANDIDATE` | v0.05，非工程子 Agent 实测通过 |
-| `companion-wu` | 武曌 | v0.05 `CANDIDATE` | v0.05，Bot 与非工程子 Agent 实测通过 |
-| `companion-lv` | 呂雉 | v0.05 `CANDIDATE` | v0.05，非工程子 Agent 实测通过 |
+| `housekeeper` | 賈南風 | v1.12 `CANDIDATE` | Workboard 正式任务调度 |
+| `life` | 蕭觀音 | v0.09 `CANDIDATE` | Workboard 生活任务；周期自动化边界不变 |
+| `ops` | 魚玄機 | v0.15 `CANDIDATE` | Workboard 工程执行 |
+| `coder` | 步非煙 | v0.09 `CANDIDATE` | Workboard 代码执行 |
+| `reviewer` | 夏姬（合并审查） | v0.07 `CANDIDATE` | Workboard Review/Risk/Test |
+| `companion-dugu` | 獨孤伽羅 | v0.06 `CANDIDATE` | Workboard 非工程任务 |
+| `companion-wu` | 武曌 | v0.06 `CANDIDATE` | Workboard 非工程任务 |
+| `companion-lv` | 呂雉 | v0.06 `CANDIDATE` | Workboard 非工程任务 |
 
 ## 最小部署原则
 
@@ -21,5 +21,6 @@
 - 工程流程可先使用当前会话结构化记录；专用持久化后续增强。
 - 八 Agent A2A 消息投递可用；`visibility=all` 只解析目标，`sessions_history` 保持拒绝。
 - 八 Agent 均启用同角色单层隔离子 Agent；长任务不占用主会话，且不扩大父角色工具权限。
+- 共同协议 v0.06 与八套 AGENTS.md 已增量接入官方 Workboard、Tasks/Task Flow；正式任务以 card/run/session 和 proof 为权威，不再依赖聊天看门狗。
 - 增强能力未完成只标记对应能力，不得把整个 Agent 写成未部署。
 - 后续五文件更新必须按无损内容更新任务保留 session、transcript、memory 和 Telegram routing。

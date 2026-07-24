@@ -8,5 +8,6 @@
 | v0.06 | `CANDIDATE` | NAS 当前回滚基线 | 2026-07-23 从固定提交完成五文件部署，角色包一致性已验证 |
 | v0.07 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.06，追加 A2A 传输/历史隔离和个人记忆来源隔离 |
 | v0.08 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.07，追加同角色非阻塞技术子 Agent |
+| v0.09 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.08，追加 Workboard worker 执行契约 |
 
-当前没有 `STABLE` 版本。v0.08 是当前设计与 NAS 部署版本。
+当前没有 `STABLE` 版本。v0.09 是当前设计与 NAS 部署版本。

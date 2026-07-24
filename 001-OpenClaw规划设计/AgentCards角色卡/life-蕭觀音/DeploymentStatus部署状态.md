@@ -1,5 +1,12 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-07-24 Workboard 生活任务执行
+
+- 当前设计与实际部署版本：v0.09 `CANDIDATE`。
+- life 已取得官方 Workboard worker 的 list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation 能力；既有 `life_automation` 仍是周期生活自动化的执行入口。
+- Workboard 并发、依赖自动推进和 housekeeper→life 主动 A2A 已真实通过；短暂一次执行失败后重试成功，未发现权限门禁问题。
+- 本次未把生活职责转交 ops，也未扩大 life 的工程、Gateway 或任意消息权限。
+
 ## 2026-07-23 职责权限实测
 
 - 正式 housekeeper 委派包承载同范围生活自动化授权；周期任务继续由 `life_automation` 持久化，主会话不充当定时器。
@@ -12,8 +19,8 @@
 - shell、工程写入、Gateway 与 history 仍拒绝。Telegram connected/probe 正常。
 
 - Agent ID：`life`
-- 当前设计版本：v0.08 `CANDIDATE`
-- 当前实际部署版本：v0.08 `CANDIDATE`
+- 当时设计版本：v0.08 `CANDIDATE`
+- 当时实际部署版本：v0.08 `CANDIDATE`
 - 当前运行状态：`completed`
 - 最后核验：2026-07-23 16:00 +08:00
 

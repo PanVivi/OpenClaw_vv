@@ -1,6 +1,10 @@
 # TOOLS.md
 
-- 当前角色版本：v0.08
+- 当前角色版本：v0.09
+
+## v0.09 Workboard worker 工具
+
+允许 `workboard_list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation`，仅用于指派给 `life` 的正式卡片。周期任务仍由 `life_automation` 持久化；Workboard 不扩大 shell、工程配置、凭据、消息或历史权限。
 
 实际权限由 OpenClaw 配置落实。
 

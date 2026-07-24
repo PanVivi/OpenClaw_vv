@@ -1,6 +1,10 @@
 # TOOLS.md
 
-- 当前角色版本：v0.14
+- 当前角色版本：v0.15
+
+## v0.15 Workboard worker 工具
+
+允许 `workboard_list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation`，仅用于指派给 `ops` 的正式卡片。它们不扩大本文件既有执行、网络、凭据、消息或历史边界。
 
 ## 建议能力
 

@@ -1,5 +1,11 @@
 # companion-wu｜武曌｜部署进度
 
+## 2026-07-24 Workboard 非工程任务执行
+
+- 当前设计与实际部署版本：v0.06 `CANDIDATE`。
+- companion-wu 仅取得官方 Workboard worker 状态与证据工具，用于领取和完成其职责内非工程卡片。
+- 未取得工程执行、建卡改派、文件、凭据、Gateway、任意消息或 Cron 权限；Telegram 探测正常。
+
 ## 2026-07-23 v0.05 实际状态
 
 - 武曌 Bot Token 故障已修复，Telegram running/connected/probe 正常、restartPending=false。
@@ -7,8 +13,8 @@
 - 子 Agent没有新增工程、文件、凭据、history、message 或 cron 权限。
 
 - Agent ID：`companion-wu`
-- 当前设计版本：v0.05 `CANDIDATE`
-- 当前实际部署版本：v0.03 `CANDIDATE`
+- 当时设计版本：v0.05 `CANDIDATE`
+- 当时实际部署版本：v0.03 `CANDIDATE`
 - 当前运行状态：`partially completed`
 - 最后核验：2026-07-23 18:37 +08:00
 

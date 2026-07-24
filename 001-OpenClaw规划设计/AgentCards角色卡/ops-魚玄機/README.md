@@ -1,8 +1,8 @@
-# ops｜魚玄機｜当前角色卡 v0.14｜CANDIDATE 候选版
+# ops｜魚玄機｜当前角色卡 v0.15｜CANDIDATE 候选版
 
 ## 版本状态
 
-- 当前设计版本：v0.14；NAS 实际部署版本以 `DeploymentStatus部署状态.md` 为准。
+- 当前设计版本：v0.15；NAS 实际部署版本以 `DeploymentStatus部署状态.md` 为准。
 - v0.01—v0.05：`REJECTED`，不得部署或作为后续底稿。
 - v0.06：`CANDIDATE`，NAS 当前部署与回滚基线。
 - v0.07：`CANDIDATE`，A2A 与记忆隔离设计基线。
@@ -12,6 +12,9 @@
 - v0.11：`CANDIDATE`，停用高频热重载的专用 Telegram 插件，改用 OpenClaw 原生 `channels add` 与 `agents bind`。
 - v0.13：`CANDIDATE`，标准运维改为任务级授权；同一任务包内不逐步骤索权，只在严重例外暂停上报。
 - v0.14：`CANDIDATE`，对齐实际执行层：仅 ops 取消逐命令 exec 审批；任务必需的官方可校验临时依赖自动处理，高风险仍在副作用前集中询问一次。
+- v0.15：`CANDIDATE`，完整继承 v0.14，新增 Workboard claim/heartbeat/proof/complete/block 执行契约。
+
+v0.15 不改变魚玄機人格、工程总管职责或既有执行权限；只把正式任务状态接入官方持久账本，避免聊天回报、重启或 announce 丢失任务连续性。
 - 当前没有 `STABLE` 版本。
 
 ## 定位

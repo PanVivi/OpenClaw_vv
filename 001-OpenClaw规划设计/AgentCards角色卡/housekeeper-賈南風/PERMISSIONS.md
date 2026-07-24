@@ -1,6 +1,8 @@
 # PERMISSIONS.md
 
-- 当前角色版本：v1.11
+- 当前角色版本：v1.12
+
+v1.12 新增 Workboard 控制面工具与 `housekeeper_workboard_start`；保持 `exec/process/write/edit/apply_patch/gateway/message/sessions_history` 拒绝。迁移完成后移除 `housekeeper_task_watch`。
 
 本文件是 `housekeeper / 賈南風` 的建议权限矩阵，不是可直接复制的 OpenClaw 配置。部署者必须按当前版本支持的字段转换并实测。
 
@@ -22,7 +24,7 @@
 | `session_status` | 可选/有限 | 用于查询会话运行状态，不得当作项目完成状态。 |
 | `sessions_history` | 否 | 当前保持硬拒绝；`visibility=all` 只用于目标解析。 |
 | `sessions_spawn` / `sessions_yield` / `subagents` | 同角色有限 | 仅创建和管理同一 `housekeeper` 的单层隔离子 Agent；不得借此取得专业执行权。 |
-| `housekeeper_task_watch` | 有限 | 只记录 Task ID、目标、回报期限和状态；默认 10 分钟无回告主动上报，不读历史、不保存凭据。 |
+| Workboard 控制面与受限派发适配器 | 有限 | 可建卡、分解、指定、查询、核验和请求官方派发；不得借此执行任意命令、写文件、改配置或发送任意外部消息。 |
 | companion 会话读取 | 可选/有限 | 元数据/摘要优先；历史仅少主要求或已登记协调任务必要时最小读取。 |
 | companion 直接联系与下令 | 有限 | 正常流程经 life；只有少主直接要求时，才绕过 life 联系并向指定 companion 下令。 |
 | 生活自动化 | 调度有限/业务否 | life 是提醒、日历、Cron、未来投递和持续跟踪的唯一业务执行所有者；housekeeper 只负责正式委派与状态汇总，持久化由 life 自己通过 `life_automation` 完成。 |
@@ -64,4 +66,4 @@
 - 三位 companion 均为独立常驻 Agent，可同时运行，不设置单选或互斥。
 - 完整记忆插件、真实工具名称、housekeeper 独立命名空间、纠正、删除、失效和隔离测试另立部署任务；在该任务完成前，长期记忆写入项只能视为设计边界，不得标记为已部署。
 - v1.08 不扩大 companion 直达权限；仍只有少主直接要求时，housekeeper 才可绕过 life 联系指定 companion。
-- 当前会话结构化 Task/Stage/Gate 记录可用于基础协作；专用持久化、硬单次消费、跨重启恢复和精确历史代理仍是后续增强；同角色隔离子 Agent 已作为非阻塞基础能力启用。
+- Workboard、Tasks 与 Task Flow 已作为正式任务持久化、派发、执行状态和跨重启恢复事实源；精确历史代理仍是后续增强；同角色隔离子 Agent 仅用于 housekeeper 自身的非阻塞规划与整理。

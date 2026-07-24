@@ -1,0 +1,28 @@
+{
+  "id": "housekeeper-workboard-control",
+  "name": "Housekeeper Workboard Control",
+  "version": "1.0.3",
+  "description": "Allow only the housekeeper agent to trigger the official Workboard dispatcher and read a card by UUID without granting general exec.",
+  "contracts": {
+    "tools": [
+      "housekeeper_workboard_start",
+      "housekeeper_workboard_show"
+    ]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "agentId": {
+        "type": "string",
+        "default": "housekeeper"
+      },
+      "timeoutMs": {
+        "type": "integer",
+        "minimum": 5000,
+        "maximum": 60000,
+        "default": 30000
+      }
+    }
+  }
+}

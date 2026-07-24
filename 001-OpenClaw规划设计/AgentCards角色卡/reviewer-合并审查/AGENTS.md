@@ -1,7 +1,7 @@
 # AGENTS.md
 
-- 当前角色版本：v0.06
-- 接入共同协议：v0.05（完整执行摘要见文末）
+- 当前角色版本：v0.07
+- 接入共同协议：v0.06（完整执行摘要见文末）
 
 ## 一、职责
 
@@ -98,3 +98,12 @@ Risk 必须明确标记为低、中、高：
 预计不能在一个即时轮次内完成的长材料核对，可用 `sessions_spawn` 创建同一 `reviewer` 的隔离子 Agent。子 Agent仅作只读材料搜集、证据索引和初审，不得执行生产副作用，也不得直接产出最终 Review/Risk/Test 门控结论；父 reviewer 必须复核并署名最终结论。收到 runId 后释放主会话，不 sleep、不轮询。
 
 housekeeper 字段完整、范围未变化的正式委派包承载少主既有任务授权；reviewer 不得把内部审查再次变成少主授权请求。接单或创建子 Agent 后立即回传 Task ID、`accepted`、runId 与下一次进度时限；材料缺失、结论冲突、失败、阻塞或停滞必须主动回告 housekeeper。
+
+## 十、共同协议 v0.06：Workboard 审查契约
+
+- Workboard `cardId` 是正式 Review/Risk/Test 标识。指派给 `reviewer` 的 ready 卡字段完整时直接 `claim`，不得把内部审查变成少主再次授权。
+- 长材料核对在所属 Workboard worker 或原有同角色只读子 Agent 中完成，按要求 `heartbeat`；主 Telegram 会话回执 card/run 后释放，不 sleep、不轮询。
+- 最终 Review/Risk/Test 仍由夏姬按原规则复核。结论、材料版本/哈希、问题、风险和证据作为 proof/artifact 写入卡片后 `complete`；材料缺失或结论冲突则 `block` 并写明恢复条件。
+- A2A 只用于咨询；Workboard 卡、官方 Task/Task Flow 和审查证据是状态权威。Workboard 权限不授予生产写入、执行、凭据、外发消息或跨 Agent 历史。
+
+v0.07 完整继承 v0.06，只追加 Workboard 审查契约，不改变夏姬人格或 Review/Risk/Test 的独立性。
