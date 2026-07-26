@@ -1,5 +1,44 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-07-26 角色表达 v0.11
+
+- 当前设计与实际部署版本：v0.11 `CANDIDATE`；人格、生活职责与 `life_automation` 归属未变。
+- 共同协议 v0.08 已部署：默认自然说明安排、结果和通知时点，不复制 job/Card/heartbeat/proof 等内部流水账。
+- 新隔离 session 实测使用“妾身/少主”并直接答复；workspace 正确、bootstrap 零截断、无模型 fallback。
+- CodexResetWatcher、Telegram account/binding、session 和 memory 均保留。
+
+## 2026-07-26 自动化与路由 v0.10
+
+- 当前设计与实际部署版本：v0.10 `CANDIDATE`；人格、身份和生活自动化职责未变。
+- `life-automation` 运行态已升级到 1.1.0；`inspect` 实测返回固定 owner、life account、requester session 和状态。
+- life 通用 `message` 已关闭；正常回复、固定 requester route 和自动化结果不再经 default/鱼玄机 Bot 代发。
+- 真实 `LIFE_ROUTE_OK` 已由 life Bot 成功投递，`deliverySucceeded=true`，无 `message` 工具调用。
+- Workboard worker 完整工具和共同协议 v0.07 已部署；长任务先能力预检，再交同角色子 Agent/worker。
+- 既有 CodexResetWatcher、Telegram account/binding、session、memory 均保留。
+
+## 2026-07-26 CodexResetWatcher 双源监控
+
+- 角色卡与人格版本仍为 v0.09，本轮不修改角色属性。
+- 生产 Cron `59432519-c6fc-43f7-8efd-a3cf38230259` 仍由 life 所有，调度由每 30 分钟改为每 10 分钟。
+- 监控已从“只读 codexreset.org”升级为“X 最新动态发现 + X 官方 oEmbed 验证 + codexreset.org 独立核查”。
+- 当前没有 X Developer Token，生产使用 Nitter RSS 发现候选；脚本预留 `0600` Token 文件形式的官方 X API v2 入口。
+- 目标 Post `2081096447718723984` 已在生产 NAS 完成 RSS、官方 oEmbed、网站三段验证。
+- 状态 schema 1→2 无损迁移，旧 ID 不补发；单源故障可降级、两源同败真实失败。
+- life Bot 真实验收通知、手动 Cron、Gateway 重启后 probe 与八 Bot 回归均通过。
+- 未扩大 life 的 shell、Gateway、任意外发或工程写入权限；实际发送仍只由固定 Watcher 通过既有 life Telegram account 完成。
+
+## 2026-07-24 Workboard 生活任务执行
+
+- 当前设计与实际部署版本：v0.09 `CANDIDATE`。
+- life 已取得官方 Workboard worker 的 list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation 能力；既有 `life_automation` 仍是周期生活自动化的执行入口。
+- Workboard 并发、依赖自动推进和 housekeeper→life 主动 A2A 已真实通过；短暂一次执行失败后重试成功，未发现权限门禁问题。
+- 本次未把生活职责转交 ops，也未扩大 life 的工程、Gateway 或任意消息权限。
+
+## 2026-07-23 职责权限实测
+
+- 正式 housekeeper 委派包承载同范围生活自动化授权；周期任务继续由 `life_automation` 持久化，主会话不充当定时器。
+- 生产实际调用 `life_automation list`：1 call / 0 failures；无重复索权。
+
 ## 2026-07-23 v0.08 实际状态
 
 - 五件套已部署；一次性同一 life 子 Agent实测成功。
@@ -7,8 +46,8 @@
 - shell、工程写入、Gateway 与 history 仍拒绝。Telegram connected/probe 正常。
 
 - Agent ID：`life`
-- 当前设计版本：v0.08 `CANDIDATE`
-- 当前实际部署版本：v0.08 `CANDIDATE`
+- 当时设计版本：v0.08 `CANDIDATE`
+- 当时实际部署版本：v0.08 `CANDIDATE`
 - 当前运行状态：`completed`
 - 最后核验：2026-07-23 16:00 +08:00
 

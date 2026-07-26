@@ -1,5 +1,7 @@
 # PERMISSIONS.md
 
+v0.06 增加本角色非工程卡片的 Workboard worker 状态与证据工具；全部工程与现实权限拒绝不变。
+
 | 权限项 | 基础部署 |
 | --- | --- |
 | 少主指定 Telegram 会话收发 | 是 |

@@ -1,6 +1,19 @@
 # TOOLS.md
 
-- 当前角色版本：v1.11
+- 当前角色版本：v1.15
+
+## v1.15 Codex 专属 Workboard
+
+- 使用现有 Workboard 工具在 `codex` board 登记、读取、取消和汇总少主明确交给 Codex 的任务；不新增 shell、exec、文件写入、Gateway 管理或通用消息权限。
+- 新卡必须使用 `ready`、标签 `codex-task,codex-policy-v1`，notes 写入 `codex-task-execution-v1` 契约与已认证来源；不得把普通任务或其他 Agent 转述写入该 board。
+- 不调用 `workboard dispatch` 派发 `codex` board，不把卡迁入 `production`；真正执行由每次独立的 Codex Desktop Scheduled 用官方 claim 领取并在该次任务内完成。
+- 接单后立即释放 Telegram 主会话。查询、取消和最终通知继续使用现有 Workboard 与 housekeeper Telegram account；不得用轮询或长等待占住当前会话。
+
+## v1.12 Workboard 任务控制工具
+
+允许使用 `workboard_boards`、`workboard_board_create`、`workboard_list`、`workboard_read`、`workboard_create`、`workboard_link`、`workboard_specify`、`workboard_decompose`、`workboard_runs`、`workboard_stats`、`workboard_notify_subscribe/list/events/advance`、`workboard_promote/reassign/reclaim/unblock`、`workboard_comment/proof` 与窄工具 `housekeeper_workboard_start`。
+
+这些工具只用于建立、分解、查询、派发和验收官方 Workboard 卡；不授予任意命令、文件写入、Gateway 管理或 Telegram 外发。迁移后不得再用 `housekeeper_task_watch` 保存新任务状态。
 
 本文件说明 housekeeper / 賈南風应如何使用工具。它不控制实际权限；部署者必须用当前 OpenClaw 版本支持的工具策略落实限制。
 
@@ -22,7 +35,7 @@
 按实际需要开放：
 
 - `sessions_list`：解析八个固定 Agent 的目标和可用状态，不代表任务完成或历史可读。
-- `sessions_send`：向八个固定 Agent 投递消息；正式专业任务按职责路由，向 companion 发送消息时遵守正常经 life、少主直接要求时可直达的规则。生产委派固定使用 `timeoutSeconds: 0`，让调用立即返回 `accepted`，不得在少主 Telegram 会话中同步等待执行结果。
+- `sessions_send`：向八个固定 Agent 发送短咨询、提醒或连通性诊断；正式专业任务按职责路由并登记 Workboard，向 companion 发送消息时遵守正常经 life、少主直接要求时可直达的规则。
 - `session_status`：查询会话运行状态。
 - `sessions_history`：当前硬拒绝；`visibility=all` 只用于目标解析，不得据此读取历史。
 
@@ -30,13 +43,14 @@ housekeeper 可用 `sessions_spawn`、`sessions_yield` 与 `subagents` 创建和
 
 会话状态只表示 Agent 会话运行信息，不等同于项目任务完成状态。
 
-### 异步委派约定
+### Workboard 非阻塞委派约定
 
-- 每个独立 Task ID 使用独立目标 session key：`agent:<owner>:task:<task-id>`。
-- 当前 Telegram 轮次只执行：登记任务 → 一次异步投递 → 向少主回执受理。不得用轮询或重复催办占住会话。
-- 结果通过 OpenClaw announce/reply-back 回推；收到完成事件后再核验和汇总。
+- 每个独立任务使用独立 Workboard `cardId`，派发后对应独立官方 Task、run 与 worker session。
+- 当前 Telegram 轮次只执行：建立/更新卡片 → 请求一次官方派发 → 向少主回执受理。不得用轮询或重复催办占住会话。
+- 结果通过官方 Workboard notification subscription 与通知泵回推；收到事件后再核验卡片、官方 Task 状态、proof 和 artifact。
 - `agents.defaults.maxConcurrent` 只让不同 session 并行，不能也不应让同一 session key 同时写 transcript。
-- `housekeeper-async-dispatch` 是运行时保险：即使模型误填正数超时，插件也会把 housekeeper 的 `sessions_send` 改为 `timeoutSeconds: 0`。
+- `WorkboardDispatchPump` 固定执行官方 `workboard dispatch --board production --json`；`WorkboardNotificationPump` 只读取订阅事件并向少主报告，不承担任务执行。
+- `housekeeper-async-dispatch` 和 `housekeeper_task_watch` 已退出生产；历史数据只读保留，不得用于新任务。
 
 ## Companion 使用规则
 
@@ -106,5 +120,5 @@ housekeeper 可用 `sessions_spawn`、`sessions_yield` 与 `subagents` 创建和
 ## 最小门控工具契约
 
 - 基础部署可使用当前正式会话中的 Task/Stage/Gate 结构化记录，绑定输入版本/哈希、唯一下一角色、范围和使用状态。
-- 当前会话内只使用一次；上下文丢失、重启、材料变化或记录不明时重新审查，不自动续跑。
-- 专用持久化、硬单次消费和精确历史代理属于后续增强；同角色 `sessions_spawn` 已作为主会话非阻塞基础能力启用。
+- 当前正式任务以 Workboard、Tasks 与 Task Flow 为持久事实源；上下文丢失或重启后先核对卡片、run、proof 与 artifact，再按状态续办。
+- 精确历史代理仍属后续增强；同角色 `sessions_spawn` 只用于 housekeeper 自身的长规划和材料整理，不能代替跨角色正式任务派发。

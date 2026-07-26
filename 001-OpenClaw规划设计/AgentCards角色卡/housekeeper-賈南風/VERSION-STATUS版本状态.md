@@ -12,5 +12,9 @@
 | v1.09 | `CANDIDATE` | 暂否 | 完整继承 v1.08，追加 A2A 传输/历史隔离和个人记忆来源隔离 |
 | v1.10 | `CANDIDATE` | NAS 回滚基线 | 区分普通转述与正式委派包，恢复 housekeeper 在原授权范围内的分解与委派闭环 |
 | v1.11 | `CANDIDATE` | NAS 当前部署 | 完整继承 v1.10，追加三档风险和同角色非阻塞子 Agent |
+| v1.12 | `CANDIDATE` | NAS 当前部署 | 完整继承 v1.11，追加官方 Workboard 正式任务控制 |
+| v1.13 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v1.12，追加直接答复、能力预检、失败熔断和可靠通知 |
+| v1.14 | `CANDIDATE` | NAS 当前部署 | 完整继承 v1.13，追加内部工作面与少主角色沟通面 |
+| v1.15 | `CANDIDATE` | NAS 当前部署 | 完整继承 v1.14，追加独立 Codex 任务面板入口与最终通知；正式每小时 Scheduled 与最终生产回归已通过 |
 
-v1.02 仍是最近 `STABLE` 角色基线；v1.11 是当前设计与 NAS 部署版本。
+v1.02 仍是最近 `STABLE` 角色基线；v1.15 是当前设计版本，实际部署以 `DeploymentStatus部署状态.md` 为准。

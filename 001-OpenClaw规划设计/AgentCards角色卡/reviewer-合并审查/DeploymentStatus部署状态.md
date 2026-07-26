@@ -1,5 +1,30 @@
 # reviewer｜夏姬（合并审查）｜部署进度
 
+## 2026-07-26 角色表达 v0.09
+
+- 当前设计与实际部署版本：v0.09 `CANDIDATE`；人格名称仍为“夏姬”，Review/Risk/Test 与只读边界未变。
+- 共同协议 v0.08 已部署：默认先说通过、不通过或不能确认，不把固定 JSON、Stage Record 或内部字段原样交给少主。
+- 普通回复和技术细账各用新隔离 session 实测通过；workspace 正确、bootstrap 零截断、无模型 fallback。
+- Bot、binding、session、transcript 和记忆均保留。
+
+## 2026-07-26 工作流可靠性 v0.08
+
+- 当前设计与实际部署版本：v0.08 `CANDIDATE`；人格名称仍为“夏姬”，审查职责未变。
+- 共同协议 v0.07 已部署：直接结论、证据不足直说、只读能力预检、硬失败不重复。
+- 真实 Workboard 子 Agent 验收卡完成 claim、heartbeat、proof `RELAY_FAIL_CURSOR_OK` 和 complete。
+- reviewer 仍无工程写入和 Gateway 权限；Bot、binding、session、transcript 和记忆均保留。
+
+## 2026-07-24 Workboard 审查任务执行
+
+- 当前设计与实际部署版本：v0.07 `CANDIDATE`。
+- reviewer 已取得官方 Workboard worker 的 list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation 能力，用于提交 Review/Risk/Test 结论及证据。
+- 负向权限实测确认 reviewer 不能写文件；本次没有扩大审查人格、执行职责或生产写权限。
+
+## 2026-07-23 职责权限实测
+
+- 正式 housekeeper 委派包承载同范围审查授权；同角色子 Agent只做只读材料搜集，最终 Review/Risk/Test 仍由父 reviewer 决定。
+- 生产实际调用 `read AGENTS.md`：1 call / 0 failures；未开放写入、shell 或生产执行。
+
 ## 2026-07-23 v0.06 实际状态
 
 - 五件套、低/中/高 Risk 分类和只读子 Agent规则已部署。
@@ -7,8 +32,8 @@
 - exec/write/history/Gateway/message/cron 仍拒绝。Telegram connected/probe 正常。
 
 - Agent ID：`reviewer`
-- 当前设计版本：v0.06 `CANDIDATE`
-- 当前实际部署版本：v0.04 `CANDIDATE`
+- 当时设计版本：v0.06 `CANDIDATE`
+- 当时实际部署版本：v0.04 `CANDIDATE`
 - 当前运行状态：`partially completed`
 - 最后核验：2026-07-23 18:17 +08:00
 

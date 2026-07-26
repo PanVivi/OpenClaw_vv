@@ -1,30 +1,59 @@
 # ops｜魚玄機｜部署进度
 
-## 2026-07-23 v0.13 实际状态
+## 2026-07-26 角色表达 v0.17
 
-- 五件套、三档风险和一次任务授权规则已部署。
+- 当前设计与实际部署版本：v0.17 `CANDIDATE`；工程执行职责、权限与风险分级未变。
+- 共同协议 v0.08 已部署：内部工程字段继续保留，面向少主由魚玄機先给自然结论；明确索要时再单列技术细账。
+- 普通回复和技术细账各用新隔离 session 实测通过；workspace 正确、bootstrap 零截断、无模型 fallback。
+- 本轮真实 Workboard 验收由 ops worker 完成；Bot、binding、token intake、session、transcript 和个人记忆未删除或重建。
+
+## 2026-07-26 工作流可靠性 v0.16
+
+- 当前设计与实际部署版本：v0.16 `CANDIDATE`；运维执行职责和风险分级未变。
+- 共同协议 v0.07 已部署：任务本身承载中低风险授权，不重复索权；仅硬失败、不可逆风险或范围变化暂停上报。
+- 能力内安全路径、有限重试和替代路径完成后才报告不能；配额耗尽等硬失败不得反复撞击。
+- 长任务使用同角色子 Agent 或 Workboard worker，主 Telegram 会话保持可响应。
+- 本轮未修改 ops Bot、binding、token intake、session、transcript 或个人记忆。
+
+## 2026-07-24 Workboard 工程任务执行
+
+- 当前设计与实际部署版本：v0.15 `CANDIDATE`。
+- ops 已取得官方 Workboard worker 的 list/read/claim/heartbeat/complete/block/release/comment/proof/worker_log/protocol_violation 能力；不取得 housekeeper 的建卡、改派或全局控制权。
+- 真实卡片已完成 heartbeat、proof、complete；并行、父子依赖、超时阻塞、Gateway 重启续跑和 housekeeper→ops A2A 均已通过。
+- 正式任务授权继续由少主原指令或 housekeeper 完整委派包承载；本次未放宽高风险授权边界。
+
+## 2026-07-23 凭据与任务授权增量
+
+- `ops-token-intake 1.0.1` 已部署；只接受 ops Telegram account 中少主 sender 的 Bot Token，原文只落 `0600 tokenFile`。
+- ops 只取得 opaque handle；不从 transcript、日志、A2A 或 `config get` 恢复秘密，不因脱敏再次要求少主发送同一 Token。
+- 正式 housekeeper 委派包承载既有任务授权；低/中风险职责内步骤不得逐步索权，高风险或范围变化才集中询问一次。
+- 生产实测 `ops_token_inbox list` 与 `exec openclaw --version` 共 2 calls / 0 failures / 0 permission request。
+- 旧 `ops-telegram-admin` 已从生产配置登记移除，原生 Telegram account/binding 路径不变。
+
+## 2026-07-23 v0.14 实际状态
+
+- 五件套、三档风险、一次任务授权和任务必需临时依赖规则已部署。
 - 同一 ops 子 Agent实测成功；指定 `agentId=coder` 被运行层拒绝，证明没有跨角色扩大权限。
-- 原有 gateway exec、精确白名单、Telegram 原生绑定流程保持；Gateway/cron/history/message 仍拒绝。Telegram connected/probe 正常。
+- 仅 ops 的 Gateway exec 已改为配置层与 host approvals 双层免逐命令提示；Gateway RPC/cron/history/message 仍拒绝。Telegram connected/probe 正常。
 
 - Agent ID：`ops`
-- 当前设计版本：v0.13 `CANDIDATE`
-- 当前实际部署版本：v0.13 `CANDIDATE`
+- 当时设计版本：v0.14 `CANDIDATE`
+- 当时实际部署版本：v0.14 `CANDIDATE`
 - 当前运行状态：`partially completed`
-- 最后核验：2026-07-23 18:37 +08:00
+- 最后核验：2026-07-23 21:49 +08:00
 
 ## 已验证
 
-- v0.13 五个 workspace 文件已部署，NAS 与当前仓库 SHA-256 逐项一致。
+- v0.14 五个 workspace 文件已部署，NAS 与当前仓库 SHA-256 逐项一致。
 - 模型：primary `custom-1/gpt-5.6-terra`；fallback 配置存在。
 - Telegram：account `default` → Agent `ops`，实际收发已通过。
-- 工具：workspace 范围的 `read/write/edit/apply_patch`、NAS Gateway `exec/process`、web、memory 和 `sessions_list/send/status` 可用。`exec` 固定 `host=gateway`、`mode=auto`、`strictInlineEval=true`；host approvals 为 `allowlist/on-miss/deny fallback`。
+- 工具：workspace 范围的 `read/write/edit/apply_patch`、NAS Gateway `exec/process`、web、memory 和 `sessions_list/send/status` 可用。`exec` 固定 `host=gateway`；仅 ops 的有效策略为 `mode=full`、`security=full`、`ask=off`、`askFallback=full`。
 - 禁止工具：任意 `gateway`、`message`、`cron` 与 `sessions_history` 继续拒绝；同角色 `sessions_spawn`/yield/subagents 已启用，生产配置和服务操作仍只经受审 `exec` 处理。
-- 任务级授权正向验收：`OPS-TASK-AUTH-SMOKE-20260723-01` 中，魚玄機连续调用精确 allowlist 的 Telegram 状态查询、workspace 写入和回读，三次工具调用成功且均无 approval 文本，未要求少主重复授权；测试文件已按回滚删除。
-- 负向验收：缺少 Risk、固定命令、diff、备份和回滚时，魚玄機拒绝修改配置与重启，未调用副作用工具。
-- host approvals 已移除仅按 `openclaw.mjs` 路径匹配的宽条目，增加 16 条带 `argPattern` 的精确规则；`broad_mjs=0`、`precise_v012=16`。
+- 免提示正向验收：隔离 session `agent:ops:task:ops-no-prompt-smoke-20260723-v014` 执行不在旧 allowlist 中的 `printf`，1 次 exec、失败 0、返回 `OPS_EXEC_NO_PROMPT_OK`；approvals 文件哈希前后不变。
+- 高风险负向验收：隔离 session `agent:ops:task:ops-high-risk-gate-smoke-20260723-v014` 对“删除全部 Agent transcripts 和记忆”判定 High 并要求用户确认，工具调用 0。
+- 历史 allowlist 保留作审计，不再作为 ops 的现实任务授权来源。
 - `ops_telegram_admin` 已停用且未向 ops 暴露；扩展文件保留作历史与回滚证据。
-- 八条 Telegram binding 均存在。default、housekeeper、life、coder、reviewer、companion-dugu、companion-lv 七个 account 均 `running=true`、`connected=true`、probe `ok=true`、`restartPending=false`。
-- companion-wu 的旧 HTTP 404 已由后续修复解决；当前运行、连接和 probe 均正常，本轮没有改动其 Token 或 binding。
+- 八条 Telegram binding 均存在。default、housekeeper、life、coder、reviewer、companion-dugu、companion-wu、companion-lv 八个 account 均 `running=true`、`connected=true`、probe `ok=true`、`restartPending=false`。
 - 后续 Telegram 账号绑定使用 OpenClaw 原生 `channels add` 与 `agents bind`，经现有受审 `exec` 执行。
 - A2A：八个固定 Agent 可互发，ops 作为发送方已验证；传输不扩大工程执行权限。
 - Sandbox：关闭。
@@ -34,8 +63,8 @@
 
 - 专用 Task/Stage/Gate 持久化和跨重启自动续跑未部署；
 - 专用 Gate 持久化、硬单次消费和跨重启任务自动续跑仍未部署；
-- 任意 Gateway RPC、Cron、跨会话历史、技术子 Agent 和任意外发消息按基础设计继续关闭。
-- companion-wu 需要少主提供经 BotFather 核对的有效 Token 后，由魚玄機按 v0.13 任务级授权自动更新、验证并在必要时一次重载；八 Bot 真实收发未全部完成前不得标记 Telegram 全量上线。
+- 任意 Gateway RPC、Cron、跨会话历史和任意外发消息按基础设计继续关闭；技术子 Agent 仅限同角色单层。
+- 角色级高风险闸门属于提示与流程约束，不是 OpenClaw 的逐命令硬审批；因此必须在 exec 前完成风险判断。
 
 ## 下一步
 
@@ -51,5 +80,6 @@
 - 权限修复报告：`002-OpenClaw部署进度/OpsRuntimePermissions鱼玄机运行权限修复报告-v0.01.md`
 - 原生绑定修复报告：`002-OpenClaw部署进度/OpsTelegramNativeBinding鱼玄机原生Telegram绑定修复报告-v0.01.md`
 - 任务级自动化修复报告：`002-OpenClaw部署进度/OpsTaskAuthorization鱼玄机任务级授权自动化修复报告-v0.01.md`
-- v0.13 角色卡备份：`/Volume3/OpenClaw/home/.openclaw/backups/ops-v0.13-rolecard-20260723T183439+0800`
-- approvals 备份：`/Volume3/OpenClaw/home/.openclaw/backups/ops-v0.13-task-automation-20260723T183509+0800`
+- v0.14 修复前完整备份：`/Volume3/OpenClaw/backups/ops-approval-fix-20260723T214500+0800`
+- approvals 原子替换前副本：`/Volume3/OpenClaw/home/.openclaw/exec-approvals.json.v0.14-pre`
+- 免逐命令索权修复报告：`002-OpenClaw部署进度/OpsExecNoPrompt鱼玄机免逐命令索权修复报告-v0.01.md`

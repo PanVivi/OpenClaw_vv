@@ -1,11 +1,12 @@
 {
   "name": "openclaw-plugin-housekeeper-async-dispatch",
-  "version": "1.0.0",
+  "version": "1.2.2",
   "type": "module",
   "private": true,
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "plugin:validate": "npm run build"
+    "test": "npm run build && node test/integration.mjs",
+    "plugin:validate": "npm test"
   },
   "files": [
     "dist",
@@ -14,6 +15,9 @@
   ],
   "peerDependencies": {
     "openclaw": ">=2026.7.1"
+  },
+  "dependencies": {
+    "typebox": "^1.1.38"
   },
   "devDependencies": {
     "openclaw": "latest",

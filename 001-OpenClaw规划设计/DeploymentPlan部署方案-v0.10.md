@@ -196,3 +196,19 @@ housekeeper / 賈南風
 - 八个 Agent分别实测主会话可看到 spawn 工具、能创建同角色子 Agent、父会话非阻塞、子 Agent不能递归或越权。
 - 核对八个 Telegram 账号运行与 probe、八条 binding、A2A 主动双向、插件状态和 Gateway 健康。
 - 对比更新前后 session/transcript/记忆/路由清单；已有聊天不得丢失或串线。
+
+### 委派与凭据专项部署
+
+- 启用 `housekeeper-async-dispatch 1.2.2`，仅向 housekeeper 暴露 `housekeeper_task_watch`；配置 owner chat、10 分钟首次回报期限和持久状态目录。
+- 启用 `ops-token-intake 1.0.1`，仅向 ops 暴露 `ops_token_inbox`；限定 Telegram ops account 和少主 sender ID，秘密目录 `0700`、Token 文件 `0600`。
+- 旧 `ops-telegram-admin` 不参与生产绑定；账号和 binding 均使用 OpenClaw 原生命令。
+- 两个插件必须通过并发状态写入测试。固定临时文件、无锁 JSON 更新或监控异常阻断主任务均为验收失败。
+
+### 专项验收
+
+- housekeeper 真实 A2A 派发立即返回 accepted/runId，下游实际执行并回报，状态从 waiting 自动闭环为 completed。
+- 人为构造超期任务时，必须向原 owner 会话主动报告；少主不需要先追问。
+- ops 实际调用 `ops_token_inbox` 和 `exec`，不得出现职责内无权限或重复索权。
+- coder 在 sandbox 内实际 read/exec；reviewer 实际只读；life 实际调用 `life_automation`。
+- 8 个 Telegram account 分别 probe；Gateway CLI/服务版本一致；配置 validate 零 warning。
+- 没有新真实 Bot Token 时，只能记录 hook 集成、并发、去重、生产加载和工具调用通过，不得伪称已完成真实秘密投递端到端测试。

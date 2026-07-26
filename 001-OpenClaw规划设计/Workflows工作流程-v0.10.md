@@ -248,3 +248,19 @@ ops/coder 提出拆分
 ### C. 无损更新
 
 备份运行配置与八套角色五件套 → 记录 session/transcript/记忆/路由清单和哈希 → 修改仓库新版本 → 仅覆盖角色静态文件和最小配置 → validate → 必要时一次重启 → 八角色子 Agent Smoke Test、Telegram probe、A2A、记忆隔离与路由核验 → 失败按备份回滚。禁止删除 transcript、重绑旧 session 或把其他 Agent摘要写成个人记忆。
+
+### D. 委派回报与主动告警
+
+1. housekeeper 正式委派包至少包含 Task ID、原始授权来源、目标、范围、完成标准、Risk、责任 Agent、首次回报期限和回报目标。
+2. 跨角色 `sessions_send` 立即返回；责任 Agent收到正式包即视为获得同范围任务授权，不逐步骤向少主再次询问。
+3. 责任 Agent先回 accepted / runId；后续 progress、completed、blocked 或 cancelled 通过 A2A 回报。
+4. housekeeper 持久跟踪状态；默认首次回报期限 10 分钟。超时、blocked 或连续失败时主动向原 Telegram 会话报告，不等待少主询问。
+5. 跟踪器故障不得阻断实际委派；状态写入失败只记录故障并保留原任务真实状态。
+
+### E. Telegram Bot Token 安全流
+
+1. 少主只需在魚玄機 Telegram 会话发送一次 Token。
+2. 入站 hook 在模型和日志脱敏前保存 Token 为安全 `tokenFile`；模型、transcript、日志、A2A 和长期记忆不保存原文。
+3. 魚玄機用 `ops_token_inbox list/claim` 取得 opaque handle 和文件路径，不读取、打印或复制 Token。
+4. account/binding 使用 OpenClaw 原生多账号命令和 `--token-file`；完成后执行配置校验、必要的一次 reload/restart、账号 probe 与 binding 核对。
+5. 只有身份、目标 Agent、账号冲突、Token 无效或操作升级为高风险时才询问；不得因脱敏回显再次要求少主发送同一 Token。
