@@ -1,6 +1,6 @@
 # 002 OpenClaw架设部署｜CurrentProgress 当前进度｜v0.26
 
-核验时间：2026-07-26 14:00 +08:00
+核验时间：2026-07-26 14:34 +08:00
 分支：`agent/lossless-content-update`
 
 ## v0.26 Codex 任务面板增量
@@ -9,6 +9,11 @@
 - 官方 Workboard 已建立独立 `codex` board；现有生产派发泵继续固定 `--board production`。
 - 賈南風设计升级到 v1.15，只新增 Codex 卡登记、查询、取消和最终通知，不新增 shell 或工程执行职责。
 - Windows 客户端、固定执行政策、DPAPI 仓库外凭据和 Codex Desktop Scheduled 已建立；正式周期为每小时一次，空队列静默。
+- 最终卡 `CODEX-PANEL-ACCEPTANCE-002` 已在正式每小时 Scheduled 中完成 Discover、官方 claim、Bind、heartbeat、重新研究、正式验收计划和三轮不同关注面复核；未创建或等待第二层 Codex task。
+- 当前生产回归通过：OpenClaw `2026.7.1-2`、配置 valid/warnings 为空、Gateway service/RPC 正常、Workboard/Codex 插件 loaded；Tasks 0 error，保留 1 条既有 Cron lost warning。
+- `WorkboardDispatchPump` 继续每分钟固定 `--board production` 且最近运行 ok；`codex` board 只有 Codex Desktop scanner 领取，没有经过 production dispatcher。
+- 8/8 Telegram account probe ok，8 条 binding 和 A2A 八角色 allowlist 不变；session 1316→1332、memory 219→219、credentials/secrets 10→10。
+- Codex automation TOML 已只读核对为 `ACTIVE`、每小时、local project、`gpt-5.6-sol`，完整政策提示词和失败运行才通知策略均正确。
 - 完整部署与真实验收结果见 `CodexTaskPanel任务面板部署报告-v0.01.md`；电脑关机或 Codex Desktop 未运行时不会执行本地 Scheduled。
 
 ## v0.25 本轮增量

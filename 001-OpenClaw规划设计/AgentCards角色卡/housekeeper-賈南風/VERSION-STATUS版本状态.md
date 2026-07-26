@@ -15,6 +15,6 @@
 | v1.12 | `CANDIDATE` | NAS 当前部署 | 完整继承 v1.11，追加官方 Workboard 正式任务控制 |
 | v1.13 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v1.12，追加直接答复、能力预检、失败熔断和可靠通知 |
 | v1.14 | `CANDIDATE` | NAS 当前部署 | 完整继承 v1.13，追加内部工作面与少主角色沟通面 |
-| v1.15 | `CANDIDATE` | 待本次验收 | 完整继承 v1.14，追加独立 Codex 任务面板入口与最终通知 |
+| v1.15 | `CANDIDATE` | NAS 当前部署 | 完整继承 v1.14，追加独立 Codex 任务面板入口与最终通知；正式每小时 Scheduled 与最终生产回归已通过 |
 
 v1.02 仍是最近 `STABLE` 角色基线；v1.15 是当前设计版本，实际部署以 `DeploymentStatus部署状态.md` 为准。

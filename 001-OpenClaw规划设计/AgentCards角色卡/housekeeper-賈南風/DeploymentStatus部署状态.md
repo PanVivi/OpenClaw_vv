@@ -2,9 +2,10 @@
 
 ## 2026-07-26 Codex 任务面板 v1.15
 
-- 当前设计版本：v1.15 `CANDIDATE`；完整继承 v1.14，不改变姓名、人格、大总管职责、风险边界或既有权限。
+- 当前设计与实际部署版本：v1.15 `CANDIDATE`；完整继承 v1.14，不改变姓名、人格、大总管职责、风险边界或既有权限。
 - 新增独立 `codex` Workboard 登记、查询、取消和最终通知规则；不交给 `production` dispatcher，不授予 housekeeper shell。
-- 实际部署、Scheduled 与端到端验收结果以 `002-OpenClaw部署进度/CodexTaskPanel任务面板部署报告-v0.01.md` 为准。
+- 正式每小时 Codex Desktop Scheduled 为 ACTIVE；真实通过空扫描、官方 claim/release/heartbeat/blocked，以及本次可完成卡的三审、客户端、生产隔离和八 Telegram/A2A/数据无损回归。
+- OpenClaw 配置、Gateway、Workboard/Codex 插件、production dispatcher、八 binding 与 A2A 均未修改；实际部署和最终端到端结果以 `002-OpenClaw部署进度/CodexTaskPanel任务面板部署报告-v0.01.md` 为准。
 
 ## 2026-07-26 角色表达与通知 v1.14
 

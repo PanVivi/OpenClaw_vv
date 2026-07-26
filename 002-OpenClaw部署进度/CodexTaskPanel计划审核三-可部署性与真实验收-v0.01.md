@@ -66,4 +66,25 @@
 
 ## 8. 部署反馈复审
 
-真实调度先安全暴露了两个假阳性风险：当前 card JSON 的 board 位于 `metadata.automation.boardId`，`show` 结果含 `card` 包装；以及 standalone Scheduled 不应依赖嵌套 `create_thread`。客户端已按现场 schema 修正并通过离线测试；真实 Scheduled 已完成 Discover、claim、heartbeat、三面只读审核和受控 blocked，证明失败不会假写 done。最终验收仍须在仓库 commit/push 后再跑一张可完成卡。可部署性复审通过。
+真实调度先安全暴露了两个假阳性风险：当前 card JSON 的 board 位于 `metadata.automation.boardId`，`show` 结果含 `card` 包装；以及 standalone Scheduled 不应依赖嵌套 `create_thread`。客户端已按现场 schema 修正并通过离线测试；真实 Scheduled 已完成 Discover、claim、heartbeat、三面只读审核和受控 blocked，证明失败不会假写 done。最终可完成卡已由 `CODEX-PANEL-ACCEPTANCE-002` 承担，并按第 9 节新复核门禁执行。可部署性复审通过。
+
+## 9. 最终验收计划复核（CODEX-PANEL-ACCEPTANCE-002）
+
+- 受审输入：本计划第 11 节正文，SHA256 `1b5cccc2303b28632764ef32251b307eba11c64e2abff5643d9c3c95d38ca809`
+- 唯一关注面：当前版本兼容、可部署性和假阳性。
+
+现场前置证据：
+
+- OpenClaw `2026.7.1-2 (0790d9f)`；`config validate` 返回 `valid=true`、warnings 为空。
+- Gateway service 为 `active/running`，RPC `ok=true`，CLI/Gateway/server 均为 `2026.7.1-2`，插件版本无 drift。
+- 客户端离线 Test 的七个契约与负向 case 全部为 true。
+- Codex automation TOML 为 `ACTIVE`、`FREQ=HOURLY;INTERVAL=1`、local project、`gpt-5.6-sol`，提示词包含本次完整政策和禁止 `codex` dispatch。
+
+反假阳性门禁：
+
+1. 后续生产验收必须读取结构化字段与八个通道/绑定/数据计数，不能用单一退出码或配置文本替代。
+2. 每小时声明与本次真实 Scheduled 领取/执行分开取证；当前卡的 claim、bind、heartbeat 已形成实际运行证据。
+3. GitHub 同步必须在 push 后比较本地与 `origin` HEAD；文档中不得保留未完成占位。
+4. Workboard 必须由 Complete 返回真实 `done` 和 proof 后才可 Notify；Notify 返回请求成功才算闭环。
+
+本轮结论：当前版本与执行环境具备实施条件，验收设计能识别主要假阳性；第三审通过，允许进入限定实施与真实验证。

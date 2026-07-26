@@ -69,3 +69,18 @@ Codex 官方说明本地项目 Scheduled 依赖电脑开机、项目可用和桌
 ## 8. 部署反馈复审
 
 真实 Scheduled 验收确认：每次 Codex Scheduled 已是官方 standalone 独立任务，调度环境内再创建第二层 Codex task 不可靠且没有必要。方案已改为“Scheduled 空扫；命中后本次独立 run 直接执行”，仍不占用賈南風或任何 OpenClaw 主会话，也满足少主要求的独立长任务。领取改用 Workboard 原生 claim，架构更贴合官方状态机。复审通过。
+
+## 9. 最终验收计划复核（CODEX-PANEL-ACCEPTANCE-002）
+
+- 受审输入：本计划第 11 节正文，SHA256 `1b5cccc2303b28632764ef32251b307eba11c64e2abff5643d9c3c95d38ca809`
+- 唯一关注面：需求、范围与架构。
+
+复核结果：
+
+1. 目标逐项覆盖最终卡要求：HEAD/推送、客户端、每小时 Scheduled、board 隔离、生产回归、文档、done/proof 与賈南風通知均有明确步骤。
+2. 执行者仍是当前 standalone Scheduled；賈南風只负责入口和最终汇报，没有新增 shell、工程执行或第九角色。
+3. `codex` 使用官方 claim 协议且明确禁止进入 `production` dispatcher，权威状态边界未混淆。
+4. 修改范围被限定为本轮计划/审核/报告、賈南風部署与版本状态、CurrentProgress；没有借最终验收重构配置或角色设计。
+5. PC 必须开机并运行 Codex Desktop 的能力边界继续保留，没有把本方案误报为 NAS 24/7 执行。
+
+本轮结论：需求、范围和架构无阻塞问题；本轮通过，交由安全与失败恢复复核。

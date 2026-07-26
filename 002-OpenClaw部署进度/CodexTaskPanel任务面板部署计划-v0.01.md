@@ -266,4 +266,47 @@ Codex Desktop 需要读取 OpenClaw Workboard，并在任务确实涉及 NAS 时
 - 阶段 C：`codex` board 与賈南風 v1.15 已部署；production dispatcher 未改。
 - 阶段 D：DPAPI 凭据和仅当前用户 ACL 已部署；只读连接、claim/release/heartbeat 已实测。
 - 阶段 E：Scheduled 已建立；真实运行暴露“嵌套第二层 task”误区后，按官方 standalone Scheduled 机制修正，三轮计划分别复审通过。
-- 阶段 F：空扫描、合规 discovery、原子 claim、release、heartbeat、三面审核与受控 blocked 已通过；最终 done、每小时切换、生产回归、GitHub 同步和賈南風通知待完成。
+- 阶段 F：空扫描、合规 discovery、原子 claim、release、heartbeat、三面审核与受控 blocked 已通过；2026-07-26 最终卡再次完成三审、客户端、正式每小时 Scheduled、生产隔离与八 Telegram/A2A/数据无损回归，进入文档、GitHub、done/proof 与賈南風通知收尾。
+
+## 11. 最终验收执行计划（CODEX-PANEL-ACCEPTANCE-002）
+
+- 执行日期：2026-07-26
+- 验收基线：分支 `agent/lossless-content-update`，执行前 `HEAD=05ede8965f7847d1d7c65506e9d86d2a806b998f`，与 `origin/agent/lossless-content-update` 一致且工作树干净。
+- 目标：把第 10 节阶段 F 的原收尾项目全部变成可复核事实；只有离线、Scheduled、生产回归、文档、GitHub、Workboard 与 Telegram 闭环全数通过才完成卡片。
+- 非目标：不重启 Gateway；不修改 `openclaw.json`、Telegram binding、A2A、模型、记忆、现有角色职责或 `production` board；不通过 `dispatch --board codex` 启动执行。
+
+风险与保护：
+
+1. 假阳性：同时核对结构化输出、对象字段、计数和目标状态，不只看退出码。
+2. 凭据泄露：远端命令只经受控客户端执行；输出、diff 和待提交内容进行秘密扫描，不读取或打印 DPAPI 明文。
+3. 并发与重复副作用：本次卡已由官方 claim 原子领取并绑定当前 Scheduled；同一仓库只保留本次单写者；完成后通知失败只重试通知，不重做验收或提交。
+4. 生产回退：所有生产检查均只读；发现配置、Gateway、插件、Tasks、八 Telegram、A2A、transcript、memory 或 production 隔离异常时立即 Block。
+5. 文档写入：仅修改本计划执行记录、本轮三份审核、部署报告、賈南風部署/版本状态和当前进度；Git 基线和既有 NAS 备份可用于回退，文档提交可由单一 revert 撤销。
+
+执行顺序与准入：
+
+1. 预检：确认分支、上游、干净工作树和基线提交；不满足则停止。
+2. 离线验证：运行 `CodexTaskPanelClient.ps1 Test`；所有契约与负向案例必须通过。
+3. Scheduled 验证：只读核对 automation TOML 的 `ACTIVE`、`FREQ=HOURLY;INTERVAL=1`、本地项目、模型、完整政策提示词和失败通知策略。
+4. 生产只读验证：通过已领取卡的 `RemoteExec` 核对 OpenClaw 版本、配置/Gateway、Workboard 与 Codex 插件、Tasks 审计、`codex`/`production` 隔离、正式 pump 命令、八 Telegram、binding、A2A、transcript 和 memory 计数；任何字段异常不得进入文档同步。
+5. 文档同步：把所有原收尾占位改成实际结果，记录时间、版本、命令类别、计数与结果锚点；不写凭据和 claim token。
+6. 本地验收：复跑客户端测试，检查 diff、范围和秘密；确认没有范围外文件。
+7. GitHub 同步：提交限定文档，推送指定分支，再核对本地 `HEAD` 与远端分支完全一致。
+8. 业务闭环：以包含 commit、push、验证结果和证据文档的摘要完成 Workboard 卡；确认 `done` 与 proof 后，再调用 Notify 请求賈南風通过既有 Telegram account 汇报。
+
+真实验收条件：
+
+- 客户端测试所有 case 为 true；
+- Scheduled 的状态、周期、执行环境、项目、模型和政策提示词均与本计划一致；
+- 生产配置有效、Gateway/RPC 正常、相关插件 loaded、Tasks 无新增 error；
+- `production` dispatcher 仍固定 `--board production`，未出现 `codex` dispatch；
+- 八 Telegram probe 成功，八 binding 与 A2A allowlist 保持既有结构，transcript/memory 无删除；
+- 文档无原收尾占位残留，秘密扫描和范围检查通过；
+- commit/push 成功且本地/远端 HEAD 相等；
+- 当前卡真实进入 `done` 且带 proof，Notify 返回 Telegram 请求成功。
+
+回滚：
+
+- 生产无写入，无需服务或配置回滚；
+- 文档提交如需撤销，基于执行前 `05ede8965f7847d1d7c65506e9d86d2a806b998f` 做单一反向提交，不改写共享历史；
+- Complete 前失败写 Block；Complete 后仅通知失败时保留 done 并只重试 Notify。

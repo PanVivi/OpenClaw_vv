@@ -98,3 +98,18 @@ Card 正文来自少主消息，但正文也可能引用网页、日志、代码
 ## 8. 部署反馈复审
 
 初版用 `ready → scheduled` 充当 reserve，但当前 OpenClaw 源码明确要求 scheduled 卡携带 `scheduledAt`，无该字段会被状态保持规则拒绝。已改为官方 `workboard.cards.claim`：原子变为 running、返回 claim token、支持 heartbeat、release、complete 和 block。claim token 仅保存在当前用户 ACL 的本机 state，输出和 Git 均不包含它。失败前可 release 回 ready，执行后失败进入 blocked。安全与恢复复审通过。
+
+## 9. 最终验收计划复核（CODEX-PANEL-ACCEPTANCE-002）
+
+- 受审输入：本计划第 11 节正文，SHA256 `1b5cccc2303b28632764ef32251b307eba11c64e2abff5643d9c3c95d38ca809`
+- 唯一关注面：安全、数据保护、权限、副作用与失败恢复。
+
+复核结果：
+
+1. 生产阶段全部为只读查询，不重启服务、不改配置、binding、A2A、模型、记忆或 production board，权限与副作用保持最小。
+2. RemoteExec 只允许当前已领取并映射为 running 的卡使用；计划不读取、打印或提交 DPAPI 明文与 claim token。
+3. 写入仅限 Git 可回退文档；执行前基线提交明确，范围外改动或秘密扫描失败会在提交前熔断。
+4. 完成顺序为验收、文档、提交、push、远端 HEAD 复核、Complete、Notify；通知失败不会重跑已产生副作用的步骤。
+5. 配置/服务/通道/数据计数任一异常直接 Block，避免用恢复动作扩大本次授权；生产没有写入，因此无需制造额外备份或回滚风险。
+
+本轮结论：安全、数据保护和失败恢复门禁完整；本轮通过，交由可部署性与真实验收复核。
