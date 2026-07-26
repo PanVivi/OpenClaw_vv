@@ -15,14 +15,14 @@
 9. [部署方案 v0.11（完整继承版）](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.11.md)
 10. [无损内容更新任务 v0.01](002-OpenClaw部署进度/LosslessContentUpdate无损内容更新任务-v0.01.md)
 11. [实施路线 v0.12（完整继承版）](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.12.md)
-12. [当前进度 v0.22](002-OpenClaw部署进度/CurrentProgress当前进度-v0.22.md)
+12. [当前进度 v0.23](002-OpenClaw部署进度/CurrentProgress当前进度-v0.23.md)
 13. [委派自动化修复报告 v0.01](002-OpenClaw部署进度/DelegatedAutomation委派自动化修复报告-v0.01.md)
 14. [萧观音自动化插件部署报告 v0.01](002-OpenClaw部署进度/LifeAutomationPlugin萧观音自动化插件部署报告-v0.01.md)
 15. [贾南风非阻塞委派报告 v0.01](002-OpenClaw部署进度/HousekeeperAsyncDispatch贾南风非阻塞委派报告-v0.01.md)
 16. [鱼玄机 Telegram 运维插件历史报告 v0.01](002-OpenClaw部署进度/OpsTelegramAdmin鱼玄机Telegram运维插件部署报告-v0.01.md)
 17. [鱼玄机原生 Telegram 绑定修复报告 v0.01](002-OpenClaw部署进度/OpsTelegramNativeBinding鱼玄机原生Telegram绑定修复报告-v0.01.md)
 18. [部署后故障与修复 v0.02](003-OpenClaw事故经验/PostDeploymentRecovery部署后故障与修复-v0.02.md)
-19. [来源索引 v0.20](000-OpenClaw文档管理/SourceIndex来源索引-v0.20.md)
+19. [来源索引 v0.21](000-OpenClaw文档管理/SourceIndex来源索引-v0.21.md)
 20. [魚玄機运行权限修复报告 v0.01](002-OpenClaw部署进度/OpsRuntimePermissions鱼玄机运行权限修复报告-v0.01.md)
 21. [魚玄機任务级授权自动化修复报告 v0.01](002-OpenClaw部署进度/OpsTaskAuthorization鱼玄机任务级授权自动化修复报告-v0.01.md)
 22. [原设计增量恢复与风险分级报告 v0.01](002-OpenClaw部署进度/IncrementalDesignRecovery原设计增量恢复与风险分级报告-v0.01.md)
@@ -30,6 +30,8 @@
 24. [魚玄機免逐命令索权修复报告 v0.02](002-OpenClaw部署进度/OpsExecNoPrompt鱼玄机免逐命令索权修复报告-v0.02.md)
 25. [Workboard 任务控制升级计划 v0.01](002-OpenClaw部署进度/WorkboardTaskControl工作板任务控制升级计划-v0.01.md)
 26. [Workboard 任务控制部署报告 v0.01](002-OpenClaw部署进度/WorkboardTaskControl工作板任务控制部署报告-v0.01.md)
+27. [CodexResetWatcher 双源监控修复计划 v0.01](002-OpenClaw部署进度/CodexResetWatcher双源监控修复计划-v0.01.md)
+28. [CodexResetWatcher 双源监控部署报告 v0.01](002-OpenClaw部署进度/CodexResetWatcher双源监控部署报告-v0.01.md)
 
 ## 当前角色版本
 

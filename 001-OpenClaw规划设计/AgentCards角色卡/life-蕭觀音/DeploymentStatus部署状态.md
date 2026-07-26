@@ -1,5 +1,16 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-07-26 CodexResetWatcher 双源监控
+
+- 角色卡与人格版本仍为 v0.09，本轮不修改角色属性。
+- 生产 Cron `59432519-c6fc-43f7-8efd-a3cf38230259` 仍由 life 所有，调度由每 30 分钟改为每 10 分钟。
+- 监控已从“只读 codexreset.org”升级为“X 最新动态发现 + X 官方 oEmbed 验证 + codexreset.org 独立核查”。
+- 当前没有 X Developer Token，生产使用 Nitter RSS 发现候选；脚本预留 `0600` Token 文件形式的官方 X API v2 入口。
+- 目标 Post `2081096447718723984` 已在生产 NAS 完成 RSS、官方 oEmbed、网站三段验证。
+- 状态 schema 1→2 无损迁移，旧 ID 不补发；单源故障可降级、两源同败真实失败。
+- life Bot 真实验收通知、手动 Cron、Gateway 重启后 probe 与八 Bot 回归均通过。
+- 未扩大 life 的 shell、Gateway、任意外发或工程写入权限；实际发送仍只由固定 Watcher 通过既有 life Telegram account 完成。
+
 ## 2026-07-24 Workboard 生活任务执行
 
 - 当前设计与实际部署版本：v0.09 `CANDIDATE`。
