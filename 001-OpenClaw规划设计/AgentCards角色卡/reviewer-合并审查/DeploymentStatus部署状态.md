@@ -1,5 +1,12 @@
 # reviewer｜夏姬（合并审查）｜部署进度
 
+## 2026-07-26 角色表达 v0.09
+
+- 当前设计与实际部署版本：v0.09 `CANDIDATE`；人格名称仍为“夏姬”，Review/Risk/Test 与只读边界未变。
+- 共同协议 v0.08 已部署：默认先说通过、不通过或不能确认，不把固定 JSON、Stage Record 或内部字段原样交给少主。
+- 普通回复和技术细账各用新隔离 session 实测通过；workspace 正确、bootstrap 零截断、无模型 fallback。
+- Bot、binding、session、transcript 和记忆均保留。
+
 ## 2026-07-26 工作流可靠性 v0.08
 
 - 当前设计与实际部署版本：v0.08 `CANDIDATE`；人格名称仍为“夏姬”，审查职责未变。

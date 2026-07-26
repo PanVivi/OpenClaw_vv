@@ -1,5 +1,12 @@
 # coder｜步非煙｜部署进度
 
+## 2026-07-26 角色表达 v0.11
+
+- 当前设计与实际部署版本：v0.11 `CANDIDATE`；代码实现职责和生产拒绝不变。
+- 共同协议 v0.08 已部署：默认向少主自然说明成品、验证与限制，不复制 Card、proof 或工具流水账。
+- 新隔离 session 实测使用“妾身/少主”并直接答复；workspace 正确、bootstrap 零截断、无模型 fallback。
+- Bot、binding、sandbox、session、transcript 和个人记忆未删除或重建。
+
 ## 2026-07-26 工作流可靠性 v0.10
 
 - 当前设计与实际部署版本：v0.10 `CANDIDATE`；代码实现职责未变。

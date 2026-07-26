@@ -9,6 +9,8 @@ import assert from "node:assert/strict";
 const execFileAsync = promisify(execFile);
 const UUID_RE =
   /\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/i;
+const UUID_GLOBAL_RE =
+  /\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\b/gi;
 
 const config = {
   node:
@@ -88,19 +90,88 @@ function oneLine(value, fallback = "无") {
   return value.replace(/\s+/g, " ").trim().slice(0, 500);
 }
 
-function buildMessage(rows) {
-  const lines = ["【Workboard 主动回报】"];
-  for (const row of rows) {
-    lines.push(
-      "",
-      `事件：${row.event.kind} / ${row.event.id}`,
-      `任务：${row.title}`,
-      `Card：${row.cardId ?? "无法解析"}`,
-      `状态：${row.status}`,
-      `结果：${row.detail}`
-    );
+function humanizeTitle(value) {
+  const cleaned = oneLine(value, "这件事")
+    .replace(/[\u0000-\u001f\u007f]/g, " ")
+    .replace(UUID_GLOBAL_RE, "")
+    .replace(/[【\[]?(?:受控)?(?:模拟)?(?:验收|测试)[】\]]?/g, "")
+    .replace(/\bWorkboard\b/gi, "任务")
+    .replace(/\bRelay\b/gi, "通知")
+    .replace(/\bcompleted\b/gi, "完成")
+    .replace(/\b(?:done|success)\b/gi, "完成")
+    .replace(/端到端/g, "全程")
+    .replace(/\b20\d{6}(?:[-_T]?\d{4,6})?\b/g, "")
+    .replace(/\s+/g, " ")
+    .replace(/^[\s:：\-—]+|[\s:：\-—]+$/g, "")
+    .trim();
+  return (cleaned || "这件事").slice(0, 60);
+}
+
+function humanizeReason(row) {
+  const source = `${row?.event?.kind ?? ""} ${row?.status ?? ""} ${
+    row?.detail ?? ""
+  }`.toLowerCase();
+  if (/quota|rate.?limit|billing|额度|余额/.test(source)) {
+    return "所用模型额度已尽，当前不能继续";
   }
-  return lines.join("\n");
+  if (/permission|forbidden|denied|eacces|eperm|权限/.test(source)) {
+    return "当前权限不足";
+  }
+  if (/auth|token|credential|unauthorized|凭据|认证/.test(source)) {
+    return "凭据没有通过";
+  }
+  if (
+    /network|econn|enotfound|socket|connection|fetch failed|网络|连接/.test(
+      source
+    )
+  ) {
+    return "网络没有连通";
+  }
+  if (/timeout|timed out|expired|stale|超时|失联/.test(source)) {
+    return "超过了约定时限";
+  }
+  if (/dependency|prerequisite|前置|依赖/.test(source)) {
+    return "前置条件还没有满足";
+  }
+  return "执行没有顺利完成，原始原因已留档";
+}
+
+function outcomeKind(row) {
+  const source = `${row?.event?.kind ?? ""} ${row?.status ?? ""}`.toLowerCase();
+  if (/\b(cancelled|canceled)\b/.test(source)) return "cancelled";
+  if (/\b(stale|timeout|timedout|expired)\b/.test(source)) return "stale";
+  if (/\b(blocked|waiting_input)\b/.test(source)) return "blocked";
+  if (/\b(failed|failure|error)\b/.test(source)) return "failed";
+  if (/\b(completed|complete|done|success|succeeded)\b/.test(source)) {
+    return "completed";
+  }
+  return "updated";
+}
+
+function buildMessage(rows) {
+  return rows
+    .map((row) => {
+      const title = humanizeTitle(row.title);
+      switch (outcomeKind(row)) {
+        case "completed":
+          return `少主，本宫盯着的「${title}」已经办妥。`;
+        case "failed":
+          return `少主，「${title}」没办成，本宫已经按住了。缘故：${humanizeReason(
+            row
+          )}。`;
+        case "blocked":
+          return `少主，「${title}」卡住了，本宫已经叫停。缘故：${humanizeReason(
+            row
+          )}。`;
+        case "stale":
+          return `少主，「${title}」迟迟没有回话，本宫已把它按停，免得空耗。`;
+        case "cancelled":
+          return `少主，「${title}」已经停下，本宫不会让它继续乱跑。`;
+        default:
+          return `少主，「${title}」有了新回报，本宫已经记下；细账留在案中。`;
+      }
+    })
+    .join("\n\n");
 }
 
 function findMessageId(value) {
@@ -238,7 +309,8 @@ async function processOnce(deps = {}) {
   if (!batchAlreadySent) {
     const rows = [];
     for (const event of events) rows.push(await describe(event));
-    const sent = await send(buildMessage(rows));
+    const renderedMessage = buildMessage(rows);
+    const sent = await send(renderedMessage);
     messageId = sent.messageId;
     await writeAudit(auditPath, {
       type: "sent",
@@ -247,7 +319,8 @@ async function processOnce(deps = {}) {
       accountId: config.telegramAccount,
       target: config.telegramTarget,
       eventIds,
-      messageId
+      messageId,
+      renderedMessage
     });
   }
 
@@ -324,6 +397,7 @@ async function selfTest() {
   await rm(auditPath, { force: true });
   let sends = 0;
   let advances = 0;
+  let sentText = "";
   const ok = await processOnce({
     fetchEvents: async () => ({ events: [event] }),
     describe: async (value) => ({
@@ -333,8 +407,9 @@ async function selfTest() {
       status: "done",
       detail: "ok"
     }),
-    send: async () => {
+    send: async (message) => {
       sends += 1;
+      sentText = message;
       return { messageId: "fixture-message" };
     },
     advance: async () => {
@@ -347,6 +422,82 @@ async function selfTest() {
   assert.equal(ok.ok, true);
   assert.equal(sends, 1);
   assert.equal(advances, 1);
+  assert.equal(sentText, "少主，本宫盯着的「fixture」已经办妥。");
+  assert.doesNotMatch(
+    sentText,
+    /Workboard 主动回报|Card|event|heartbeat|proof|completed|done|[0-9a-f]{8}-[0-9a-f-]{27,}/i
+  );
+
+  assert.equal(
+    humanizeTitle(
+      `【模拟验收】新脚本 Relay completed 端到端验证 20260726-1230 ${sampleId}`
+    ),
+    "新脚本 通知 完成 全程验证"
+  );
+  assert.equal(
+    buildMessage([
+      {
+        event: { kind: "failed", id: "event-2" },
+        cardId: sampleId,
+        title: "模型调用",
+        status: "failed",
+        detail: "quota exhausted"
+      }
+    ]),
+    "少主，「模型调用」没办成，本宫已经按住了。缘故：所用模型额度已尽，当前不能继续。"
+  );
+  assert.equal(
+    buildMessage([
+      {
+        event: { kind: "blocked", id: "event-3" },
+        cardId: sampleId,
+        title: "配置核对",
+        status: "blocked",
+        detail: "permission denied"
+      }
+    ]),
+    "少主，「配置核对」卡住了，本宫已经叫停。缘故：当前权限不足。"
+  );
+  assert.equal(
+    buildMessage([
+      {
+        event: { kind: "stale", id: "event-4" },
+        cardId: sampleId,
+        title: "长任务",
+        status: "stale",
+        detail: "timeout"
+      }
+    ]),
+    "少主，「长任务」迟迟没有回话，本宫已把它按停，免得空耗。"
+  );
+  assert.equal(
+    buildMessage([
+      {
+        event: { kind: "cancelled", id: "event-5" },
+        cardId: sampleId,
+        title: "旧任务",
+        status: "cancelled",
+        detail: "cancelled by owner"
+      }
+    ]),
+    "少主，「旧任务」已经停下，本宫不会让它继续乱跑。"
+  );
+  assert.equal(
+    humanizeReason({
+      event: { kind: "failed" },
+      status: "error",
+      detail: "token unauthorized"
+    }),
+    "凭据没有通过"
+  );
+  assert.equal(
+    humanizeReason({
+      event: { kind: "failed" },
+      status: "error",
+      detail: "ECONNREFUSED"
+    }),
+    "网络没有连通"
+  );
 
   await assert.rejects(
     processOnce({
@@ -412,11 +563,39 @@ async function selfTest() {
   assert.equal(empty.empty, true);
   await rm(auditPath, { force: true });
   await rm(`${auditPath}.advance-fail`, { force: true });
-  return { ok: true, fixtures: 7 };
+  return { ok: true, fixtures: 16 };
 }
 
 if (process.argv.includes("--self-test")) {
   console.log(JSON.stringify(await selfTest(), null, 2));
+} else if (process.argv.includes("--preview-fixtures")) {
+  const previewRows = [
+    {
+      event: { kind: "completed", id: "preview-completed" },
+      title: "新通知全程验证",
+      status: "done",
+      detail: "heartbeat and proof recorded"
+    },
+    {
+      event: { kind: "failed", id: "preview-failed" },
+      title: "模型调用",
+      status: "failed",
+      detail: "quota exhausted"
+    },
+    {
+      event: { kind: "blocked", id: "preview-blocked" },
+      title: "配置核对",
+      status: "blocked",
+      detail: "permission denied"
+    },
+    {
+      event: { kind: "stale", id: "preview-stale" },
+      title: "长任务",
+      status: "stale",
+      detail: "timeout"
+    }
+  ];
+  console.log(buildMessage(previewRows));
 } else if (process.argv.includes("--dry-run")) {
   const fetched = await gatewayCall("workboard.notifications.events", {
     subscriptionId: config.subscriptionId,

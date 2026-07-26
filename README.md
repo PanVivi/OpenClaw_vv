@@ -10,19 +10,19 @@
 4. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
 5. [角色卡审核 v0.08](001-OpenClaw规划设计/RoleCardAudit角色卡审核-v0.08.md)
 6. 对应 Agent 的 DeploymentStatus、VERSION-STATUS 和五个 workspace 文件
-7. [共同协议 v0.06](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
+7. [共同协议 v0.08](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
 8. [工作流程 v0.10（完整继承版）](001-OpenClaw规划设计/Workflows工作流程-v0.10.md)
-9. [部署方案 v0.11（完整继承版）](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.11.md)
+9. [部署方案 v0.12（角色表达修复）](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.12.md)
 10. [无损内容更新任务 v0.01](002-OpenClaw部署进度/LosslessContentUpdate无损内容更新任务-v0.01.md)
 11. [实施路线 v0.12（完整继承版）](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.12.md)
-12. [当前进度 v0.23](002-OpenClaw部署进度/CurrentProgress当前进度-v0.23.md)
+12. [当前进度 v0.25](002-OpenClaw部署进度/CurrentProgress当前进度-v0.25.md)
 13. [委派自动化修复报告 v0.01](002-OpenClaw部署进度/DelegatedAutomation委派自动化修复报告-v0.01.md)
 14. [萧观音自动化插件部署报告 v0.01](002-OpenClaw部署进度/LifeAutomationPlugin萧观音自动化插件部署报告-v0.01.md)
 15. [贾南风非阻塞委派报告 v0.01](002-OpenClaw部署进度/HousekeeperAsyncDispatch贾南风非阻塞委派报告-v0.01.md)
 16. [鱼玄机 Telegram 运维插件历史报告 v0.01](002-OpenClaw部署进度/OpsTelegramAdmin鱼玄机Telegram运维插件部署报告-v0.01.md)
 17. [鱼玄机原生 Telegram 绑定修复报告 v0.01](002-OpenClaw部署进度/OpsTelegramNativeBinding鱼玄机原生Telegram绑定修复报告-v0.01.md)
 18. [部署后故障与修复 v0.02](003-OpenClaw事故经验/PostDeploymentRecovery部署后故障与修复-v0.02.md)
-19. [来源索引 v0.21](000-OpenClaw文档管理/SourceIndex来源索引-v0.21.md)
+19. [来源索引 v0.23](000-OpenClaw文档管理/SourceIndex来源索引-v0.23.md)
 20. [魚玄機运行权限修复报告 v0.01](002-OpenClaw部署进度/OpsRuntimePermissions鱼玄机运行权限修复报告-v0.01.md)
 21. [魚玄機任务级授权自动化修复报告 v0.01](002-OpenClaw部署进度/OpsTaskAuthorization鱼玄机任务级授权自动化修复报告-v0.01.md)
 22. [原设计增量恢复与风险分级报告 v0.01](002-OpenClaw部署进度/IncrementalDesignRecovery原设计增量恢复与风险分级报告-v0.01.md)
@@ -32,18 +32,19 @@
 26. [Workboard 任务控制部署报告 v0.01](002-OpenClaw部署进度/WorkboardTaskControl工作板任务控制部署报告-v0.01.md)
 27. [CodexResetWatcher 双源监控修复计划 v0.01](002-OpenClaw部署进度/CodexResetWatcher双源监控修复计划-v0.01.md)
 28. [CodexResetWatcher 双源监控部署报告 v0.01](002-OpenClaw部署进度/CodexResetWatcher双源监控部署报告-v0.01.md)
+29. [角色表达与通知修复部署报告 v0.01](002-OpenClaw部署进度/RoleVoice角色表达与通知修复部署报告-v0.01.md)
 
 ## 当前角色版本
 
 ```text
-housekeeper       賈南風 v1.12
-life              蕭觀音 v0.09
-ops               魚玄機 v0.15
-coder             步非煙 v0.09
-reviewer          夏姬（合并审查）v0.07
-companion-dugu    獨孤伽羅 v0.06
-companion-wu      武曌 v0.06
-companion-lv      呂雉 v0.06
+housekeeper       賈南風 v1.14
+life              蕭觀音 v0.11
+ops               魚玄機 v0.17
+coder             步非煙 v0.11
+reviewer          夏姬（合并审查）v0.09
+companion-dugu    獨孤伽羅 v0.08
+companion-wu      武曌 v0.08
+companion-lv      呂雉 v0.08
 ```
 
 ## 当前目标

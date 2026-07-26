@@ -1,5 +1,12 @@
 # companion-dugu｜獨孤伽羅｜部署进度
 
+## 2026-07-26 角色表达 v0.08
+
+- 当前设计与实际部署版本：v0.08 `CANDIDATE`；成熟管控型陪伴人格和非工程边界未变。
+- 共同协议 v0.08 已部署：内部协调字段不进入陪伴回复；默认以“我/伽羅、我的少主”自然回应。
+- 新隔离 session 角色回复、正确 workspace、bootstrap 零截断和无 fallback 均通过。
+- Telegram account/binding、session、transcript 和个人记忆均保留；最终 probe 通过。
+
 ## 2026-07-26 工作流可靠性 v0.07
 
 - 当前设计与实际部署版本：v0.07 `CANDIDATE`；人格与陪伴职责未变。

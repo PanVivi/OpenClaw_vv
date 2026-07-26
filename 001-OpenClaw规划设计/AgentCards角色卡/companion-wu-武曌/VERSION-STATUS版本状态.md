@@ -8,5 +8,7 @@
 | v0.04 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.03，追加 A2A 传输/历史隔离和个人记忆来源隔离 |
 | v0.05 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.04，追加同角色非工程子 Agent；Telegram Token 故障已修复 |
 | v0.06 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.05，追加 Workboard 非工程任务契约 |
+| v0.07 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.06，追加直接答复、能力预检和失败熔断 |
+| v0.08 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.07，追加内部协调面与少主角色沟通面 |
 
-当前没有 `STABLE` 版本。v0.06 是当前设计与 NAS 部署版本。
+当前没有 `STABLE` 版本。v0.08 是当前设计与 NAS 部署版本。

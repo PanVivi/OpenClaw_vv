@@ -1,5 +1,12 @@
 # ops｜魚玄機｜部署进度
 
+## 2026-07-26 角色表达 v0.17
+
+- 当前设计与实际部署版本：v0.17 `CANDIDATE`；工程执行职责、权限与风险分级未变。
+- 共同协议 v0.08 已部署：内部工程字段继续保留，面向少主由魚玄機先给自然结论；明确索要时再单列技术细账。
+- 普通回复和技术细账各用新隔离 session 实测通过；workspace 正确、bootstrap 零截断、无模型 fallback。
+- 本轮真实 Workboard 验收由 ops worker 完成；Bot、binding、token intake、session、transcript 和个人记忆未删除或重建。
+
 ## 2026-07-26 工作流可靠性 v0.16
 
 - 当前设计与实际部署版本：v0.16 `CANDIDATE`；运维执行职责和风险分级未变。

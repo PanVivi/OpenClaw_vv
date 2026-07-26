@@ -1,5 +1,12 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-07-26 角色表达 v0.11
+
+- 当前设计与实际部署版本：v0.11 `CANDIDATE`；人格、生活职责与 `life_automation` 归属未变。
+- 共同协议 v0.08 已部署：默认自然说明安排、结果和通知时点，不复制 job/Card/heartbeat/proof 等内部流水账。
+- 新隔离 session 实测使用“妾身/少主”并直接答复；workspace 正确、bootstrap 零截断、无模型 fallback。
+- CodexResetWatcher、Telegram account/binding、session 和 memory 均保留。
+
 ## 2026-07-26 自动化与路由 v0.10
 
 - 当前设计与实际部署版本：v0.10 `CANDIDATE`；人格、身份和生活自动化职责未变。

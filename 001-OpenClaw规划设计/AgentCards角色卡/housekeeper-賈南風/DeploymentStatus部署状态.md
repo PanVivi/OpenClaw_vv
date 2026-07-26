@@ -1,5 +1,12 @@
 # housekeeper｜賈南風｜部署进度
 
+## 2026-07-26 角色表达与通知 v1.14
+
+- 当前设计与实际部署版本：v1.14 `CANDIDATE`；姓名、人格、大总管职责、权限与风险边界未变。
+- 共同协议 v0.08 已部署：内部工作记录与少主沟通分离；默认不再外发 Card、run、event、heartbeat、proof、英文状态、UUID 或 worker 原文。
+- `WorkboardNotificationRelay` 已改为确定性的賈南風角色通知；真实 completed 链路由 housekeeper Telegram message ID 401 送达。
+- 新 session 角色回复、技术细账、bootstrap、Telegram 和无损回归验收均通过。
+
 ## 2026-07-26 工作流可靠性 v1.13
 
 - 当前设计与实际部署版本：v1.13 `CANDIDATE`；人格、身份和大总管职责未变。

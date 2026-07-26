@@ -15,5 +15,9 @@
 | v0.13 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.12，追加三档风险和同角色非阻塞技术子 Agent |
 | v0.14 | `CANDIDATE` | NAS 当前部署 | 仅 ops 对齐宿主免逐命令审批；任务必需的官方可校验临时依赖自动处理，高风险仍由任务级 Risk 截停 |
 | v0.15 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.14，追加 Workboard worker 执行契约 |
+| v0.16 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.15，追加直接答复、能力预检、失败熔断和可靠执行 |
+| v0.17 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.16，追加内部工程面与少主角色沟通面 |
+
+当前没有 `STABLE` 版本。v0.17 是当前设计与 NAS 部署版本。
 
 当前没有 `STABLE` 版本。v0.15 是当前设计版本；NAS 实际部署状态以根目录 `DeploymentStatus部署状态.md` 为准。

@@ -1,19 +1,21 @@
-# housekeeper｜賈南風｜当前角色卡 v1.12｜CANDIDATE 候选版
+# housekeeper｜賈南風｜当前角色卡 v1.14｜CANDIDATE 候选版
 
 本目录保存当前设计版本。历史版本位于 `旧文档/`；当前实际运行状态以 `DeploymentStatus部署状态.md` 为准。
 
 ## 版本状态
 
-- 当前设计与实际部署版本：v1.12 `CANDIDATE`；v1.02 为最近 `STABLE` 角色基线。
+- 当前设计与实际部署版本：v1.14 `CANDIDATE`；v1.02 为最近 `STABLE` 角色基线。
 - v1.03—v1.07：`REJECTED`，不得部署或作为后续底稿。
 - v1.08：`CANDIDATE`，NAS 历史部署与回滚基线。
 - v1.09：`CANDIDATE`，A2A 与记忆隔离设计基线。
 - v1.11：`CANDIDATE`，历史设计与部署版本。
 - v1.12：`CANDIDATE`，增量接入官方 Workboard 正式任务控制。
+- v1.13：`CANDIDATE`，追加直接答复、能力预检、失败熔断和可靠通知。
+- v1.14：`CANDIDATE`，追加内部工作面与少主角色沟通面。
 
-## v1.12 增量
+## v1.14 增量
 
-完整继承 v1.11 与 v1.02 不可删减基线，只把任务合同、分解、派发、状态、证据、通知和重启恢复接入官方 Workboard、Tasks 与 Task Flow。新任务不再依赖私有看门狗；人格、总管职责、路由和风险边界不变。
+完整继承 v1.13 与 v1.02 不可删减基线。内部继续用 Workboard、Tasks、Task Flow 和证据字段管事；面向少主改由賈南風先给自然结论，不再默认外发内部编号、英文状态或 worker 原文。人格、总管职责、路由和风险边界不变。
 
 ## v1.08—v1.09 修正
 

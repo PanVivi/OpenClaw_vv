@@ -9,5 +9,7 @@
 | v0.07 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.06，追加 A2A 传输/历史隔离和个人记忆来源隔离 |
 | v0.08 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.07，追加同角色非阻塞技术子 Agent |
 | v0.09 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.08，追加 Workboard worker 执行契约 |
+| v0.10 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.09，追加直接答复、能力预检、失败熔断和可靠执行 |
+| v0.11 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.10，追加内部实现面与少主角色沟通面 |
 
-当前没有 `STABLE` 版本。v0.09 是当前设计与 NAS 部署版本。
+当前没有 `STABLE` 版本。v0.11 是当前设计与 NAS 部署版本。

@@ -11,5 +11,7 @@
 | v0.07 | `CANDIDATE` | NAS 回滚基线 | 接受 housekeeper 正式委派包的既有授权，并明确 A2A/owner-only Cron 的部署边界 |
 | v0.08 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.07，追加同角色一次性非阻塞子 Agent，周期任务边界不变 |
 | v0.09 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.08，追加 Workboard 生活任务契约 |
+| v0.10 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.09，追加自动化固定路由、直接答复和失败熔断 |
+| v0.11 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.10，追加内部调度面与少主角色沟通面 |
 
-当前没有 `STABLE` 版本。v0.09 是当前设计与 NAS 部署版本。
+当前没有 `STABLE` 版本。v0.11 是当前设计与 NAS 部署版本。
