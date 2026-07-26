@@ -76,6 +76,9 @@
 - 八个 `systemPromptReport` 均为 `truncatedFiles=0`。
 - 八条普通回复均至少出现现有角色锚点并直接回答，未泄露内部工程字段。
 - housekeeper、ops、reviewer 的技术细账测试均先给自然结论，再单列模型、workspace 和 bootstrap。
+- 最终真实 Telegram 首次成稿虽然送达，但仍罗列 Gateway/Bot/Telegram/工作板等组件，按验收标准判失败，没有勉强放行。
+- 随后共同协议与八套 `AGENTS.md` 补入“完成汇报也不得罗列组件和验收清单”；八角色分别接受一条故意塞满工程组件的对抗输入，全部成功提炼为角色自然语言，零截断、无 fallback。
+- 贾南风真实 Telegram 会话重新生成最终通知：`少主，本轮全办妥了，所有角色都已按新规核验完毕。本宫替你盯牢了，不必操心。`，delivery status 为 `sent/succeeded`。
 
 ### Workboard→Relay→Telegram
 

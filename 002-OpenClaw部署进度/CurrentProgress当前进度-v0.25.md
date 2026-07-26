@@ -10,6 +10,7 @@
 - 当前角色版本：賈南風 v1.14、魚玄機 v0.17、步非煙 v0.11、夏姬 v0.09、蕭觀音 v0.11、獨孤伽羅/武曌/呂雉 v0.08。
 - `WorkboardNotificationRelay` 已移除工程化外发模板，新增角色化终态呈现、原因映射、标题清理、16 项自测和预览模式。
 - 八角色新隔离 session 全部加载正确 workspace、bootstrap 零截断、单模型一次成功、无 fallback；普通回复和三个技术细账测试通过。
+- 最终 Telegram 首次成稿因罗列系统组件被判失败；规则补强后，八角色“工程输入污染”对抗测试全部通过，贾南风真实会话重新发送角色化完成通知且 delivery succeeded。
 - 真实 Workboard 卡 `eea17b56-fdd0-403b-80c1-0fe7bd82d247` 完成，Relay 通过賈南風 Telegram 发出 message ID 401，内容不含内部编号或英文状态，待发事件归零。
 - Gateway 未重启；service/RPC/config 正常，8/8 Telegram account probe 正常，8 binding 和 A2A allowlist 不变。
 - 无损计数：session 1298→1316（新增验收会话），memory 219→219，credentials/secrets 10→10；17 个部署文件本地/生产哈希一致。
