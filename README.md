@@ -5,8 +5,8 @@
 ## 当前阅读顺序
 
 1. [文档与版本规则 v1.05](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.05.md)
-2. [快速简报 v1.10](001-OpenClaw规划设计/QuickBrief快速简报-v1.10.md)
-3. [最终设计 v1.09（完整继承版）](001-OpenClaw规划设计/FinalDesign最终设计-v1.09.md)
+2. [快速简报 v1.11](001-OpenClaw规划设计/QuickBrief快速简报-v1.11.md)
+3. [最终设计 v1.10（完整继承版）](001-OpenClaw规划设计/FinalDesign最终设计-v1.10.md)
 4. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
 5. [角色卡审核 v0.08](001-OpenClaw规划设计/RoleCardAudit角色卡审核-v0.08.md)
 6. 对应 Agent 的 DeploymentStatus、VERSION-STATUS 和五个 workspace 文件
@@ -60,3 +60,5 @@ companion-lv      呂雉 v0.08
 全员 A2A 消息投递已启用，但 `sessions_history` 保持拒绝。GitHub 设计不等于 NAS 已部署；基础角色状态与增强能力状态分别记录。
 
 故障排查、兼容性、权限和安全判断必须遵守根目录 `AGENTS.md`：先检索当前网络资料，再结合现场证据判断和验证，不得只凭记忆猜测。
+
+少主明确交给 Codex 的任务使用独立 `codex` Workboard 与 Codex Desktop 每小时 Scanner；它不进入 `production` dispatcher。固定执行政策、客户端、计划、三轮审核和部署报告分别位于 `001-OpenClaw规划设计/Automation自动化/` 与 `002-OpenClaw部署进度/`。

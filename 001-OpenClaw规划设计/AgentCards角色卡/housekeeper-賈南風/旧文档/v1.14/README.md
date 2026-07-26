@@ -1,10 +1,10 @@
-# housekeeper｜賈南風｜当前角色卡 v1.15｜CANDIDATE 候选版
+# housekeeper｜賈南風｜当前角色卡 v1.14｜CANDIDATE 候选版
 
 本目录保存当前设计版本。历史版本位于 `旧文档/`；当前实际运行状态以 `DeploymentStatus部署状态.md` 为准。
 
 ## 版本状态
 
-- 当前设计版本：v1.15 `CANDIDATE`；v1.02 为最近 `STABLE` 角色基线，实际部署状态见 `DeploymentStatus部署状态.md`。
+- 当前设计与实际部署版本：v1.14 `CANDIDATE`；v1.02 为最近 `STABLE` 角色基线。
 - v1.03—v1.07：`REJECTED`，不得部署或作为后续底稿。
 - v1.08：`CANDIDATE`，NAS 历史部署与回滚基线。
 - v1.09：`CANDIDATE`，A2A 与记忆隔离设计基线。
@@ -12,11 +12,6 @@
 - v1.12：`CANDIDATE`，增量接入官方 Workboard 正式任务控制。
 - v1.13：`CANDIDATE`，追加直接答复、能力预检、失败熔断和可靠通知。
 - v1.14：`CANDIDATE`，追加内部工作面与少主角色沟通面。
-- v1.15：`CANDIDATE`，追加独立 Codex 任务面板登记、查询、取消和最终通知规则。
-
-## v1.15 增量
-
-完整继承 v1.14。少主明确交给 Codex 的任务进入独立 `codex` board，由 Codex Desktop 每小时轻扫并建立独立后台任务；賈南風仍只接单、登记、查询、催办、取消和汇总，不获得工程执行权限、不阻塞 Telegram 主会话，也不影响 `production` board。人格、称呼、风险分级和既有工作流不变。
 
 ## v1.14 增量
 

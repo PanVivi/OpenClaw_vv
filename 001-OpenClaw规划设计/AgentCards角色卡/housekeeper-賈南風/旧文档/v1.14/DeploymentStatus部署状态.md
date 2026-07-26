@@ -1,11 +1,5 @@
 # housekeeper｜賈南風｜部署进度
 
-## 2026-07-26 Codex 任务面板 v1.15
-
-- 当前设计版本：v1.15 `CANDIDATE`；完整继承 v1.14，不改变姓名、人格、大总管职责、风险边界或既有权限。
-- 新增独立 `codex` Workboard 登记、查询、取消和最终通知规则；不交给 `production` dispatcher，不授予 housekeeper shell。
-- 实际部署、Scheduled 与端到端验收结果以 `002-OpenClaw部署进度/CodexTaskPanel任务面板部署报告-v0.01.md` 为准。
-
 ## 2026-07-26 角色表达与通知 v1.14
 
 - 当前设计与实际部署版本：v1.14 `CANDIDATE`；姓名、人格、大总管职责、权限与风险边界未变。

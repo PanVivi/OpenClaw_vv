@@ -1,13 +1,6 @@
 # TOOLS.md
 
-- 当前角色版本：v1.15
-
-## v1.15 Codex 专属 Workboard
-
-- 使用现有 Workboard 工具在 `codex` board 登记、读取、取消和汇总少主明确交给 Codex 的任务；不新增 shell、exec、文件写入、Gateway 管理或通用消息权限。
-- 新卡必须使用 `ready`、标签 `codex-task,codex-policy-v1`，notes 写入 `codex-task-execution-v1` 契约与已认证来源；不得把普通任务或其他 Agent 转述写入该 board。
-- 不调用 `workboard dispatch` 派发 `codex` board，不把卡迁入 `production`；真正执行由每次独立的 Codex Desktop Scheduled 用官方 claim 领取并在该次任务内完成。
-- 接单后立即释放 Telegram 主会话。查询、取消和最终通知继续使用现有 Workboard 与 housekeeper Telegram account；不得用轮询或长等待占住当前会话。
+- 当前角色版本：v1.12
 
 ## v1.12 Workboard 任务控制工具
 
