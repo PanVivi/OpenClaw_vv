@@ -1,5 +1,14 @@
 # housekeeper｜賈南風｜部署进度
 
+## 2026-07-26 工作流可靠性 v1.13
+
+- 当前设计与实际部署版本：v1.13 `CANDIDATE`；人格、身份和大总管职责未变。
+- 接单后以 Workboard 建卡、分解、委派；长任务由 worker/同角色子 Agent 执行，主 Telegram 会话不等待长任务。
+- blocked/failed/stale 由无模型 `WorkboardNotificationRelay` 主动回报；真实 completed、blocked、发送失败不推进 cursor、补发和重启恢复均通过。
+- 用户主动停用的旧 `WorkboardNotificationPump` 继续 disabled；新 Relay 显式使用 housekeeper Bot。
+- 共同协议 v0.07 已部署：直接回答、能力预检、有限重试、硬失败熔断、终态主动上报。
+- 当前卡片、会话、个人记忆、Telegram account/binding 未删除或重建。
+
 ## 2026-07-24 Workboard 正式任务控制
 
 - 当前设计与实际部署版本：v1.12 `CANDIDATE`；最近 `STABLE` 角色基线仍为 v1.02。

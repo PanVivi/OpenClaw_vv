@@ -60,11 +60,11 @@
   },
   {
     "path": "agents.list[4].tools.allow",
-    "value": ["web_search", "web_fetch", "cron", "message", "sessions_list", "sessions_send", "session_status", "life_automation", "sessions_spawn", "sessions_yield", "subagents"]
+    "value": ["cron", "life_automation", "session_status", "sessions_list", "sessions_send", "sessions_spawn", "sessions_yield", "subagents", "web_fetch", "web_search", "workboard_block", "workboard_claim", "workboard_comment", "workboard_complete", "workboard_heartbeat", "workboard_list", "workboard_proof", "workboard_protocol_violation", "workboard_read", "workboard_release", "workboard_worker_log"]
   },
   {
     "path": "agents.list[4].tools.deny",
-    "value": ["sessions_history", "exec", "process", "read", "write", "edit", "apply_patch", "gateway"]
+    "value": ["sessions_history", "exec", "process", "read", "write", "edit", "apply_patch", "gateway", "message"]
   },
   {
     "path": "agents.list[4].subagents",

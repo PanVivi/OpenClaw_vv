@@ -1,5 +1,12 @@
 # coder｜步非煙｜部署进度
 
+## 2026-07-26 工作流可靠性 v0.10
+
+- 当前设计与实际部署版本：v0.10 `CANDIDATE`；代码实现职责未变。
+- 共同协议 v0.07 已部署：先直接回答，能力内穷尽，启动子 Agent 前校验有效工具，硬失败不盲目重试。
+- 长代码任务使用 coder 同角色子 Agent/Workboard worker，不长期阻塞主 Telegram 会话。
+- coder Bot、binding、sandbox、session、transcript 和个人记忆未被删除或重建。
+
 ## 2026-07-24 Workboard 代码任务执行
 
 - 当前设计与实际部署版本：v0.09 `CANDIDATE`。

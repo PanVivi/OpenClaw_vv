@@ -1,5 +1,14 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-07-26 自动化与路由 v0.10
+
+- 当前设计与实际部署版本：v0.10 `CANDIDATE`；人格、身份和生活自动化职责未变。
+- `life-automation` 运行态已升级到 1.1.0；`inspect` 实测返回固定 owner、life account、requester session 和状态。
+- life 通用 `message` 已关闭；正常回复、固定 requester route 和自动化结果不再经 default/鱼玄机 Bot 代发。
+- 真实 `LIFE_ROUTE_OK` 已由 life Bot 成功投递，`deliverySucceeded=true`，无 `message` 工具调用。
+- Workboard worker 完整工具和共同协议 v0.07 已部署；长任务先能力预检，再交同角色子 Agent/worker。
+- 既有 CodexResetWatcher、Telegram account/binding、session、memory 均保留。
+
 ## 2026-07-26 CodexResetWatcher 双源监控
 
 - 角色卡与人格版本仍为 v0.09，本轮不修改角色属性。

@@ -1,5 +1,12 @@
 # reviewer｜夏姬（合并审查）｜部署进度
 
+## 2026-07-26 工作流可靠性 v0.08
+
+- 当前设计与实际部署版本：v0.08 `CANDIDATE`；人格名称仍为“夏姬”，审查职责未变。
+- 共同协议 v0.07 已部署：直接结论、证据不足直说、只读能力预检、硬失败不重复。
+- 真实 Workboard 子 Agent 验收卡完成 claim、heartbeat、proof `RELAY_FAIL_CURSOR_OK` 和 complete。
+- reviewer 仍无工程写入和 Gateway 权限；Bot、binding、session、transcript 和记忆均保留。
+
 ## 2026-07-24 Workboard 审查任务执行
 
 - 当前设计与实际部署版本：v0.07 `CANDIDATE`。

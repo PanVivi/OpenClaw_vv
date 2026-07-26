@@ -1,5 +1,11 @@
 # companion-lv｜呂雉｜部署进度
 
+## 2026-07-26 工作流可靠性 v0.07
+
+- 当前设计与实际部署版本：v0.07 `CANDIDATE`；人格与陪伴职责未变。
+- 共同协议 v0.07 已部署：回复直达、能力预检、有限重试、硬失败熔断；长任务不阻塞主会话。
+- Telegram account/binding、session、transcript 和个人记忆均保留；最终 probe 通过。
+
 ## 2026-07-24 Workboard 非工程任务执行
 
 - 当前设计与实际部署版本：v0.06 `CANDIDATE`。

@@ -33,6 +33,7 @@ type StateFile = {
 };
 
 const TOOL_NAME = "life_automation";
+const PLUGIN_VERSION = "1.1.0";
 const JOB_PREFIX = "life-automation-";
 const TICK_INTERVAL_MS = 15_000;
 const RUN_TIMEOUT_MS = 10 * 60_000;
@@ -42,6 +43,7 @@ const ParamsSchema = Type.Object(
     action: Type.Union([
       Type.Literal("list"),
       Type.Literal("get"),
+      Type.Literal("inspect"),
       Type.Literal("create"),
       Type.Literal("update"),
       Type.Literal("pause"),
@@ -169,6 +171,17 @@ export default definePluginEntry({
       typeof pluginConfig.ownerChatId === "string" && pluginConfig.ownerChatId.trim()
         ? pluginConfig.ownerChatId.trim()
         : undefined;
+    const telegramAccountId =
+      typeof pluginConfig.telegramAccountId === "string" &&
+      pluginConfig.telegramAccountId.trim()
+        ? pluginConfig.telegramAccountId.trim()
+        : "life";
+    if (allowedAgentId !== "life") {
+      throw new Error("life-automation agentId must be life");
+    }
+    if (telegramAccountId !== "life") {
+      throw new Error("life-automation telegramAccountId must be life");
+    }
     const sessionKey = ownerChatId
       ? `agent:${allowedAgentId}:telegram:direct:${ownerChatId}`
       : undefined;
@@ -308,7 +321,9 @@ export default definePluginEntry({
       tickTimer = setInterval(() => void processDue(), TICK_INTERVAL_MS);
       tickTimer.unref?.();
       void processDue();
-      api.logger.info(`life-automation scheduler started (state=${statePath})`);
+      api.logger.info(
+        `life-automation scheduler started (state=${statePath}, account=${telegramAccountId})`
+      );
     });
     api.on("gateway_stop", () => {
       if (tickTimer) clearInterval(tickTimer);
@@ -322,7 +337,7 @@ export default definePluginEntry({
         name: TOOL_NAME,
         label: "Life Automation",
         description:
-          "Manage only life-owned persistent scheduled tasks. Supports list/get/create/update/pause/resume/remove/run_now. It cannot run shell commands, write OpenClaw config, or target another agent.",
+          "Manage only life-owned persistent scheduled tasks. Supports inspect/list/get/create/update/pause/resume/remove/run_now. It cannot run shell commands, write OpenClaw config, or target another agent.",
         parameters: ParamsSchema,
         async execute(_toolCallId, rawParams) {
           const params = rawParams as JsonRecord;
@@ -344,6 +359,40 @@ export default definePluginEntry({
               };
 
               switch (params.action) {
+                case "inspect": {
+                  const identifier =
+                    typeof params.task_id === "string" && params.task_id.trim()
+                      ? params.task_id.trim()
+                      : typeof params.job_id === "string" && params.job_id.trim()
+                        ? params.job_id.trim()
+                        : undefined;
+                  const inspectedJob = identifier
+                    ? state.jobs.find(
+                        (candidate) =>
+                          candidate.taskId === identifier ||
+                          candidate.schedulerJobId === identifier
+                      )
+                    : undefined;
+                  if (identifier && !inspectedJob) {
+                    throw new Error(`Life automation not found: ${identifier}`);
+                  }
+                  return result({
+                    ok: true,
+                    plugin: {
+                      id: "life-automation",
+                      version: PLUGIN_VERSION,
+                      ownerAgentId: allowedAgentId,
+                      ownerChatId,
+                      telegramAccountId,
+                      sessionKey,
+                      tickIntervalMs: TICK_INTERVAL_MS,
+                      runTimeoutMs: RUN_TIMEOUT_MS,
+                      statePath
+                    },
+                    jobCount: state.jobs.length,
+                    job: inspectedJob
+                  });
+                }
                 case "list":
                   return result({ ok: true, jobs: state.jobs });
                 case "get":
