@@ -2,7 +2,7 @@
 
 ## 2026-07-28 少主专属生活资料区修复
 
-- 当前设计版本：v0.12 `CANDIDATE`；插件与生产配置已完成，生产角色五件套等待固定 Git 提交后同步。
+- 当前设计与实际部署版本：v0.12 `CANDIDATE`；生产角色五件套来自固定提交 `7eaaaa2`。
 - 根因已确认：`life` 有 `workspaceAccess=rw`，但有效工具 allowlist 没有文件能力，且通用 `read/write/edit/apply_patch/exec/process` 明确 deny；因此此前无法创建和回读备忘录。
 - 用户把目标从专用备忘录扩展为固定 `users/Vivi/` 少主专属生活资料区；生产已安装 `life-memo` 1.1.0，向 `life` 单独暴露 `life_files`。
 - `life_files` 支持固定专属根内 `list/get/mkdir/create/update/append` 和 `.md/.txt/.json/.csv/.ics`；不提供删除、移动、重命名、shell、脚本与任意工程写入。
