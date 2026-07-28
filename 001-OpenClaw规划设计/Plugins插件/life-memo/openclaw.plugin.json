@@ -1,0 +1,32 @@
+{
+  "id": "life-memo",
+  "name": "Life Owner Files",
+  "description": "Give only the life agent constrained access to the owner's dedicated life-files directory.",
+  "version": "1.1.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "agentId": {
+        "type": "string",
+        "default": "life"
+      },
+      "ownerRoot": {
+        "type": "string"
+      }
+    }
+  },
+  "activation": {
+    "onStartup": true
+  },
+  "contracts": {
+    "tools": [
+      "life_files"
+    ]
+  },
+  "toolMetadata": {
+    "life_files": {
+      "optional": true
+    }
+  }
+}

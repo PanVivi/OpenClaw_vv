@@ -1,8 +1,8 @@
 # PERMISSIONS.md
 
-本文件是 life / 蕭觀音 v0.12 的建议权限矩阵，不是可直接复制的配置。
+本文件是 life / 蕭觀音 v0.09 的建议权限矩阵，不是可直接复制的配置。
 
-v0.12 完整继承 v0.11，新增固定少主专属生活资料区；周期触发仍归 `life_automation`，通用文件和工程权限不变。
+v0.09 增加受指派卡片的 Workboard worker 状态与证据工具；周期触发仍归 `life_automation`，其他权限不变。
 
 | 权限项 | 基础部署 | 说明 |
 | --- | --- | --- |
@@ -17,9 +17,6 @@ v0.12 完整继承 v0.11，新增固定少主专属生活资料区；周期触�
 | `sessions_history` | 否 | `visibility=all` 只解析目标，不开放历史 |
 | companion 日常协调 | 可选/有限 | 三位 companion 独立上线不依赖此能力 |
 | 长期记忆 | 后续增强 | 仅专用 life 记忆能力 |
-| 少主专属生活资料 | 是/有限 | `life_files` 仅向 life 暴露，只能访问固定 `users/Vivi/` 子树 |
-| 专属资料子目录 | 是/有限 | 仅可创建，不提供删除、移动或重命名 |
-| 专属资料文件 | 是/有限 | `.md/.txt/.json/.csv/.ics`；list/get/create/update/append，单文件 256 KiB |
 | 普通文件写入与删除 | 否 | 禁止 |
 | shell、exec、process | 否 | 禁止 |
 | OpenClaw 配置与服务控制 | 否 | 由专业 Agent 处理 |
@@ -35,6 +32,4 @@ v0.12 完整继承 v0.11，新增固定少主专属生活资料区；周期触�
 - A2A 不授予其他 Agent 的 workspace、工具、个人记忆或现实权限；维护测试和 ACK 不写入个人长期记忆。
 - housekeeper 从少主认证会话生成、字段完整且范围未变化的正式委派包可承载该任务既有授权；普通转述仍不授权。
 - `life_automation` 的执行不依赖 ops、Codex 或管理员在线；不得因委派来自 housekeeper 而再次要求少主下令。
-- `life_files` 不授予 life 根工作区读写权；路径逃逸、符号链接、脚本、删除、角色卡、session、memory、配置和其他 Agent 数据保持拒绝。
-- 只有真实写入成功并通过 `life_files get` 回读核对后，才能向少主确认资料已保存。
 - 完整长期记忆和插件未声明的高级可靠性仍属于后续增强。

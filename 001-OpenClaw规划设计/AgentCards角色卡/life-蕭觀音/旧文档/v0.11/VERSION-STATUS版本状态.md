@@ -13,6 +13,5 @@
 | v0.09 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.08，追加 Workboard 生活任务契约 |
 | v0.10 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.09，追加自动化固定路由、直接答复和失败熔断 |
 | v0.11 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.10，追加内部调度面与少主角色沟通面 |
-| v0.12 | `CANDIDATE` | 部署中 | 完整继承 v0.11，新增固定 `users/Vivi/` 少主专属生活资料区与 `life_files` |
 
-当前没有 `STABLE` 版本。v0.12 是当前设计版本；实际部署状态以根目录 `DeploymentStatus部署状态.md` 为准。
+当前没有 `STABLE` 版本。v0.11 是当前设计与 NAS 部署版本。
