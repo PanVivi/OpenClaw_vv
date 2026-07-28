@@ -1,5 +1,18 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-07-28 少主专属生活资料区修复
+
+- 当前设计与实际部署版本：v0.12 `CANDIDATE`；生产角色五件套来自固定提交 `7eaaaa2`。
+- 根因已确认：`life` 有 `workspaceAccess=rw`，但有效工具 allowlist 没有文件能力，且通用 `read/write/edit/apply_patch/exec/process` 明确 deny；因此此前无法创建和回读备忘录。
+- 用户把目标从专用备忘录扩展为固定 `users/Vivi/` 少主专属生活资料区；生产已安装 `life-memo` 1.1.0，向 `life` 单独暴露 `life_files`。
+- `life_files` 支持固定专属根内 `list/get/mkdir/create/update/append` 和 `.md/.txt/.json/.csv/.ics`；不提供删除、移动、重命名、shell、脚本与任意工程写入。
+- 本地集成测试 `LIFE_OWNER_FILES_TEST_OK`；生产 `config validate`、plugin doctor、Gateway connectivity 和八个 Telegram account probe 均通过。
+- 真实 life 会话已创建并回读 `users/Vivi/备忘录/Vivi.md`；3 次 `life_files` 调用、0 次失败，LongCat-2.0 无 fallback。
+- 隔离与连续性通过：ops 真实系统提示不含 `life_files`；目标文件 `0600`、目录 `0700`；部署前 160 个 life 会话文件无一丢失。
+- 临时 SSH 私钥已按用户要求保留在本地临时目录，不纳入 Git；本轮完成后也不自动删除。
+- 部署前基线备份：`/Volume3/OpenClaw/home/.openclaw/backups/life-memo-permission-20260728T132528Z`。
+- 1.1.0 升级前增量备份：`/Volume3/OpenClaw/home/.openclaw/backups/life-memo-permission-20260728T133533Z`。
+
 ## 2026-07-26 角色表达 v0.11
 
 - 当前设计与实际部署版本：v0.11 `CANDIDATE`；人格、生活职责与 `life_automation` 归属未变。

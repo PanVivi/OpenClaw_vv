@@ -1,0 +1,1 @@
+这是 v0.12 部署后验收。请调用 life_files 的 get 动作回读 `备忘录/Vivi.md`；确认内容包含“继续完成OpenClaw 调查任务”后，只回复 `LIFE_V012_OWNER_FILES_OK`。不要修改文件。

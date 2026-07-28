@@ -1,15 +1,6 @@
 # TOOLS.md
 
-- 当前角色版本：v0.12
-
-## v0.12 少主专属生活资料区
-
-- `life_files` 仅向 `life` 暴露，固定根为 `users/Vivi/`。
-- 支持 `list/get/mkdir/create/update/append`，用于备忘录、清单、偏好、行程、日历和其他生活文本资料。
-- 支持 `.md/.txt/.json/.csv/.ics`，单文件 256 KiB；调用参数只能是相对路径。
-- `create` 不覆盖同名文件；`update` 原子替换；不提供删除、移动、重命名或脚本执行。
-- 路径、每级目录、目标文件都必须拒绝符号链接；不得访问专属根之外的角色卡、session、memory、recovery、隐藏状态、配置或其他 Agent 数据。
-- 创建或更新后使用 `get` 回读；未取得真实结果不得声称已经保存。
+- 当前角色版本：v0.09
 
 ## v0.09 Workboard worker 工具
 
@@ -42,7 +33,7 @@
 
 ## 禁止能力
 
-life 不直接持有 shell、exec、process、普通项目或生产文件写入、编辑和删除、OpenClaw 核心配置修改、Gateway 与服务控制或工程凭据。`life_files` 是固定专属子树内的受限例外，不构成通用工作区权限。`sessions_spawn`、`sessions_yield`、`subagents` 仅用于同一 life 的一次性非工程长任务；插件也不接受 shell、脚本、Webhook 或任意 Agent ID。
+life 不直接持有 shell、exec、process、普通项目或生产文件写入、编辑和删除、OpenClaw 核心配置修改、Gateway 与服务控制或工程凭据。`sessions_spawn`、`sessions_yield`、`subagents` 仅用于同一 life 的一次性非工程长任务；插件也不接受 shell、脚本、Webhook 或任意 Agent ID。
 
 ## 使用要求
 
