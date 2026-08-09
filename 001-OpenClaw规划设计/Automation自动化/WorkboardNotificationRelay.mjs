@@ -5,6 +5,7 @@ import { dirname } from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 
 const execFileAsync = promisify(execFile);
 const UUID_RE =
@@ -88,6 +89,17 @@ function extractCardId(event) {
 function oneLine(value, fallback = "无") {
   if (typeof value !== "string" || !value.trim()) return fallback;
   return value.replace(/\s+/g, " ").trim().slice(0, 500);
+}
+
+const INTERNAL_CONTROL_WORDS = new Set([
+  "ANNOUNCE_SKIP",
+  "REPLY_SKIP",
+  "NO_REPLY"
+]);
+
+function isInternalControlOnly(value) {
+  if (typeof value !== "string") return false;
+  return INTERNAL_CONTROL_WORDS.has(value.trim());
 }
 
 function humanizeTitle(value) {
@@ -193,18 +205,32 @@ function findMessageId(value) {
 }
 
 async function loadSentEventIds(path) {
+  const states = await loadDeliveryStates(path);
+  return new Set(
+    [...states.entries()]
+      .filter(([, state]) => state === "sent" || state === "advanced")
+      .map(([id]) => id)
+  );
+}
+
+async function loadDeliveryStates(path) {
   try {
     const lines = (await readFile(path, "utf8")).split(/\r?\n/).filter(Boolean);
-    const ids = new Set();
+    const states = new Map();
     for (const line of lines) {
       const row = parseJson(line, "relay audit");
-      if (row.type === "sent" && Array.isArray(row.eventIds)) {
-        for (const id of row.eventIds) ids.add(id);
+      if (
+        ["sending", "sent", "unknown", "advanced", "quarantined"].includes(
+          row.type
+        ) &&
+        Array.isArray(row.eventIds)
+      ) {
+        for (const id of row.eventIds) states.set(id, row.type);
       }
     }
-    return ids;
+    return states;
   } catch (error) {
-    if (error?.code === "ENOENT") return new Set();
+    if (error?.code === "ENOENT") return new Map();
     throw error;
   }
 }
@@ -223,9 +249,8 @@ async function defaultDescribe(event) {
     return {
       event,
       cardId: undefined,
-      title: "通知解析异常",
-      status: event.kind,
-      detail: oneLine(event.message, "事件中没有可解析的 Card UUID")
+      userVisible: false,
+      diagnostic: "事件缺少可解析的任务标识"
     };
   }
   try {
@@ -247,11 +272,8 @@ async function defaultDescribe(event) {
     return {
       event,
       cardId,
-      title: "任务详情读取失败",
-      status: event.kind,
-      detail: `${oneLine(event.message, "状态已更新")}；读取错误：${oneLine(
-        error.message
-      )}`
+      userVisible: false,
+      diagnostic: `任务详情读取失败：${oneLine(error.message)}`
     };
   }
 }
@@ -293,8 +315,11 @@ async function processOnce(deps = {}) {
         limit
       }));
   const auditPath = deps.auditPath ?? config.auditPath;
-  const sentEventIds =
-    deps.sentEventIds ?? (await loadSentEventIds(auditPath));
+  const deliveryStates =
+    deps.deliveryStates ??
+    (deps.sentEventIds
+      ? new Map([...deps.sentEventIds].map((id) => [id, "sent"]))
+      : await loadDeliveryStates(auditPath));
 
   const fetched = await fetchEvents();
   const events = Array.isArray(fetched?.events) ? fetched.events : [];
@@ -304,24 +329,80 @@ async function processOnce(deps = {}) {
   }
 
   const eventIds = events.map((event) => event.id);
-  const batchAlreadySent = eventIds.every((id) => sentEventIds.has(id));
+  const batchStates = eventIds.map((id) => deliveryStates.get(id));
+  const batchAlreadySent = batchStates.every(
+    (state) => state === "sent" || state === "advanced"
+  );
+  const unresolved = eventIds.filter((id, index) =>
+    ["sending", "unknown"].includes(batchStates[index])
+  );
+  if (unresolved.length) {
+    return {
+      ok: false,
+      needsReconcile: true,
+      count: events.length,
+      eventIds,
+      unresolvedEventIds: unresolved
+    };
+  }
   let messageId;
   if (!batchAlreadySent) {
     const rows = [];
     for (const event of events) rows.push(await describe(event));
-    const renderedMessage = buildMessage(rows);
-    const sent = await send(renderedMessage);
-    messageId = sent.messageId;
-    await writeAudit(auditPath, {
-      type: "sent",
-      at: new Date().toISOString(),
-      subscriptionId: config.subscriptionId,
-      accountId: config.telegramAccount,
-      target: config.telegramTarget,
-      eventIds,
-      messageId,
-      renderedMessage
-    });
+    const quarantined = rows.filter(
+      (row) => row?.userVisible === false || isInternalControlOnly(row?.detail)
+    );
+    const visibleRows = rows.filter(
+      (row) => row?.userVisible !== false && !isInternalControlOnly(row?.detail)
+    );
+    if (quarantined.length) {
+      await writeAudit(auditPath, {
+        type: "quarantined",
+        at: new Date().toISOString(),
+        subscriptionId: config.subscriptionId,
+        eventIds: quarantined.map((row) => row.event.id),
+        reasons: quarantined.map((row) =>
+          oneLine(row.diagnostic, "内部控制事件，不向少主发送")
+        )
+      });
+    }
+    if (visibleRows.length) {
+      const visibleEventIds = visibleRows.map((row) => row.event.id);
+      const renderedMessage = buildMessage(visibleRows);
+      await writeAudit(auditPath, {
+        type: "sending",
+        at: new Date().toISOString(),
+        subscriptionId: config.subscriptionId,
+        accountId: config.telegramAccount,
+        target: config.telegramTarget,
+        eventIds: visibleEventIds,
+        contentHash: createHash("sha256").update(renderedMessage, "utf8").digest("hex")
+      });
+      let sent;
+      try {
+        sent = await send(renderedMessage);
+      } catch (error) {
+        await writeAudit(auditPath, {
+          type: "unknown",
+          at: new Date().toISOString(),
+          subscriptionId: config.subscriptionId,
+          eventIds: visibleEventIds,
+          reason: oneLine(error instanceof Error ? error.message : String(error))
+        });
+        throw error;
+      }
+      messageId = sent.messageId;
+      await writeAudit(auditPath, {
+        type: "sent",
+        at: new Date().toISOString(),
+        subscriptionId: config.subscriptionId,
+        accountId: config.telegramAccount,
+        target: config.telegramTarget,
+        eventIds: visibleEventIds,
+        messageId,
+        renderedMessage
+      });
+    }
   }
 
   const advanced = await advance(events.length);
@@ -520,6 +601,22 @@ async function selfTest() {
     }),
     /telegram unavailable/
   );
+  const unknownStates = await loadDeliveryStates(`${auditPath}.send-fail`);
+  assert.equal(unknownStates.get(event.id), "unknown");
+  let unknownReplaySends = 0;
+  const unknownReplay = await processOnce({
+    fetchEvents: async () => ({ events: [event] }),
+    send: async () => {
+      unknownReplaySends += 1;
+      return { messageId: "must-not-send" };
+    },
+    advance: async () => {
+      throw new Error("must not advance unresolved delivery");
+    },
+    auditPath: `${auditPath}.send-fail`
+  });
+  assert.equal(unknownReplay.needsReconcile, true);
+  assert.equal(unknownReplaySends, 0);
 
   let replaySends = 0;
   const replay = await processOnce({
@@ -534,6 +631,44 @@ async function selfTest() {
   });
   assert.equal(replaySends, 0);
   assert.equal(replay.replayAfterConfirmedSend, true);
+
+  let malformedSends = 0;
+  const malformed = { id: "event-malformed", kind: "completed", message: "no task id" };
+  const quarantined = await processOnce({
+    fetchEvents: async () => ({ events: [malformed] }),
+    describe: defaultDescribe,
+    send: async () => {
+      malformedSends += 1;
+      return { messageId: "must-not-send" };
+    },
+    advance: async () => ({ events: [malformed] }),
+    auditPath: `${auditPath}.malformed`,
+    deliveryStates: new Map()
+  });
+  assert.equal(quarantined.ok, true);
+  assert.equal(malformedSends, 0);
+  assert.equal((await loadDeliveryStates(`${auditPath}.malformed`)).get(malformed.id), "advanced");
+
+  let controlSends = 0;
+  const controlEvent = { ...event, id: "event-control" };
+  await processOnce({
+    fetchEvents: async () => ({ events: [controlEvent] }),
+    describe: async (value) => ({
+      event: value,
+      cardId: sampleId,
+      title: "内部回执",
+      status: "completed",
+      detail: "ANNOUNCE_SKIP"
+    }),
+    send: async () => {
+      controlSends += 1;
+      return { messageId: "must-not-send" };
+    },
+    advance: async () => ({ events: [controlEvent] }),
+    auditPath: `${auditPath}.control`,
+    deliveryStates: new Map()
+  });
+  assert.equal(controlSends, 0);
 
   await assert.rejects(
     processOnce({
@@ -563,7 +698,10 @@ async function selfTest() {
   assert.equal(empty.empty, true);
   await rm(auditPath, { force: true });
   await rm(`${auditPath}.advance-fail`, { force: true });
-  return { ok: true, fixtures: 16 };
+  await rm(`${auditPath}.send-fail`, { force: true });
+  await rm(`${auditPath}.malformed`, { force: true });
+  await rm(`${auditPath}.control`, { force: true });
+  return { ok: true, fixtures: 22 };
 }
 
 if (process.argv.includes("--self-test")) {

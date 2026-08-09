@@ -1,0 +1,20 @@
+{
+  "id": "ops-controlled-exec",
+  "name": "Ops Controlled Exec",
+  "description": "Give only ops fixed-schema, read-only OpenClaw status, diagnostics, checksum and bounded log-tail capabilities without arbitrary shell input.",
+  "version": "1.0.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "agentId": { "type": "string", "default": "ops" },
+      "openclawBin": { "type": "string" },
+      "stateDir": { "type": "string" },
+      "configPath": { "type": "string" },
+      "allowedRoots": { "type": "array", "items": { "type": "string" } }
+    }
+  },
+  "activation": { "onStartup": true },
+  "contracts": { "tools": ["ops_controlled_exec"] },
+  "toolMetadata": { "ops_controlled_exec": { "optional": true } }
+}

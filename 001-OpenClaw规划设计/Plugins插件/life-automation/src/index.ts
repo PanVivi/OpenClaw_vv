@@ -428,8 +428,25 @@ export default definePluginEntry({
                   if (typeof params.prompt === "string" && params.prompt.trim()) {
                     record.prompt = params.prompt.trim();
                   }
-                  if (typeof params.schedule_kind === "string") {
-                    record.schedule = buildSchedule(params, defaultTimezone);
+                  const scheduleUpdateRequested =
+                    typeof params.schedule_kind === "string" ||
+                    typeof params.at === "string" ||
+                    typeof params.cron_expression === "string" ||
+                    typeof params.every_minutes === "number";
+                  if (scheduleUpdateRequested) {
+                    const scheduleParams: JsonRecord = { ...params };
+                    if (typeof scheduleParams.schedule_kind !== "string") {
+                      if (typeof params.at === "string") {
+                        scheduleParams.schedule_kind = "at";
+                      } else if (typeof params.cron_expression === "string") {
+                        scheduleParams.schedule_kind = "cron";
+                      } else if (typeof params.every_minutes === "number") {
+                        scheduleParams.schedule_kind = "every";
+                      } else {
+                        scheduleParams.schedule_kind = record.schedule.kind;
+                      }
+                    }
+                    record.schedule = buildSchedule(scheduleParams, defaultTimezone);
                   }
                   if (typeof params.notify_owner === "boolean") {
                     record.notifyOwner = params.notify_owner;

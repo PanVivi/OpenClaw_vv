@@ -1,0 +1,29 @@
+{
+  "id": "morning-brief-control",
+  "name": "Morning Brief Control",
+  "description": "Give life typed control over morning-brief inputs and housekeeper a durable handoff-only path.",
+  "version": "1.0.2",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "lifeAgentId": { "type": "string", "default": "life" },
+      "housekeeperAgentId": { "type": "string", "default": "housekeeper" },
+      "ownerRoot": { "type": "string" },
+      "stateRoot": { "type": "string" },
+      "runtimeStatusPath": { "type": "string" },
+      "timezone": { "type": "string", "default": "Asia/Taipei" },
+      "ownerChatId": { "type": "string" },
+      "telegramAccountId": { "type": "string", "default": "life" },
+      "geocodingUrl": { "type": "string", "default": "https://geocoding-api.open-meteo.com/v1/search" }
+    }
+  },
+  "activation": { "onStartup": true },
+  "contracts": {
+    "tools": ["morning_brief_control", "morning_brief_handoff"]
+  },
+  "toolMetadata": {
+    "morning_brief_control": { "optional": true },
+    "morning_brief_handoff": { "optional": true }
+  }
+}

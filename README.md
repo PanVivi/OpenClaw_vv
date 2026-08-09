@@ -5,24 +5,24 @@
 ## 当前阅读顺序
 
 1. [文档与版本规则 v1.05](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.05.md)
-2. [快速简报 v1.11](001-OpenClaw规划设计/QuickBrief快速简报-v1.11.md)
-3. [最终设计 v1.10（完整继承版）](001-OpenClaw规划设计/FinalDesign最终设计-v1.10.md)
+2. [快速简报 v1.12](001-OpenClaw规划设计/QuickBrief快速简报-v1.12.md)
+3. [最终设计 v1.11（晨报与确定性工作流增量）](001-OpenClaw规划设计/FinalDesign最终设计-v1.11.md)
 4. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
 5. [角色卡审核 v0.08](001-OpenClaw规划设计/RoleCardAudit角色卡审核-v0.08.md)
 6. 对应 Agent 的 DeploymentStatus、VERSION-STATUS 和五个 workspace 文件
 7. [共同协议 v0.08](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
-8. [工作流程 v0.10（完整继承版）](001-OpenClaw规划设计/Workflows工作流程-v0.10.md)
-9. [部署方案 v0.12（角色表达修复）](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.12.md)
+8. [工作流程 v0.12（确定性门控增量）](001-OpenClaw规划设计/Workflows工作流程-v0.12.md)
+9. [部署方案 v0.13（晨报与治理增量）](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.13.md)
 10. [无损内容更新任务 v0.01](002-OpenClaw部署进度/LosslessContentUpdate无损内容更新任务-v0.01.md)
-11. [实施路线 v0.12（完整继承版）](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.12.md)
-12. [当前进度 v0.27](002-OpenClaw部署进度/CurrentProgress当前进度-v0.27.md)
+11. [实施路线 v0.14](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.14.md)
+12. [当前进度 v0.28](002-OpenClaw部署进度/CurrentProgress当前进度-v0.28.md)
 13. [委派自动化修复报告 v0.01](002-OpenClaw部署进度/DelegatedAutomation委派自动化修复报告-v0.01.md)
 14. [萧观音自动化插件部署报告 v0.01](002-OpenClaw部署进度/LifeAutomationPlugin萧观音自动化插件部署报告-v0.01.md)
 15. [贾南风非阻塞委派报告 v0.01](002-OpenClaw部署进度/HousekeeperAsyncDispatch贾南风非阻塞委派报告-v0.01.md)
 16. [鱼玄机 Telegram 运维插件历史报告 v0.01](002-OpenClaw部署进度/OpsTelegramAdmin鱼玄机Telegram运维插件部署报告-v0.01.md)
 17. [鱼玄机原生 Telegram 绑定修复报告 v0.01](002-OpenClaw部署进度/OpsTelegramNativeBinding鱼玄机原生Telegram绑定修复报告-v0.01.md)
 18. [部署后故障与修复 v0.02](003-OpenClaw事故经验/PostDeploymentRecovery部署后故障与修复-v0.02.md)
-19. [来源索引 v0.25](000-OpenClaw文档管理/SourceIndex来源索引-v0.25.md)
+19. [来源索引 v0.26](000-OpenClaw文档管理/SourceIndex来源索引-v0.26.md)
 20. [魚玄機运行权限修复报告 v0.01](002-OpenClaw部署进度/OpsRuntimePermissions鱼玄机运行权限修复报告-v0.01.md)
 21. [魚玄機任务级授权自动化修复报告 v0.01](002-OpenClaw部署进度/OpsTaskAuthorization鱼玄机任务级授权自动化修复报告-v0.01.md)
 22. [原设计增量恢复与风险分级报告 v0.01](002-OpenClaw部署进度/IncrementalDesignRecovery原设计增量恢复与风险分级报告-v0.01.md)
@@ -34,12 +34,13 @@
 28. [CodexResetWatcher 双源监控部署报告 v0.01](002-OpenClaw部署进度/CodexResetWatcher双源监控部署报告-v0.01.md)
 29. [角色表达与通知修复部署报告 v0.01](002-OpenClaw部署进度/RoleVoice角色表达与通知修复部署报告-v0.01.md)
 30. [萧观音少主专属资料区修复与验收报告 v0.01](002-OpenClaw部署进度/LifeOwnerFiles萧观音少主专属资料区修复与验收报告-v0.01.md)
+31. [晨报、全模块控制与工作流修复生产验收 v0.01](002-OpenClaw部署进度/MorningBriefAndWorkflowRepair修复与生产验收报告-v0.01.md)
 
 ## 当前角色版本
 
 ```text
-housekeeper       賈南風 v1.14
-life              蕭觀音 v0.12
+housekeeper       賈南風 v1.17
+life              蕭觀音 v0.14
 ops               魚玄機 v0.17
 coder             步非煙 v0.11
 reviewer          夏姬（合并审查）v0.09
@@ -54,9 +55,11 @@ companion-lv      呂雉 v0.08
 
 賈南風可直接回答简单生活问题；需要设置、定时、未来投递、持续跟踪、生活工具或 companion 协调时转蕭觀音。字段完整的正式委派包可承载少主既有授权，接收 Agent 不要求少主重复指令；life 仍是生活自动化唯一业务所有者。`life-automation` 已让萧观音直接执行受限自动化，不依赖 Codex、ops 或管理员在线。`life_files` 仅允许萧观音在固定 `users/Vivi/` 专属生活资料区管理受限文本资料，不开放通用文件、shell 或工程写入。
 
-賈南風的正式任务统一进入官方 Workboard，由 Tasks / Task Flow 建立独立 run 与 worker session；固定派发泵和可重放通知泵负责后台推进与主动回报。Telegram 前台完成接单/回执后立即恢复接收消息；A2A 只用于短咨询、提醒和诊断，不再把聊天回话当任务账本。
+賈南風的正式任务以官方 Tasks / Task Flow 为运行事实；冻结计划、三次独立完整审核、实施、验收、同步和最终通知由 `workflow_governance` 持久门控，不靠角色记忆。旧 Workboard 仍由固定派发泵和可重放通知泵推进；当前版本缺少 Task/Flow mutation Hook，在替代链验收前不能停用两个一分钟 Cron。
 
-魚玄機在少主直接任务或 housekeeper 正式委派形成的任务级授权包内，使用仅对 ops 取消逐命令审批的 NAS Gateway `exec/process` 执行工程配置、服务和部署。低风险自动执行，中风险由内部 Risk/备份/回滚/Test 闭环，任务必需的官方可校验临时工具自动处理，只有高风险暂停上报；授权包内不逐步骤索权。Telegram account/binding 使用 OpenClaw 原生 `channels add` 与 `agents bind`，`ops-telegram-admin` 已停用。任意 Gateway RPC、Cron、history 和任意外发仍关闭；spawn 仅开放为同角色单层隔离子 Agent。
+魚玄機优先使用 `ops_controlled_exec` 等固定参数化能力。低风险自动执行，中风险由内部完整复核、备份、回滚和验证闭环；高风险在副作用前由角色自然说明并只询问一次。通用高风险 `exec/process` 被 fail-closed 拦截，不再生成原生工业审批卡；没有专用受控能力的动作保持 blocked。身份仍为 `ops`，Telegram account 仍为 `default`，没有改名。
+
+晨间玉简由蕭觀音统一掌管：少主可以直接交代所有允许人工维护的模块；也可以告诉賈南風，由她建立持久转交，再由蕭觀音应用。只有应用成功回执才算录入。唯一正式发送时间为每天 06:00（Asia/Shanghai），版式以 2026-08-04 11:54 定稿为准。
 
 全员 A2A 消息投递已启用，但 `sessions_history` 保持拒绝。GitHub 设计不等于 NAS 已部署；基础角色状态与增强能力状态分别记录。
 

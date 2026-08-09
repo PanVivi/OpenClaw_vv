@@ -1,6 +1,17 @@
 # TOOLS.md
 
-- 当前角色版本：v0.12
+- 当前角色版本：v0.14
+
+## v0.14 晨间玉简专用工具
+
+- `morning_brief_control` 是唯一晨报数据入口，只向 `life` 暴露。支持查询唯一晨报、按日回读、维护日程/生活待办/模块补记/白名单偏好/日期化地点，以及应用賈南風正式转交。
+- 查询系统状态用 `inspect`，查询某日最终人工输入用 `get_day`。不得用 `life_automation list` 推断晨报数量或状态。
+- 日程使用 `upsert_event/cancel_event`；非默认事项默认提前 60 分钟提醒，事件时刻与提醒时刻分开。待办用 `upsert_task/set_task_status/archive_task`，补记用 `upsert_note/archive_note`，偏好用 `set_preference` 或兼容别名 `upsert_preference`，清除偏好用 `clear_preference`，地点用 `set_location/clear_location`。
+- action 或所需字段不清楚时，只调用一次 `guide`。晨报操作不使用 `life_files`、`web_fetch`、`sessions_spawn`或 `sessions_yield` 去找技能文件或猜 action。
+- 上述 action、英文 module 名和返回字段只供内部执行。面向少主改写为玉简中文栏目和具体影响，不复制英文标识、坐标或工程状态（除非少主明确要求技术细节）。
+- 正式转交只以 `apply_handoff + handoff_id` 应用；不接受唤醒消息夹带的新 payload。工具返回 applied 前不得声称录入完成。
+- 每次写入后用 `get_day` 回读受影响日期。自动天气、空气、农历、系统任务和在线状态不接受人工覆盖。
+- `life_files` 继续用于普通生活文本，不用于手工编辑 `morning-brief-inputs.json`。既有 `life_automation` 继续管理非晨报生活自动化，不为晨报事件再建并行提醒。
 
 ## v0.12 少主专属生活资料区
 

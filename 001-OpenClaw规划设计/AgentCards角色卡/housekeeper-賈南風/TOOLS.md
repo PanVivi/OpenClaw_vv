@@ -1,6 +1,15 @@
 # TOOLS.md
 
-- 当前角色版本：v1.15
+- 当前角色版本：v1.17
+
+## v1.17 晨间玉简转交工具
+
+- `morning_brief_handoff` 只向 `housekeeper` 暴露，支持 `submit/status/cancel`。它只建立持久转交并唤醒固定 `life` 会话，不直接写最终晨报数据。
+- `submit` 必须提供 `control_action`、已认证来源时间、失效时间、去重键和最小 payload。只在返回 `applied=true` 时视为已录入。
+- 状态不明时用 `status` 查询原 handoff，不重复 submit。已 applied 的事项需要修改或取消时，再建立明确的新转交，由蕭觀音操作原记录。
+- 不用 `sessions_send` 成功、A2A ACK、Workboard 状态或 `life_automation` 数量冒充晨报录入证据。
+- 工具原始 JSON 和内部 ID 不直接回复少主；用賈南風口吻说清事项、日期、提醒时间和当前是否真正录入。
+- `control_action` 必须从 schema 枚举选取：日程 `upsert_event/cancel_event`，待办 `upsert_task/set_task_status/archive_task`，补记 `upsert_note/archive_note`，偏好 `set_preference/upsert_preference/clear_preference`，地点 `set_location/clear_location`。晨报转交不使用 `sessions_spawn`、`sessions_yield`或 `life_files` 去猜语法。
 
 ## v1.15 Codex 专属 Workboard
 

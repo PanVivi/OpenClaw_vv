@@ -1,5 +1,13 @@
 # housekeeper｜賈南風｜部署进度
 
+## 2026-08-09 晨间玉简全模块转交 v1.17
+
+- 当前设计与实际部署版本：v1.17 `CANDIDATE`；身份仍为 `housekeeper`，Telegram account/binding 仍为 `housekeeper`，没有改名。
+- `morning_brief_handoff` 只允许提交、查询和取消持久转交；housekeeper 不能直接写 life owner 文件，也不并行创建提醒。
+- 少主交代抬头、天气关注、空气敏感、衣行偏好、生活待办、门人备注、日程或小签时均可代收；只有 life 实际应用后的 `applied` 才能回复已录入。
+- 自然语言转交生产验收已形成 applied 回执并正确投影；pending/applying/blocked 不得包装成完成。
+- 正式冻结计划和三次独立完整审查已写入官方 Task Flow，当前任务在文档与同步完成前不会进入最终通知。
+
 ## 2026-07-26 Codex 任务面板 v1.15
 
 - 当前设计与实际部署版本：v1.15 `CANDIDATE`；完整继承 v1.14，不改变姓名、人格、大总管职责、风险边界或既有权限。

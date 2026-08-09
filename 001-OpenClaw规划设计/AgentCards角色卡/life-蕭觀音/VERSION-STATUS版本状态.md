@@ -14,5 +14,7 @@
 | v0.10 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.09，追加自动化固定路由、直接答复和失败熔断 |
 | v0.11 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.10，追加内部调度面与少主角色沟通面 |
 | v0.12 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.11，新增固定 `users/Vivi/` 少主专属生活资料区与 `life_files` |
+| v0.13 | `CANDIDATE` | NAS 回滚基线 | 完整继承 v0.12，新增晨间玉简状态查询与日程输入 |
+| v0.14 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.13，新增全部晨报模块 typed 控制、默认提前 60 分钟提醒和正式 handoff 应用 |
 
-当前没有 `STABLE` 版本。v0.12 是当前设计版本；实际部署状态以根目录 `DeploymentStatus部署状态.md` 为准。
+当前没有 `STABLE` 版本。v0.14 是当前设计版本；实际部署状态以根目录 `DeploymentStatus部署状态.md` 为准。
