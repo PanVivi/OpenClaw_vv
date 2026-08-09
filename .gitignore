@@ -21,3 +21,8 @@ Thumbs.db
 # Plugin build dependencies are restored with npm install
 node_modules/
 
+# Python test/build caches are local-only
+__pycache__/
+*.py[cod]
+.pytest_cache/
+

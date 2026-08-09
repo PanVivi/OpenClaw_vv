@@ -1,5 +1,14 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-08-09 晨间玉简全模块控制 v0.14
+
+- 当前设计与实际部署版本：v0.14 `CANDIDATE`；身份仍为 `life`，Telegram account/binding 仍为 `life`，没有改名。
+- `morning-brief-control 1.0.2` 只向 life 暴露 `morning_brief_control`；可查询唯一晨报、维护全部允许人工输入的模块，并在写后回读投影。
+- 天气、AQI、农历、在线和系统任务事实不可人工覆盖；非默认日程默认提前 60 分钟，事件与提醒时间分别保存。
+- 新会话真实回答晨报已启用、每天 06:00 和可维护信息；所有调用零失败。2026-08-09 纠正版由 life account 真发为 message ID `278`。
+- `life_automation` 生产真实创建、无 `schedule_kind` 更新 `at`、读取和删除回归通过，临时提醒已清除。
+- 当前验收输入 active 数均为 0；完整证据见 `MorningBriefAndWorkflowRepair修复与生产验收报告-v0.01.md`。
+
 ## 2026-07-28 少主专属生活资料区修复
 
 - 当前设计与实际部署版本：v0.12 `CANDIDATE`；生产角色五件套来自固定提交 `7eaaaa2`。

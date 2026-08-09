@@ -1,0 +1,13 @@
+{
+  "account_id": "life",
+  "chat_id": "REQUIRED_NUMERIC_TELEGRAM_CHAT_ID",
+  "timezone": "Asia/Taipei",
+  "default_latitude": 0.0,
+  "default_longitude": 0.0,
+  "location_is_placeholder": true,
+  "failure_notice_enabled": false,
+  "owner_profile_path": null,
+  "morning_inputs_path": null,
+  "runtime_status_path": null,
+  "data_dir": "/Volume3/OpenClaw/home/.openclaw/data/hehuan-daily"
+}

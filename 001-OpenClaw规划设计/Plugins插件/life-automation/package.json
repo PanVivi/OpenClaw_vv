@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "plugin:validate": "npm run build"
+    "test": "npm run build && node test/integration.mjs",
+    "plugin:validate": "npm run test"
   },
   "files": [
     "dist",

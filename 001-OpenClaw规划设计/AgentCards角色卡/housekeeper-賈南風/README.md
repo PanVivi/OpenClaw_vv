@@ -1,10 +1,10 @@
-# housekeeper｜賈南風｜当前角色卡 v1.15｜CANDIDATE 候选版
+# housekeeper｜賈南風｜当前角色卡 v1.17｜CANDIDATE 候选版
 
 本目录保存当前设计版本。历史版本位于 `旧文档/`；当前实际运行状态以 `DeploymentStatus部署状态.md` 为准。
 
 ## 版本状态
 
-- 当前设计版本：v1.15 `CANDIDATE`；v1.02 为最近 `STABLE` 角色基线，实际部署状态见 `DeploymentStatus部署状态.md`。
+- 当前设计版本：v1.17 `CANDIDATE`；v1.02 为最近 `STABLE` 角色基线，实际部署状态见 `DeploymentStatus部署状态.md`。
 - v1.03—v1.07：`REJECTED`，不得部署或作为后续底稿。
 - v1.08：`CANDIDATE`，NAS 历史部署与回滚基线。
 - v1.09：`CANDIDATE`，A2A 与记忆隔离设计基线。
@@ -13,6 +13,12 @@
 - v1.13：`CANDIDATE`，追加直接答复、能力预检、失败熔断和可靠通知。
 - v1.14：`CANDIDATE`，追加内部工作面与少主角色沟通面。
 - v1.15：`CANDIDATE`，追加独立 Codex 任务面板登记、查询、取消和最终通知规则。
+- v1.16：`CANDIDATE`，新增晨间玉简信息转交入口。
+- v1.17：`CANDIDATE`，扩展为全部晨报模块的持久转交，并以 life applied 回执作为完成门。
+
+## v1.17 增量
+
+完整继承 v1.16。少主可以把任何晨报模块信息交给賈南風；她只建立持久 handoff，不直接写 life 文件。只有蕭觀音实际应用成功后的 `applied` 才算录入完成。
 
 ## v1.15 增量
 

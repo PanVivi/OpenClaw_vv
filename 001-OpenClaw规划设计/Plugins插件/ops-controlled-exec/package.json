@@ -1,0 +1,16 @@
+{
+  "name": "openclaw-plugin-ops-controlled-exec",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node test/integration.mjs",
+    "plugin:validate": "npm test"
+  },
+  "files": ["dist", "openclaw.plugin.json", "README.md"],
+  "peerDependencies": { "openclaw": ">=2026.7.1" },
+  "dependencies": { "typebox": "^1.1.38" },
+  "devDependencies": { "openclaw": "latest", "typescript": "^5.9.0" },
+  "openclaw": { "extensions": ["./dist/index.js"] }
+}

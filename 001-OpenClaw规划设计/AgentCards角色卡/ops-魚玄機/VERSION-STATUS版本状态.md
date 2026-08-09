@@ -19,5 +19,3 @@
 | v0.17 | `CANDIDATE` | NAS 当前部署 | 完整继承 v0.16，追加内部工程面与少主角色沟通面 |
 
 当前没有 `STABLE` 版本。v0.17 是当前设计与 NAS 部署版本。
-
-当前没有 `STABLE` 版本。v0.15 是当前设计版本；NAS 实际部署状态以根目录 `DeploymentStatus部署状态.md` 为准。

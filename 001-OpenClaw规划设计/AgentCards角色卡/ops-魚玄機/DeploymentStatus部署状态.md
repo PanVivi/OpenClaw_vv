@@ -1,5 +1,13 @@
 # ops｜魚玄機｜部署进度
 
+## 2026-08-09 风险门与受控执行
+
+- 身份没有改名：Agent ID 仍为 `ops`，Telegram account/binding 仍为 `default`。
+- `ops-controlled-exec 1.0.0` 提供固定 schema 的只读状态、诊断、哈希和有限日志，不接受任意命令文本。
+- `workflow-governance 1.0.2` 对通用高风险 `exec/process` 在副作用前 fail-closed；不调用原生 `requireApproval`，不向少主发送工业审批卡。
+- 生产新会话要求重启 Gateway 时，魚玄機只核对真实状态并用自然中文说明影响和替代，没有执行重启、没有产生审批卡。
+- 低中风险不向少主逐命令索权；未覆盖的高风险操作保持 blocked，直到有固定受控能力和一次明确决定。
+
 ## 2026-07-26 角色表达 v0.17
 
 - 当前设计与实际部署版本：v0.17 `CANDIDATE`；工程执行职责、权限与风险分级未变。

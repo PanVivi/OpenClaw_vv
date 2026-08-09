@@ -1,10 +1,10 @@
-# life｜蕭觀音｜当前角色卡 v0.12｜CANDIDATE 候选版
+# life｜蕭觀音｜当前角色卡 v0.14｜CANDIDATE 候选版
 
 本目录保存当前设计版本。历史版本位于 `旧文档/`；实际运行状态以 `DeploymentStatus部署状态.md` 为准。
 
 ## 版本状态
 
-- 当前设计版本：v0.12；实际部署状态见 `DeploymentStatus部署状态.md`。
+- 当前设计版本：v0.14；实际部署状态见 `DeploymentStatus部署状态.md`。
 - v0.01—v0.04：`REJECTED`，不得部署或作为后续底稿。
 - v0.05：`CANDIDATE`，NAS 当前部署与回滚基线。
 - v0.06：`CANDIDATE`，A2A 与记忆隔离设计基线。
@@ -13,8 +13,10 @@
 - v0.10：`CANDIDATE`，追加自动化固定路由、直接答复和失败熔断。
 - v0.11：`CANDIDATE`，追加内部调度面与少主角色沟通面；职责和权限不变。
 - v0.12：`CANDIDATE`，新增少主专属生活资料区；通用文件与工程权限仍拒绝。
+- v0.13：`CANDIDATE`，新增晨间玉简状态查询与日程输入。
+- v0.14：`CANDIDATE`，新增全部晨报模块的 typed 控制、回读投影和默认提前 60 分钟提醒。
 
-v0.12 不改变角色属性与职责归属。一次性长任务接入 Workboard，周期性/未来触发仍由 `life_automation` 持久化；面向少主默认自然说明安排、结果和通知时点。少主专属生活资料由 `life_files` 在固定 `users/Vivi/` 子树内管理，不开放通用工作区文件权限。
+v0.14 不改变角色属性与职责归属。一次性长任务接入 Workboard，周期性/未来触发仍由 `life_automation` 持久化；面向少主默认自然说明安排、结果和通知时点。少主专属生活资料由 `life_files` 在固定 `users/Vivi/` 子树内管理；晨间玉简由 `morning_brief_control` 维护全部允许人工输入的模块，不开放通用工作区文件权限。
 - 当前没有 `STABLE` 版本。
 
 ## 角色定位
