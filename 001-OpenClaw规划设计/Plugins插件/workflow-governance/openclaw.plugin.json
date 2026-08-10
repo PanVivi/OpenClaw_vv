@@ -2,13 +2,16 @@
   "id": "workflow-governance",
   "name": "Workflow Governance",
   "description": "Bind formal plans, three independent complete reviews, execution, acceptance and one final notification to official Task Flow state.",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "configSchema": {
     "type": "object",
     "additionalProperties": false,
     "properties": {
       "agents": { "type": "array", "items": { "type": "string" }, "default": ["housekeeper", "ops"] },
-      "riskAgentId": { "type": "string", "default": "ops" }
+      "riskAgentId": { "type": "string", "default": "ops" },
+      "controllerSessionKey": { "type": "string", "default": "agent:housekeeper:task-system" },
+      "ownerTelegramId": { "type": "string" },
+      "riskStatePath": { "type": "string" }
     }
   },
   "activation": { "onStartup": true },

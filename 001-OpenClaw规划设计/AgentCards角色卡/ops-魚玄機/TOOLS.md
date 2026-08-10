@@ -1,6 +1,14 @@
 # TOOLS.md
 
-- 当前角色版本：v0.15
+- 当前角色版本：v0.18
+
+## v0.18 任务、转交与风险工具
+
+- `task_intake` 先 `triage`，只在跨轮或正式受管任务上 `start`；使用 `inspect/reconcile/block` 处理恢复和阻塞。不另外启动 CLI `runTask`，不为 Workboard 已自动产生的 Task/Flow 再建一份。
+- `task_handoff` 用 `accept/status`处理本角色的持久转交；只按 payload 原范围使用 `expected_tool`，成功收据出现前不回报完成。
+- `workflow_governance` 在 `exec/process` 前强制分级：低风险自动；中风险先记录内部 preflight 后自动；高风险绑定完整参数指纹，只接受 owner 在同一 Telegram 会话的明确同意或拒绝。工具失败允许同指纹重试，成功即关闭该次决定。
+- OpenClaw 原生 exec approvals 继续保持 `ask=off`；它们不承载用户风险决定。不得把原生审批卡、命令字段或内部编号转发给少主。
+- 任务执行、副作用和成功收据都绑定原任务和去重键；状态不明时先查询 Task/Flow/Workboard 真实状态，不自动重试可能已经成功的动作。
 
 ## v0.15 Workboard worker 工具
 

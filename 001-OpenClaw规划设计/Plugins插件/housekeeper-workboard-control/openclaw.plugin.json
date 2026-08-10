@@ -1,8 +1,8 @@
 {
   "id": "housekeeper-workboard-control",
   "name": "Housekeeper Workboard Control",
-  "version": "1.0.3",
-  "description": "Allow only the housekeeper agent to trigger the official Workboard dispatcher and read a card by UUID without granting general exec.",
+  "version": "1.1.0",
+  "description": "Allow only the housekeeper agent to call the official Workboard dispatcher and inspect a card through in-process Gateway RPC without granting general exec or launching the CLI.",
   "contracts": {
     "tools": [
       "housekeeper_workboard_start",
@@ -16,6 +16,11 @@
       "agentId": {
         "type": "string",
         "default": "housekeeper"
+      },
+      "boardId": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9._-]{0,79}$",
+        "default": "task-system"
       },
       "timeoutMs": {
         "type": "integer",

@@ -70,7 +70,7 @@ try {
   const eventParams = {
     action: "upsert_event",
     title: "技能考试",
-    event_at: "2026-08-10T09:15:00+08:00",
+    event_at: "2099-08-10T09:15:00+08:00",
     location: "考场",
     reminder_minutes: 60,
     dedupe_key: "event-skill-exam-20260810",
@@ -78,12 +78,12 @@ try {
   };
   const event = await lifeTool.execute("event", eventParams);
   assert.equal(event.details.ok, true);
-  assert.equal(event.details.eventAt, "2026-08-10T01:15:00.000Z");
-  assert.equal(event.details.reminderAt, "2026-08-10T00:15:00.000Z");
+  assert.equal(event.details.eventAt, "2099-08-10T01:15:00.000Z");
+  assert.equal(event.details.reminderAt, "2099-08-10T00:15:00.000Z");
 
   const earlyEvent = await lifeTool.execute("early-event", {
     action: "upsert_event",
-    event_at: "2026-08-10T00:30:00+08:00",
+    event_at: "2099-08-10T00:30:00+08:00",
     title: "凌晨验收事项",
     recurrence: "none",
     reminder_minutes: 60,
@@ -96,7 +96,7 @@ try {
   const task = await lifeTool.execute("task", {
     action: "upsert_task",
     title: "准备考试证件",
-    due_date: "2026-08-10",
+    due_date: "2099-08-10",
     task_status: "todo",
     dedupe_key: "task-exam-documents"
   });
@@ -108,8 +108,8 @@ try {
       action: "upsert_note",
       module,
       content: `${module} 的已确认测试补记`,
-      start_date: "2026-08-10",
-      end_date: "2026-08-10",
+      start_date: "2099-08-10",
+      end_date: "2099-08-10",
       dedupe_key: `note-${module}`
     });
     assert.equal(note.details.ok, true, module);
@@ -161,8 +161,8 @@ try {
   const ambiguousLocation = await lifeTool.execute("location-ambiguous", {
     action: "set_location",
     location_query: "北城",
-    start_date: "2026-08-10",
-    end_date: "2026-08-10",
+    start_date: "2099-08-10",
+    end_date: "2099-08-10",
     dedupe_key: "location-north-city"
   });
   assert.equal(ambiguousLocation.details.ok, false);
@@ -172,14 +172,14 @@ try {
     action: "set_location",
     location_query: "北城",
     location_index: 1,
-    start_date: "2026-08-10",
-    end_date: "2026-08-10",
+    start_date: "2099-08-10",
+    end_date: "2099-08-10",
     dedupe_key: "location-north-city"
   });
   assert.equal(selectedLocation.details.ok, true);
   assert.equal(selectedLocation.details.location, "北城 · 乙地 · 测试国");
 
-  const day = await lifeTool.execute("day", { action: "get_day", date: "2026-08-10" });
+  const day = await lifeTool.execute("day", { action: "get_day", date: "2099-08-10" });
   assert.equal(day.details.events.some((item) => item.title === "凌晨验收事项"), true);
   assert.equal(day.details.ok, true);
   assert.equal(day.details.events.length, 2);
@@ -196,7 +196,7 @@ try {
     dedupe_key: "handoff-dentist-20260811",
     payload: {
       title: "牙科复诊",
-      event_at: "2026-08-11T15:00:00+08:00",
+      event_at: "2099-08-11T15:00:00+08:00",
       reminder_minutes: 60,
       dedupe_key: "event-dentist-20260811"
     }
@@ -206,14 +206,14 @@ try {
   const handoffStatus = await housekeeperTool.execute("handoff-status", { action: "status", handoff_id: handoff.details.handoffId });
   assert.equal(handoffStatus.details.handoff.status, "applied");
 
-  const nextDay = await lifeTool.execute("next-day", { action: "get_day", date: "2026-08-11" });
+  const nextDay = await lifeTool.execute("next-day", { action: "get_day", date: "2099-08-11" });
   assert.equal(nextDay.details.events.length, 1);
   assert.equal(nextDay.details.events[0].source.kind, "housekeeper_handoff");
 
   const cancelled = await lifeTool.execute("cancel", { action: "cancel_event", event_id: event.details.recordId });
   assert.equal(cancelled.details.reminderStatus, "cancelled");
   await lifeTool.execute("cancel-early", { action: "cancel_event", event_id: earlyEvent.details.recordId });
-  const afterCancel = await lifeTool.execute("day-after-cancel", { action: "get_day", date: "2026-08-10" });
+  const afterCancel = await lifeTool.execute("day-after-cancel", { action: "get_day", date: "2099-08-10" });
   assert.equal(afterCancel.details.events.length, 0);
 
   const stored = JSON.parse(await readFile(join(ownerRoot, "morning-brief-inputs.json"), "utf8"));

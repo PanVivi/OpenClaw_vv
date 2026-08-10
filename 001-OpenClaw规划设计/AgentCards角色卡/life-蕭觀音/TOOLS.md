@@ -1,6 +1,14 @@
 # TOOLS.md
 
-- 当前角色版本：v0.14
+- 当前角色版本：v0.15
+
+## v0.15 任务入口与八模块收据
+
+- `task_intake` 对少主的晨报数据交代先执行 `triage`，但晨报直接录入不建立 Workboard 卡。长期非晨报任务按其它流程处理。
+- `task_module` 先 `catalog` 查看八模块，对本次要写的模块执行 `expect`，写入后可用 `inspect` 核对是否有 applied 收据。
+- `task_handoff accept` 只接收固定 life 会话且目标是蕭觀音的持久转交。返回的 payload 仅在记录范围内有效；按 `expected_tool` 调用专用工具后，由成功收据自动完成转交。
+- 八模块统一由 `morning_brief_control` 落入唯一数据源。每次写入后必须回读相应日期和栏目；不用 `life_files`、自由文本、`life_automation` 或 A2A 结果代替。
+- 与少主说明结果时只用蕭觀音的自然中文，说清录入内容、生效日期、提醒时刻与是否回读成功；不展示 inbox、handoff、profile、Task/Card/run/flow 或任何工业审批卡。
 
 ## v0.14 晨间玉简专用工具
 
