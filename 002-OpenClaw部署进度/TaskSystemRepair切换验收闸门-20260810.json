@@ -1,0 +1,36 @@
+{
+  "schema": "openclaw.task-system-repair-cutover-acceptance",
+  "schemaVersion": 1,
+  "createdAt": "2026-08-10T08:00:00+08:00",
+  "pluginsLoaded": true,
+  "identityUnchanged": true,
+  "threeEntrypoints": true,
+  "eightModules": true,
+  "crossRoleHandoff": true,
+  "riskLevels": true,
+  "failureRecovery": true,
+  "realTelegramReceipt": true,
+  "rollbackReady": true,
+  "evidence": {
+    "plugins": [
+      "task-system-control@1.0.0 loaded",
+      "workflow-governance@1.1.0 loaded",
+      "housekeeper-workboard-control@1.1.0 loaded"
+    ],
+    "bindings": [
+      "ops/default",
+      "housekeeper/housekeeper",
+      "life/life"
+    ],
+    "entrypoints": "housekeeper, ops and life each returned the same eight-module catalog from the production plugin",
+    "modules": "all eight modules passed create, update, inspect, cancel and cleanup on an isolated future date; the schedule reminder was exactly one hour early",
+    "handoff": "housekeeper to life handoff became applied only after the target accepted and morning_brief_control produced a successful receipt",
+    "risk": "production ops session automatically ran a read-only command; a gateway restart was blocked before side effects, explained once in natural Chinese, and its duplicate was suppressed",
+    "recovery": "local failure-path integration passed and the legacy ready/running self-lock was repaired without deleting Task or Workboard history",
+    "telegram": "the production 06:00 morning brief was delivered by the life account with Telegram messageId 279",
+    "rollback": "backup task-system-repair-20260810-006 passed isolated shadow restore, file-hash verification and config validation; no active state changed"
+  },
+  "knownAcceptanceBoundary": "A genuine owner-originated inbound Telegram update cannot be impersonated by an administrative CLI call. Runtime owner filtering, authenticated historical routes, three real role sessions and real outbound delivery were verified; the next real owner message remains the final inbound observation.",
+  "liveRollbackRehearsal": false,
+  "liveRollbackRehearsalReason": "A live rollback would require another intentional Gateway interruption after the approved deployment restart. Backup restoration was rehearsed in an isolated production-side shadow tree instead; this is reported as a remaining condition, not presented as a live rollback."
+}

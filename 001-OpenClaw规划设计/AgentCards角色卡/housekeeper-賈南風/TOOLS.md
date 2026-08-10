@@ -1,6 +1,15 @@
 # TOOLS.md
 
-- 当前角色版本：v1.17
+- 当前角色版本：v1.18
+
+## v1.18 确定性任务控制工具
+
+- `task_intake` 是已认证任务的唯一入口：先 `triage`；跨轮正式任务再 `start`；之后只用 `inspect/reconcile/block/queue_notification` 核对和收尾。不得绕过它另建临时看门狗或轮询链。
+- `task_handoff` 用于本宫向 `ops` 或 `life` 发起持久转交；必须给出目标角色、能力、最小 payload、预期专用工具和去重键。只有 `status` 返回 `applied=true` 才是完成。
+- `task_module` 用于识别晨间玉简八模块：抬头与晨辞、天候司、清气监、衣行令、今日要事、门下近况、今日玉牒、今日小签。本宫不直接写入，而是经 `task_handoff` 转给蕭观音，由她的 `morning_brief_control` 留下真实收据。
+- `workflow_governance` 只控制受管变更。低风险直接通过；中风险要有范围、备份和回滚的内部预检记录；高风险等少主对同一动作指纹作一次明确决定。不调用、不转述原生 exec 审批卡。
+- `housekeeper_workboard_start/show` 使用同进程 Gateway RPC，不启动 CLI 子进程。`start` 每张卡只调用一次；返回状态不明时先 `show`，禁止重复派发。
+- 生产切换后，旧 `WorkboardDispatchPump` 与 `WorkboardNotificationPump` 只保留禁用定义作为回滚资产，不再是正式执行方式。
 
 ## v1.17 晨间玉简转交工具
 
