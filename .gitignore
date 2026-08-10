@@ -12,6 +12,13 @@ workspace-*/
 *.mht
 *.har
 
+# Local credentials, browser traces, and generated review artifacts
+.codex-temp-*/
+.playwright-mcp/
+pw.txt
+mini-muse-existing-validation.json
+mini-muse-v2-upgrade/
+
 # OS/editor
 .DS_Store
 Thumbs.db

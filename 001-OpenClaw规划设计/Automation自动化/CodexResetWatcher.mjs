@@ -413,6 +413,8 @@ function deliverViaLife(message) {
       "agent",
       "--agent",
       "life",
+      "--model",
+      "custom-3/LongCat-2.0",
       "--session-key",
       "agent:life:codex-reset-watcher",
       "--message",
