@@ -5,24 +5,24 @@
 ## 当前阅读顺序
 
 1. [文档与版本规则 v1.05](000-OpenClaw文档管理/DocumentRules文档编号规则-v1.05.md)
-2. [快速简报 v1.12](001-OpenClaw规划设计/QuickBrief快速简报-v1.12.md)
-3. [最终设计 v1.11（晨报与确定性工作流增量）](001-OpenClaw规划设计/FinalDesign最终设计-v1.11.md)
+2. [快速简报 v1.13](001-OpenClaw规划设计/QuickBrief快速简报-v1.13.md)
+3. [最终设计 v1.12（全任务系统收口）](001-OpenClaw规划设计/FinalDesign最终设计-v1.12.md)
 4. [角色卡库](001-OpenClaw规划设计/AgentCards角色卡/README.md)
 5. [角色卡审核 v0.08](001-OpenClaw规划设计/RoleCardAudit角色卡审核-v0.08.md)
 6. 对应 Agent 的 DeploymentStatus、VERSION-STATUS 和五个 workspace 文件
 7. [共同协议 v0.08](001-OpenClaw规划设计/AgentCards角色卡/共同协议/SharedProtocol共同协议.md)
-8. [工作流程 v0.12（确定性门控增量）](001-OpenClaw规划设计/Workflows工作流程-v0.12.md)
-9. [部署方案 v0.13（晨报与治理增量）](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.13.md)
+8. [工作流程 v0.13（任务系统与治理收口）](001-OpenClaw规划设计/Workflows工作流程-v0.13.md)
+9. [部署方案 v0.14（全任务系统修复）](001-OpenClaw规划设计/DeploymentPlan部署方案-v0.14.md)
 10. [无损内容更新任务 v0.01](002-OpenClaw部署进度/LosslessContentUpdate无损内容更新任务-v0.01.md)
-11. [实施路线 v0.14](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.14.md)
-12. [当前进度 v0.28](002-OpenClaw部署进度/CurrentProgress当前进度-v0.28.md)
+11. [实施路线 v0.15](001-OpenClaw规划设计/ImplementationRoadmap实施路线图-v0.15.md)
+12. [当前进度 v0.30](002-OpenClaw部署进度/CurrentProgress当前进度-v0.30.md)
 13. [委派自动化修复报告 v0.01](002-OpenClaw部署进度/DelegatedAutomation委派自动化修复报告-v0.01.md)
 14. [萧观音自动化插件部署报告 v0.01](002-OpenClaw部署进度/LifeAutomationPlugin萧观音自动化插件部署报告-v0.01.md)
 15. [贾南风非阻塞委派报告 v0.01](002-OpenClaw部署进度/HousekeeperAsyncDispatch贾南风非阻塞委派报告-v0.01.md)
 16. [鱼玄机 Telegram 运维插件历史报告 v0.01](002-OpenClaw部署进度/OpsTelegramAdmin鱼玄机Telegram运维插件部署报告-v0.01.md)
 17. [鱼玄机原生 Telegram 绑定修复报告 v0.01](002-OpenClaw部署进度/OpsTelegramNativeBinding鱼玄机原生Telegram绑定修复报告-v0.01.md)
 18. [部署后故障与修复 v0.02](003-OpenClaw事故经验/PostDeploymentRecovery部署后故障与修复-v0.02.md)
-19. [来源索引 v0.26](000-OpenClaw文档管理/SourceIndex来源索引-v0.26.md)
+19. [来源索引 v0.28](000-OpenClaw文档管理/SourceIndex来源索引-v0.28.md)
 20. [魚玄機运行权限修复报告 v0.01](002-OpenClaw部署进度/OpsRuntimePermissions鱼玄机运行权限修复报告-v0.01.md)
 21. [魚玄機任务级授权自动化修复报告 v0.01](002-OpenClaw部署进度/OpsTaskAuthorization鱼玄机任务级授权自动化修复报告-v0.01.md)
 22. [原设计增量恢复与风险分级报告 v0.01](002-OpenClaw部署进度/IncrementalDesignRecovery原设计增量恢复与风险分级报告-v0.01.md)
@@ -35,6 +35,10 @@
 29. [角色表达与通知修复部署报告 v0.01](002-OpenClaw部署进度/RoleVoice角色表达与通知修复部署报告-v0.01.md)
 30. [萧观音少主专属资料区修复与验收报告 v0.01](002-OpenClaw部署进度/LifeOwnerFiles萧观音少主专属资料区修复与验收报告-v0.01.md)
 31. [晨报、全模块控制与工作流修复生产验收 v0.01](002-OpenClaw部署进度/MorningBriefAndWorkflowRepair修复与生产验收报告-v0.01.md)
+32. [全任务系统修复与生产验收 v0.01](002-OpenClaw部署进度/TaskSystemRepair修复与生产验收报告-v0.01.md)
+33. [全任务系统现场复核与文档勘误 v0.01](002-OpenClaw部署进度/TaskSystemRepair现场复核与文档勘误-v0.01.md)
+34. [Codex Task Panel 停用与稳定性门禁 v0.01](002-OpenClaw部署进度/CodexTaskPanel停用与稳定性门禁-v0.01.md)
+35. [本地未提交文件核验 v0.01](002-OpenClaw部署进度/LocalUncommittedAudit本地未提交文件核验-v0.01.md)
 
 ## 当前角色版本
 
@@ -55,7 +59,7 @@ companion-lv      呂雉 v0.08
 
 賈南風可直接回答简单生活问题；需要设置、定时、未来投递、持续跟踪、生活工具或 companion 协调时转蕭觀音。字段完整的正式委派包可承载少主既有授权，接收 Agent 不要求少主重复指令；life 仍是生活自动化唯一业务所有者。`life-automation` 已让萧观音直接执行受限自动化，不依赖 Codex、ops 或管理员在线。`life_files` 仅允许萧观音在固定 `users/Vivi/` 专属生活资料区管理受限文本资料，不开放通用文件、shell 或工程写入。
 
-賈南風的正式任务以官方 Tasks / Task Flow 为运行事实；冻结计划、三次独立完整审核、实施、验收、同步和最终通知由 `workflow_governance` 持久门控，不靠角色记忆。旧 Workboard 仍由固定派发泵和可重放通知泵推进；当前版本缺少 Task/Flow mutation Hook，在替代链验收前不能停用两个一分钟 Cron。
+賈南風的正式任务以官方 Tasks / Task Flow 为运行事实；`task-system-control` 负责持久 intake、唯一父 Flow、真实 Workboard/Task、跨角色 handoff 与完成 proof，`workflow_governance` 持久门控冻结计划、三次独立完整审查、顺序实施、验收、同步和最终通知。旧 WorkboardDispatchPump 与 WorkboardNotificationRelay 已停用但保留定义和历史，当前链路不再依赖两个一分钟 Cron。
 
 魚玄機优先使用 `ops_controlled_exec` 等固定参数化能力。低风险自动执行，中风险由内部完整复核、备份、回滚和验证闭环；高风险在副作用前由角色自然说明并只询问一次。通用高风险 `exec/process` 被 fail-closed 拦截，不再生成原生工业审批卡；没有专用受控能力的动作保持 blocked。身份仍为 `ops`，Telegram account 仍为 `default`，没有改名。
 
@@ -65,4 +69,4 @@ companion-lv      呂雉 v0.08
 
 故障排查、兼容性、权限和安全判断必须遵守根目录 `AGENTS.md`：先检索当前网络资料，再结合现场证据判断和验证，不得只凭记忆猜测。
 
-少主明确交给 Codex 的任务使用独立 `codex` Workboard 与 Codex Desktop 每小时 Scanner；它不进入 `production` dispatcher。固定执行政策、客户端、计划、三轮审核和部署报告分别位于 `001-OpenClaw规划设计/Automation自动化/` 与 `002-OpenClaw部署进度/`。
+Codex Task Panel 的 standalone Scheduled Scanner 已永久停用并从当前 Cron 清单移除。它曾在客户端锁生效前持续创建独立任务与 WebView，不能按旧部署计划恢复；当前只允许人工触发检查。重新启用自动扫描前必须另行完成单任务复用、最大并发 1、积压上限、退避和连续稳定性验收。`CodexResetWatcher` 是独立的额度重置监控，当前仍启用且最近运行成功。
