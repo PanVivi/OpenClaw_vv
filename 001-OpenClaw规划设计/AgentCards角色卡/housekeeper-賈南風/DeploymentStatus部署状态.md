@@ -1,5 +1,13 @@
 # housekeeper｜賈南風｜部署进度
 
+## 2026-08-11 模型路由
+
+- 身份仍为 `housekeeper`，Telegram account/binding 仍为 `housekeeper`，没有改名或重绑。
+- 主链已部署为 `custom-2/grok-4.5` → Luna → Qwen 3.8 Max → DeepSeek V4 Flash → LongCat；无投递真实调用实际命中 Grok 4.5。
+- 子 Agent 使用任务分流/生活链：Composer 2.5 → Luna → Qwen 3.8 Max → DeepSeek V4 Flash → LongCat。
+- 旧会话 model override 已清除；角色卡、工具、workspace、transcript 与个人记忆未改变。
+- 完整证据：`002-OpenClaw部署进度/ModelRouting部署与生产验收报告-v0.01.md`。
+
 ## 2026-08-09 晨间玉简全模块转交 v1.17
 
 - 当前设计与实际部署版本：v1.17 `CANDIDATE`；身份仍为 `housekeeper`，Telegram account/binding 仍为 `housekeeper`，没有改名。

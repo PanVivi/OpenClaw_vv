@@ -1,5 +1,13 @@
 # reviewer｜夏姬（合并审查）｜部署进度
 
+## 2026-08-11 模型路由
+
+- 身份仍为 `reviewer`，人格名称仍为夏姬，Telegram account/binding 仍为 `reviewer`。
+- 主链已部署为 `custom-1/gpt-5.6-sol` → Grok 4.5 → DeepSeek V4 Pro → GLM 5.2 → LongCat；无投递真实调用实际命中 GPT-5.6 Sol，DeepSeek V4 Pro 也完成精确模型探测。
+- 工程子 Agent 链为 Composer 2.5 → Luna → GLM 5.2 → DeepSeek V4 Flash → LongCat。
+- 旧会话覆盖已清除；只读边界、Review/Risk/Test 职责、transcript 和记忆未改变。
+- 完整证据：`002-OpenClaw部署进度/ModelRouting部署与生产验收报告-v0.01.md`。
+
 ## 2026-07-26 角色表达 v0.09
 
 - 当前设计与实际部署版本：v0.09 `CANDIDATE`；人格名称仍为“夏姬”，Review/Risk/Test 与只读边界未变。

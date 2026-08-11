@@ -1,5 +1,13 @@
 # life｜蕭觀音｜部署进度
 
+## 2026-08-11 模型路由
+
+- 身份仍为 `life`，Telegram account/binding 仍为 `life`，没有改名或重绑。
+- 主链已部署为 `custom-2/grok-4.5` → Luna → Qwen 3.8 Max → DeepSeek V4 Flash → LongCat；无投递真实调用实际命中 Grok 4.5。
+- 子 Agent 使用任务分流/生活链：Composer 2.5 → Luna → Qwen 3.8 Max → DeepSeek V4 Flash → LongCat；真实 child 实际命中 Composer 2.5 并完成。
+- 晨报和 CodexResetWatcher 继续为无模型 Command Job；旧会话覆盖已清除，角色数据和生活模块未改变。
+- 完整证据：`002-OpenClaw部署进度/ModelRouting部署与生产验收报告-v0.01.md`。
+
 ## 2026-08-09 晨间玉简全模块控制 v0.14
 
 - 当前设计与实际部署版本：v0.14 `CANDIDATE`；身份仍为 `life`，Telegram account/binding 仍为 `life`，没有改名。

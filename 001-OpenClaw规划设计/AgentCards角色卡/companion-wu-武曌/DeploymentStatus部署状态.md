@@ -1,5 +1,13 @@
 # companion-wu｜武曌｜部署进度
 
+## 2026-08-11 模型路由
+
+- 身份仍为 `companion-wu`，Telegram account/binding 仍为 `companion-wu`，人格和非工程边界未变。
+- 主链已部署为 `custom-2/grok-4.20-non-reasoning` → Qwen 3.6 Flash → LongCat → DeepSeek V4 Flash；无投递真实调用实际命中 Grok 4.20 non-reasoning。
+- 子 Agent 使用任务分流/生活链：Composer 2.5 → Luna → Qwen 3.8 Max → DeepSeek V4 Flash → LongCat。
+- 旧会话覆盖已清除；工具、workspace、transcript 和个人记忆未改变。
+- 完整证据：`002-OpenClaw部署进度/ModelRouting部署与生产验收报告-v0.01.md`。
+
 ## 2026-07-26 角色表达 v0.08
 
 - 当前设计与实际部署版本：v0.08 `CANDIDATE`；绝对权威型陪伴人格和非工程边界未变。

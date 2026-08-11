@@ -1,5 +1,14 @@
 # ops｜魚玄機｜部署进度
 
+## 2026-08-11 模型路由
+
+- 身份仍为 `ops`，Telegram account/binding 仍为 `default`，没有改名或重绑。
+- 主链已部署为 `custom-1/gpt-5.6-sol` → Grok 4.5 → GLM 5.2 → DeepSeek V4 Pro → LongCat；无投递真实调用实际命中 GPT-5.6 Sol。
+- 工程子 Agent 链为 Composer 2.5 → Luna → GLM 5.2 → DeepSeek V4 Flash → LongCat；真实 child 实际命中 Composer 2.5 并完成。
+- 2026-08-11 14:28 +08:00 自然 heartbeat 实际使用 LongCat；当前 schema 的 heartbeat model 只接受字符串，没有独立 fallback 对象。
+- 旧会话覆盖已清除；风险门、权限、工具、任务系统、transcript 和个人记忆未改变。
+- 完整证据：`002-OpenClaw部署进度/ModelRouting部署与生产验收报告-v0.01.md`。
+
 ## 2026-08-09 风险门与受控执行
 
 - 身份没有改名：Agent ID 仍为 `ops`，Telegram account/binding 仍为 `default`。
