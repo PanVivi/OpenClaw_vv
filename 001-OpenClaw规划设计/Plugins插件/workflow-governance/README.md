@@ -1,11 +1,41 @@
-# Workflow Governance
+# Workflow Governance 1.3.0
 
-当前版本：1.1.0
+OpenClaw 2026.7.1+ 的正式计划、三次独立完整审查、三审告知风险治理、实施、验收、同步、最终通知插件。
 
-面向 `housekeeper` 和 `ops` 的 OpenClaw 2026.7.1+ 治理插件。它把正式计划 SHA-256、三次独立完整审查、执行阶段、验收证据和唯一最终通知写入官方 Task Flow。所有入口固定绑定 `agent:housekeeper:task-system`，不再因调用角色或 Telegram 会话不同而分裂所有者。
+## 计划审查（不变）
 
-计划哈希变更会清空全部审查；少于三次或不是 `independent_complete` 的审查不能开启执行。验收、文档和同步结束后，flow 先进入 `notification_pending`；只有记录真实通知 message ID 才终结。
+计划哈希变化会清空审查；只有同一哈希下三次 `independent_complete`、不同 nonce 和不同证据哈希均通过，才能进入实施。存在外部 Workboard 工作时，所有关联项必须成功且有 proof 才能进入最终通知；真实 Telegram message ID 是通知完成条件。
 
-`simple_task`、`governed_change` 和 `research_plan_triple_review` 使用不同闸门；只有最后一种要求三次独立完整审查。Workboard detached run 自动产生的真实 Task 与 `task_mirrored` Flow 通过 `link_work` 关联，不再调用 `runTask` 制造第二条 Task。若存在外部执行，只有真实状态 succeeded 且有完成收据才能进入最终通知；不能先把父项写成完成。
+## 风险治理（1.3.0 变更）
 
-插件同时在副作用前分级处理 `ops` 的通用 `exec/process`：低风险直接通过；中风险先在内部登记范围、备份和回滚，参数完全一致时自动放行，不询问少主；高风险只生成一次自然中文决定，讲清目标、直接影响、最坏情况、回退、替代和准确动作。只读查询中出现 `password/token/credential` 字样不会被误判为高风险；同一会话一次只允许一项待决定高风险动作，重试不会再问。少主的同意或拒绝只从同一 owner Telegram 会话的明确短句中取得，参数变化会产生新的决定。整个过程不调用 OpenClaw 原生审批卡；失败后可重试同一已同意动作，成功即关闭授权。
+高风险工程命令不再等待少主人工批准。改为以下固定顺序：
+
+1. 高风险动作初次调用没有副作用，记录为 `preflight_required`。
+2. 工程 Agent 提交准确范围、已核验备份和可执行回退办法，调用 `review_high_risk`。
+3. 插件原子领取唯一 `reviewRunId`，拒绝并发重复启动。
+4. 按顺序启动三个全新独立 reviewer 会话（`deliver:false`，不传递前次输出）；内层 `before_tool_call` 闸门在工具执行前拦截所有注册会话的工具调用。
+5. 三次均 `approve` 且无 findings 才继续；任一 `block`、超时、坏 JSON 或工具尝试都终止。
+6. 启动 housekeeper 草拟会话（`deliver:false`，零工具），生成符合角色语气的白话告知正文。
+7. 通过 Telegram outbound adapter 发送告知；只有返回非空 `messageId` 才记为 `notified`。
+8. 工程 Agent 重试参数完全相同的原动作；`before_tool_call` 一次性将 `notified` 改为 `executing` 后放行。
+9. `after_tool_call` 成功记 `completed`，报错记 `execution_failed`，不再恢复为可执行状态。
+
+### 状态流转
+
+```text
+preflight_required → reviewing → notified → executing → completed
+                                    ↘ review_blocked (终态)
+                               executing → execution_failed (终态)
+```
+
+`review_blocked`、`completed`、`execution_failed` 均为不可逆终态。参数变化产生新 fingerprint，必须重新走完整流程。
+
+### 不变的部分
+
+- 低风险只读或标准动作自动执行。
+- 中风险在 worker 内登记精确范围、备份与回滚，参数一致后放行，不询问少主。
+- 只有 `ops/coder` 的 Workboard worker 执行 `exec/process` 时进入风险判断；没有 `planId + workUnitId + cardId` 关联的中高风险动作直接拒绝。
+- Telegram provider 从 `ctx.messageProvider` 识别；数字 `channelId` 不再误当 provider。
+- Task Flow、Workboard、最终验收通知等 1.2.0 既有逻辑不变。
+
+旧 `workflow-risk/v1` 状态在读取时增量迁移为 v2，历史记录不会删除。

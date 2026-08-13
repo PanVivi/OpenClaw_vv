@@ -11,7 +11,7 @@ const ParamsSchema = Type.Object({
         Type.Literal("begin_execution"), Type.Literal("set_stage"),
         Type.Literal("link_work"), Type.Literal("record_preflight"), Type.Literal("risk_status"),
         Type.Literal("ready_to_notify"), Type.Literal("acknowledge_notification"),
-        Type.Literal("block"), Type.Literal("review_high_risk")
+        Type.Literal("block")
     ]),
     flow_id: Type.Optional(Type.String({ minLength: 1 })),
     goal: Type.Optional(Type.String({ minLength: 1, maxLength: 4000 })),
@@ -83,7 +83,7 @@ export function highRiskBlockReason(command) {
     const decision = riskDecision(command);
     if (!decision)
         return undefined;
-    return `这一步属于高风险操作，魚玄機尚未执行。准备做的是${decision.goal}；直接影响是${decision.impact}；最坏情况是${decision.worstCase}。回退办法：${decision.rollback}。请魚玄機提交准确范围、已核验备份和可执行回退办法，调用 workflow_governance 的 review_high_risk 启动三审和事前告知；不得弹出原生审批卡。`;
+    return `这一步属于高风险操作，魚玄機尚未执行。准备做的是${decision.goal}；直接影响是${decision.impact}；最坏情况是${decision.worstCase}。回退办法：${decision.rollback}。较稳妥的替代办法：${decision.alternative}。请魚玄機用自然中文把这些内容讲清楚，并只问少主一次是否同意执行这一项准确动作；不得弹出原生审批卡。`;
 }
 function stableJson(value) {
     if (Array.isArray(value))
@@ -159,35 +159,6 @@ function providerOf(ctx) {
     const provider = [ctx.messageProvider, ctx.channel].find((value) => typeof value === "string" && ["telegram", "discord", "slack", "whatsapp", "signal", "imessage"].includes(value.toLowerCase()));
     return typeof provider === "string" ? provider.toLowerCase() : "";
 }
-function extractText(raw) {
-    if (typeof raw === "string")
-        return raw;
-    if (raw && typeof raw === "object") {
-        const obj = raw;
-        if (typeof obj.text === "string")
-            return obj.text;
-        if (typeof obj.message === "string")
-            return obj.message;
-        if (typeof obj.content === "string")
-            return obj.content;
-        if (Array.isArray(obj.content))
-            return obj.content.map((c) => typeof c === "string" ? c : (c?.text ?? "")).join("");
-        if (typeof obj.response === "string")
-            return obj.response;
-    }
-    return String(raw ?? "");
-}
-function extractJson(text) {
-    const match = text.match(/\{[\s\S]*\}/);
-    if (!match)
-        throw new Error("no JSON object found in review response");
-    const parsed = JSON.parse(match[0]);
-    if (parsed.verdict !== "approve" && parsed.verdict !== "block")
-        throw new Error("invalid verdict");
-    if (!Array.isArray(parsed.findings))
-        throw new Error("findings must be array");
-    return { verdict: parsed.verdict, reason: String(parsed.reason ?? ""), findings: parsed.findings };
-}
 export default definePluginEntry({
     id: "workflow-governance",
     name: "Workflow Governance",
@@ -199,7 +170,6 @@ export default definePluginEntry({
         const legacyRiskAgentId = typeof cfg.riskAgentId === "string" ? cfg.riskAgentId : "ops";
         const riskAgentIds = new Set(Array.isArray(cfg.riskAgentIds) ? cfg.riskAgentIds.filter((v) => typeof v === "string") : [legacyRiskAgentId, "coder"]);
         const decisionAgentId = typeof cfg.decisionAgentId === "string" ? cfg.decisionAgentId : "housekeeper";
-        const reviewerAgentId = typeof cfg.reviewerAgentId === "string" ? String(cfg.reviewerAgentId) : "reviewer";
         const controllerSessionKey = typeof cfg.controllerSessionKey === "string" && cfg.controllerSessionKey.trim()
             ? cfg.controllerSessionKey.trim() : "agent:housekeeper:task-system";
         const ownerTelegramId = typeof cfg.ownerTelegramId === "string" ? cfg.ownerTelegramId.trim() : "";
@@ -211,7 +181,6 @@ export default definePluginEntry({
         const taskPathRaw = typeof cfg.taskStatePath === "string" && cfg.taskStatePath.trim()
             ? cfg.taskStatePath.trim() : join(process.env.HOME ?? process.cwd(), ".openclaw", "task-system-control", "state.json");
         const taskStatePath = isAbsolute(taskPathRaw) ? taskPathRaw : resolve(taskPathRaw);
-        const registeredSessions = new Map();
         const riskTurn = new Map();
         let riskQueue = Promise.resolve();
         const withRisk = async (mutate) => {
@@ -227,19 +196,7 @@ export default definePluginEntry({
             riskQueue = operation.then(() => undefined, () => undefined);
             return operation;
         };
-        const blockReviewRun = async (reviewRunId, reason) => {
-            await withRisk((state) => {
-                const record = [...state.records].reverse().find((item) => item.reviewRunId === reviewRunId && item.status === "reviewing");
-                if (record && record.reviewRunId === reviewRunId) {
-                    record.status = "review_blocked";
-                    record.updatedAt = new Date().toISOString();
-                }
-            });
-        };
         api.on("before_tool_call", async (event, ctx) => {
-            if (ctx.sessionKey && registeredSessions.has(ctx.sessionKey)) {
-                return { block: true, blockReason: "审核或草拟会话不允许调用任何工具。" };
-            }
             if (!ctx.agentId || !riskAgentIds.has(ctx.agentId) || !["exec", "process"].includes(event.toolName))
                 return;
             const command = [event.params.command, event.params.cmd, event.params.script].find((v) => typeof v === "string");
@@ -258,8 +215,8 @@ export default definePluginEntry({
             const toolCallId = typeof event.toolCallId === "string" ? String(event.toolCallId) : undefined;
             const decision = await withRisk((state) => {
                 const now = Date.now();
-                let risk = [...state.records].reverse().find((item) => item.fingerprint === fingerprint && item.planId === work.planId && item.workUnitId === work.workUnitId && Date.parse(item.expiresAt) > now && !["completed", "execution_failed", "review_blocked", "declined"].includes(item.status));
-                if (risk?.status === "approved" || risk?.status === "notified") {
+                let risk = [...state.records].reverse().find((item) => item.fingerprint === fingerprint && item.planId === work.planId && item.workUnitId === work.workUnitId && Date.parse(item.expiresAt) > now && item.status !== "completed");
+                if (risk?.status === "approved") {
                     risk.status = "executing";
                     risk.sessionKey = ctx.sessionKey;
                     risk.toolCallId = toolCallId;
@@ -269,14 +226,14 @@ export default definePluginEntry({
                 if (risk?.status === "executing")
                     return { allow: false, record: structuredClone(risk), duplicate: true };
                 if (!risk) {
-                    const pendingOther = [...state.records].reverse().find((item) => item.ownerRoute === ownerSessionKey && item.level === "high" && ["pending_decision", "preflight_required", "reviewing"].includes(item.status) && Date.parse(item.expiresAt) > now && item.fingerprint !== fingerprint);
+                    const pendingOther = [...state.records].reverse().find((item) => item.ownerRoute === ownerSessionKey && item.level === "high" && item.status === "pending_decision" && Date.parse(item.expiresAt) > now && item.fingerprint !== fingerprint);
                     if (pendingOther)
                         return { allow: false, record: structuredClone(pendingOther), pendingOther: true };
                     const timestamp = new Date().toISOString();
                     risk = {
                         fingerprint, level, agentId: ctx.agentId, sessionKey: ctx.sessionKey, planId: work.planId, packetId: work.packetId,
                         workUnitId: work.workUnitId, cardId: work.cardId, ownerRoute: ownerSessionKey,
-                        status: level === "high" ? "preflight_required" : "preflight_required",
+                        status: level === "high" ? "pending_decision" : "preflight_required",
                         goal: description.goal, impact: description.impact, worstCase: description.worstCase,
                         rollback: description.rollback, alternative: description.alternative,
                         expiresAt: new Date(now + 30 * 60_000).toISOString(), createdAt: timestamp, updatedAt: timestamp
@@ -284,20 +241,78 @@ export default definePluginEntry({
                     state.records.push(risk);
                     return { allow: false, record: structuredClone(risk), repeatPending: false };
                 }
-                return { allow: false, record: structuredClone(risk), repeatPending: risk.level === "high" && risk.status === "preflight_required" };
+                return { allow: false, record: structuredClone(risk), repeatPending: risk.level === "high" && risk.status === "pending_decision" };
             });
             if (decision.allow)
                 return;
             if (decision.duplicate)
                 return { block: true, blockReason: "同一项变更已经在执行，先核对现有结果，不要重复启动。" };
             if (decision.pendingOther)
-                return { block: true, blockReason: "当前已有另一项高风险决定在审核流程中。本工作单元先暂停，不得并行启动第二项审核。" };
+                return { block: true, blockReason: "当前已有另一项高风险决定等少主回复。本工作单元先暂停，不得向少主重复或并行索要决定。" };
             if (decision.repeatPending)
-                return { block: true, blockReason: "这一项高风险决定已经在等待审核。请提交范围、备份和回退后调用 review_high_risk 启动三审。" };
+                return { block: true, blockReason: "这一项高风险决定已经转给賈南風说明，不得由子 Agent重复询问。等待原决定；不要展示命令、路径、指纹或审批卡。" };
             if (decision.record.level === "high") {
-                return { block: true, blockReason: `这是一项高风险动作，尚未执行。准备做的是${decision.record.goal}；直接影响是${decision.record.impact}；最坏情况是${decision.record.worstCase}。回退办法：${decision.record.rollback}。请提交准确范围、已核验备份和可执行回退办法，调用 workflow_governance 的 review_high_risk 启动三审和事前告知；内部动作指纹为 ${fingerprint}。不要询问少主，不要改参数，不要弹出审批卡。` };
+                try {
+                    await api.runtime.subagent.run({
+                        sessionKey: ownerSessionKey,
+                        message: `[高风险决定转达]\n有一个已分工的执行单元在副作用前停下。请以賈南風身份向少主自然说明一次：准备做的是${decision.record.goal}；直接影响是${decision.record.impact}；最坏情况是${decision.record.worstCase}；回退办法是${decision.record.rollback}；替代办法是${decision.record.alternative}。只问是否同意这一项准确动作，不展示命令、路径、卡片、会话或指纹。`,
+                        lane: "owner-risk-decision", lightContext: true, deliver: true, idempotencyKey: `risk-decision:${decision.record.fingerprint}`
+                    });
+                }
+                catch (error) {
+                    api.logger.warn(`high-risk owner notification could not start: ${error instanceof Error ? error.message : String(error)}`);
+                }
+                return { block: true, blockReason: "高风险副作用尚未执行，决定已经转给賈南風在原少主会话自然说明一次。当前子 Agent只需把工作单元标为等待决定，不得自行询问、改参数或弹出审批卡。" };
             }
             return { block: true, blockReason: `这是一项中风险、可回滚变更，不要询问少主。先在内部核对准确范围、备份和回滚办法，再调用 workflow_governance 的 record_preflight；内部动作指纹为 ${fingerprint}。完成内部预检后重试同一动作，参数变化必须重新预检。` };
+        });
+        api.on("before_agent_run", async (event, ctx) => {
+            if (ctx.agentId !== decisionAgentId || !ctx.sessionKey)
+                return;
+            if (providerOf(ctx) !== "telegram" || event.senderIsOwner !== true)
+                return;
+            if (ownerTelegramId && event.senderId !== ownerTelegramId)
+                return;
+            const prompt = String(event.prompt ?? "").normalize("NFKC").trim();
+            const approve = /^(?:同意|同意执行|按此执行)[。！!\s]*$/u.test(prompt);
+            const decline = /^(?:不同意|不要执行|取消|先不做|停止)[。！!\s]*$/u.test(prompt);
+            if (!approve && !decline)
+                return;
+            const resolved = await withRisk((state) => {
+                const pending = state.records.filter((item) => item.ownerRoute === ctx.sessionKey && item.level === "high" && item.status === "pending_decision" && Date.parse(item.expiresAt) > Date.now());
+                if (pending.length !== 1)
+                    return undefined;
+                const risk = pending[0];
+                risk.status = approve ? "approved" : "declined";
+                risk.updatedAt = new Date().toISOString();
+                return structuredClone(risk);
+            });
+            if (!resolved)
+                return;
+            riskTurn.set(ctx.sessionKey, resolved.status);
+            if (resolved.cardId) {
+                try {
+                    await api.runtime.gateway.request("workboard.cards.update", { id: resolved.cardId, patch: { status: approve ? "ready" : "blocked" } });
+                    if (approve)
+                        await api.runtime.gateway.request("workboard.cards.dispatch", { boardId: "task-system" });
+                }
+                catch (error) {
+                    api.logger.warn(`risk decision card transition failed: ${error instanceof Error ? error.message : String(error)}`);
+                }
+            }
+        });
+        api.on("agent_turn_prepare", (_event, ctx) => {
+            if (!ctx.sessionKey)
+                return;
+            const status = riskTurn.get(ctx.sessionKey);
+            if (!status)
+                return;
+            riskTurn.delete(ctx.sessionKey);
+            return {
+                appendContext: status === "approved"
+                    ? "少主已经对上一轮准确描述的高风险动作明确同意。只可重试完全相同的参数；参数变化必须重新说明并取得新决定。"
+                    : "少主已经拒绝上一轮高风险动作。不得执行，也不得换一种参数绕过；请说明已停止并提供低风险替代方案。"
+            };
         });
         api.on("after_tool_call", async (event, ctx) => {
             if (!ctx.agentId || !riskAgentIds.has(ctx.agentId) || !ctx.sessionKey || !["exec", "process"].includes(event.toolName))
@@ -308,7 +323,7 @@ export default definePluginEntry({
                 const record = [...state.records].reverse().find((item) => item.fingerprint === fingerprint && item.status === "executing" && (!work || (item.planId === work.planId && item.workUnitId === work.workUnitId)));
                 if (!record)
                     return;
-                record.status = event.error ? "execution_failed" : "completed";
+                record.status = event.error ? "approved" : "completed";
                 record.updatedAt = new Date().toISOString();
             });
         });
@@ -323,7 +338,7 @@ export default definePluginEntry({
             return {
                 name: "workflow_governance",
                 label: "Workflow Governance",
-                description: "Persist formal plan, three independent complete reviews, execution, acceptance, sync, final notification, and risk governance in official Task Flow.",
+                description: "Persist formal plan, three independent complete reviews, execution, acceptance, sync and final notification in official Task Flow.",
                 parameters: ParamsSchema,
                 async execute(_id, raw) {
                     const p = raw;
@@ -332,7 +347,7 @@ export default definePluginEntry({
                             await riskQueue;
                             const state = await readRiskState(riskStatePath);
                             const work = await findWorkContext(taskStatePath, toolSessionKey);
-                            const pending = state.records.filter((item) => !["completed", "declined", "execution_failed", "review_blocked"].includes(item.status) && Date.parse(item.expiresAt) > Date.now() &&
+                            const pending = state.records.filter((item) => !["completed", "declined"].includes(item.status) && Date.parse(item.expiresAt) > Date.now() &&
                                 (item.ownerRoute === ctx.sessionKey || (work && item.planId === work.planId && item.workUnitId === work.workUnitId)));
                             return result({ ok: true, pending: pending.map((item) => ({ level: item.level, status: item.status, goal: item.goal, impact: item.impact, rollback: item.rollback, alternative: item.alternative })) });
                         }
@@ -356,129 +371,6 @@ export default definePluginEntry({
                                 return structuredClone(item);
                             });
                             return result({ ok: true, preflightReady: true, goal: recorded.goal, instruction: "现在只可重试参数完全相同的动作；参数变化需要重新预检。不要向少主索要许可。" });
-                        }
-                        if (p.action === "review_high_risk") {
-                            if (!ctx.agentId || !riskAgentIds.has(ctx.agentId))
-                                throw new Error("only an engineering worker can initiate a high-risk review");
-                            const fingerprint = text(p.action_fingerprint, "action_fingerprint").toLowerCase();
-                            const scope = text(p.scope_summary, "scope_summary");
-                            const backup = text(p.backup_summary, "backup_summary");
-                            const rollback = text(p.rollback_summary, "rollback_summary");
-                            const work = await findWorkContext(taskStatePath, toolSessionKey);
-                            if (!work)
-                                throw new Error("no formal work unit is associated with this worker session");
-                            const reviewRunId = randomUUID();
-                            const claimed = await withRisk((state) => {
-                                const record = [...state.records].reverse().find((item) => item.fingerprint === fingerprint && item.planId === work.planId && item.workUnitId === work.workUnitId && item.level === "high" && item.status === "preflight_required" && Date.parse(item.expiresAt) > Date.now());
-                                if (!record)
-                                    throw new Error("no matching high-risk action is waiting for review");
-                                if (record.reviewRunId)
-                                    throw new Error("a review flow is already in progress for this action");
-                                record.reviewRunId = reviewRunId;
-                                record.status = "reviewing";
-                                record.preflight = { scope, backup, rollback };
-                                record.reviews = [];
-                                record.updatedAt = new Date().toISOString();
-                                return structuredClone(record);
-                            });
-                            const reviewMaterials = JSON.stringify({ goal: claimed.goal, impact: claimed.impact, worstCase: claimed.worstCase, decisionRollback: claimed.rollback, alternative: claimed.alternative, scope, backup, rollback, fingerprint });
-                            for (let n = 1; n <= 3; n++) {
-                                const reviewerSession = `agent:${reviewerAgentId}:risk-${reviewRunId}-${n}`;
-                                registeredSessions.set(reviewerSession, { reviewRunId, role: "reviewer" });
-                                let reviewResult;
-                                try {
-                                    const raw = await api.runtime.subagent.run({
-                                        sessionKey: reviewerSession,
-                                        message: `你是独立审核员，请审核以下高风险动作资料，只返回严格JSON：{"verdict":"approve"或"block","reason":"...","findings":["..."]}\n\n${reviewMaterials}`,
-                                        lane: "risk-review", lightContext: true, deliver: false,
-                                        idempotencyKey: `risk-review:${reviewRunId}:${n}`
-                                    });
-                                    reviewResult = extractJson(extractText(raw));
-                                }
-                                catch (error) {
-                                    registeredSessions.delete(reviewerSession);
-                                    await blockReviewRun(reviewRunId, `review ${n} failed: ${error instanceof Error ? error.message : String(error)}`);
-                                    return result({ ok: false, blocked: true, reason: `review ${n} failed: ${error instanceof Error ? error.message : String(error)}` });
-                                }
-                                registeredSessions.delete(reviewerSession);
-                                const reviewEntry = { reviewNumber: n, sessionKey: reviewerSession, reviewRunId, verdict: reviewResult.verdict, reason: reviewResult.reason, findings: reviewResult.findings, reviewedAt: new Date().toISOString() };
-                                const blockCheck = await withRisk((state) => {
-                                    const record = [...state.records].reverse().find((item) => item.reviewRunId === reviewRunId && item.status === "reviewing");
-                                    if (!record || record.reviewRunId !== reviewRunId)
-                                        return { invalid: true };
-                                    record.reviews = record.reviews || [];
-                                    record.reviews.push(reviewEntry);
-                                    if (reviewResult.verdict === "block") {
-                                        record.status = "review_blocked";
-                                        record.updatedAt = new Date().toISOString();
-                                        return { blocked: true };
-                                    }
-                                    record.updatedAt = new Date().toISOString();
-                                    return { ok: true };
-                                });
-                                if (blockCheck.invalid)
-                                    return result({ ok: false, error: "review flow state changed during review" });
-                                if (blockCheck.blocked)
-                                    return result({ ok: false, blocked: true, reason: `review ${n} blocked: ${reviewResult.reason}` });
-                            }
-                            const draftSession = `agent:${decisionAgentId}:risk-draft-${reviewRunId}`;
-                            registeredSessions.set(draftSession, { reviewRunId, role: "housekeeper" });
-                            let notificationText;
-                            try {
-                                const draftRaw = await api.runtime.subagent.run({
-                                    sessionKey: draftSession,
-                                    message: `为以下高风险动作生成事前告知白话正文。正文必须符合${decisionAgentId === "housekeeper" ? "賈南風" : decisionAgentId}角色语气，包含：准备做什么、会影响什么、最坏可能怎样、出问题如何退回、已由审核员独立审核三次、"这是事前告知，不用回复，我会按计划继续"、预计开始时间。正文不得出现命令、路径、指纹、会话编号、内部卡片名或工程缩写。\n\n${reviewMaterials}`,
-                                    lane: "risk-notification-draft", lightContext: true, deliver: false,
-                                    idempotencyKey: `risk-draft:${reviewRunId}`
-                                });
-                                notificationText = extractText(draftRaw).trim();
-                            }
-                            catch (error) {
-                                registeredSessions.delete(draftSession);
-                                await blockReviewRun(reviewRunId, `notification draft failed: ${error instanceof Error ? error.message : String(error)}`);
-                                return result({ ok: false, blocked: true, reason: `notification draft failed: ${error instanceof Error ? error.message : String(error)}` });
-                            }
-                            registeredSessions.delete(draftSession);
-                            if (!notificationText || notificationText.length < 20) {
-                                await blockReviewRun(reviewRunId, "notification text too short or empty");
-                                return result({ ok: false, blocked: true, reason: "notification text too short or empty" });
-                            }
-                            const forbiddenPatterns = [/\b(exec|process|rm\s+-rf|chmod|reboot|shutdown)\b/i, /\b\/[a-z]\//i, /\b[a-f0-9]{32,}\b/i, /fingerprint|session|agent:|cardId|workUnit/i];
-                            for (const pattern of forbiddenPatterns) {
-                                if (pattern.test(notificationText)) {
-                                    await blockReviewRun(reviewRunId, "notification text contains forbidden engineering content");
-                                    return result({ ok: false, blocked: true, reason: "notification text contains forbidden engineering content" });
-                                }
-                            }
-                            let messageId;
-                            try {
-                                const adapter = await api.runtime.channel.outbound.loadAdapter("telegram");
-                                if (!adapter?.sendText)
-                                    throw new Error("telegram outbound adapter unavailable");
-                                const sendResult = await adapter.sendText({ cfg: api.runtime.config.current(), accountId: decisionAgentId, to: ownerTelegramId, text: notificationText });
-                                const firstResult = Array.isArray(sendResult) ? sendResult[0] : sendResult;
-                                messageId = typeof firstResult?.messageId === "string" ? firstResult.messageId : (typeof firstResult?.results?.[0]?.messageId === "string" ? firstResult.results[0].messageId : undefined);
-                            }
-                            catch (error) {
-                                await blockReviewRun(reviewRunId, `telegram notification failed: ${error instanceof Error ? error.message : String(error)}`);
-                                return result({ ok: false, blocked: true, reason: `telegram notification failed: ${error instanceof Error ? error.message : String(error)}` });
-                            }
-                            if (!messageId) {
-                                await blockReviewRun(reviewRunId, "telegram returned empty message ID");
-                                return result({ ok: false, blocked: true, reason: "telegram returned empty message ID" });
-                            }
-                            const notified = await withRisk((state) => {
-                                const record = [...state.records].reverse().find((item) => item.reviewRunId === reviewRunId && item.status === "reviewing");
-                                if (!record || record.reviewRunId !== reviewRunId)
-                                    return { invalid: true };
-                                record.status = "notified";
-                                record.notification = { bodySummary: notificationText.substring(0, 200), messageId, sentAt: new Date().toISOString() };
-                                record.updatedAt = new Date().toISOString();
-                                return { ok: true, record: structuredClone(record) };
-                            });
-                            if (notified.invalid)
-                                return result({ ok: false, error: "review flow state changed during notification" });
-                            return result({ ok: true, notified: true, instruction: "事前告知已发送。现在只可重试参数完全相同的动作；参数变化必须重新审核。不用等待少主回复。" });
                         }
                         if (p.action === "list")
                             return result({ ok: true, flows: flows.list() });

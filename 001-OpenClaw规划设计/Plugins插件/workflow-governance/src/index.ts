@@ -35,25 +35,47 @@ type GovernanceState = {
   unfixableItems?: string[];
   notification?: { eventKey: string; messageId?: string; acknowledgedAt?: string };
 };
+type ReviewEntry = {
+  reviewNumber: 1 | 2 | 3;
+  sessionKey: string;
+  reviewRunId: string;
+  verdict: "approve" | "block";
+  reason: string;
+  findings: string[];
+  reviewedAt: string;
+};
+type RiskNotification = {
+  bodySummary: string;
+  messageId: string;
+  sentAt: string;
+};
 type RiskRecord = {
   fingerprint: string;
   level: "medium" | "high";
   agentId: string;
   sessionKey: string;
-  status: "preflight_required" | "pending_decision" | "approved" | "declined" | "executing" | "completed";
+  planId?: string;
+  packetId?: string;
+  workUnitId?: string;
+  cardId?: string;
+  ownerRoute?: string;
+  status: "preflight_required" | "reviewing" | "review_blocked" | "notified" | "approved" | "declined" | "executing" | "completed" | "execution_failed" | "pending_decision";
   goal: string;
   impact: string;
   worstCase: string;
   rollback: string;
   alternative: string;
   preflight?: { scope: string; backup: string; rollback: string };
+  reviewRunId?: string;
+  reviews?: ReviewEntry[];
+  notification?: RiskNotification;
   toolCallId?: string;
   expiresAt: string;
   createdAt: string;
   updatedAt: string;
 };
 type RiskState = {
-  schema: "workflow-risk/v1";
+  schema: "workflow-risk/v2";
   revision: number;
   updatedAt: string;
   records: RiskRecord[];
@@ -67,7 +89,7 @@ const ParamsSchema = Type.Object({
     Type.Literal("begin_execution"), Type.Literal("set_stage"),
     Type.Literal("link_work"), Type.Literal("record_preflight"), Type.Literal("risk_status"),
     Type.Literal("ready_to_notify"), Type.Literal("acknowledge_notification"),
-    Type.Literal("block")
+    Type.Literal("block"), Type.Literal("review_high_risk")
   ]),
   flow_id: Type.Optional(Type.String({ minLength: 1 })),
   goal: Type.Optional(Type.String({ minLength: 1, maxLength: 4000 })),
@@ -96,11 +118,11 @@ const ParamsSchema = Type.Object({
   ])),
   proof_receipt: Type.Optional(Type.String({ pattern: "^[A-Fa-f0-9]{64}$" })),
   notification_message_id: Type.Optional(Type.String({ minLength: 1, maxLength: 200 })),
-  blocked_reason: Type.Optional(Type.String({ minLength: 1, maxLength: 2000 }))
-  ,action_fingerprint: Type.Optional(Type.String({ pattern: "^[A-Fa-f0-9]{64}$" }))
-  ,scope_summary: Type.Optional(Type.String({ minLength: 1, maxLength: 1000 }))
-  ,backup_summary: Type.Optional(Type.String({ minLength: 1, maxLength: 1000 }))
-  ,rollback_summary: Type.Optional(Type.String({ minLength: 1, maxLength: 1000 }))
+  blocked_reason: Type.Optional(Type.String({ minLength: 1, maxLength: 2000 })),
+  action_fingerprint: Type.Optional(Type.String({ pattern: "^[A-Fa-f0-9]{64}$" })),
+  scope_summary: Type.Optional(Type.String({ minLength: 1, maxLength: 1000 })),
+  backup_summary: Type.Optional(Type.String({ minLength: 1, maxLength: 1000 })),
+  rollback_summary: Type.Optional(Type.String({ minLength: 1, maxLength: 1000 }))
 }, { additionalProperties: false });
 
 function result(value: unknown) {
@@ -133,13 +155,11 @@ export function riskDecision(command: string) {
   if (!match) return undefined;
   return { goal: match[1], impact: "会改变正在运行的系统或重要资料", worstCase: match[2], rollback: match[3], alternative: match[4] };
 }
-
 export function highRiskBlockReason(command: string): string | undefined {
   const decision = riskDecision(command);
   if (!decision) return undefined;
-  return `这一步属于高风险操作，魚玄機尚未执行。准备做的是${decision.goal}；直接影响是${decision.impact}；最坏情况是${decision.worstCase}。回退办法：${decision.rollback}。较稳妥的替代办法：${decision.alternative}。请魚玄機用自然中文把这些内容讲清楚，并只问少主一次是否同意执行这一项准确动作；不得弹出原生审批卡。`;
+  return `这一步属于高风险操作，魚玄機尚未执行。准备做的是${decision.goal}；直接影响是${decision.impact}；最坏情况是${decision.worstCase}。回退办法：${decision.rollback}。请魚玄機提交准确范围、已核验备份和可执行回退办法，调用 workflow_governance 的 review_high_risk 启动三审和事前告知；不得弹出原生审批卡。`;
 }
-
 function stableJson(value: unknown): string {
   if (Array.isArray(value)) return `[${value.map(stableJson).join(",")}]`;
   if (value && typeof value === "object") {
@@ -147,11 +167,9 @@ function stableJson(value: unknown): string {
   }
   return JSON.stringify(value);
 }
-
 export function actionFingerprint(toolName: string, params: JsonRecord): string {
   return createHash("sha256").update(stableJson({ toolName, params }), "utf8").digest("hex");
 }
-
 function mediumRisk(command: string) {
   if (!/\b(git\s+(commit|merge|rebase|push)|npm\s+(install|update)|pnpm\s+(install|update)|cp\b|copy-item\b|move-item\b|mv\b|write|config\s+(set|patch)|cron\s+(add|update|remove)|plugins?\s+(install|enable|disable)|systemctl\s+restart|chmod\b|chown\b)\b/i.test(command)) return undefined;
   return {
@@ -162,29 +180,69 @@ function mediumRisk(command: string) {
     alternative: "先做只读核对，或把变更缩小到一个明确对象"
   };
 }
-
 function emptyRiskState(): RiskState {
-  return { schema: "workflow-risk/v1", revision: 0, updatedAt: new Date(0).toISOString(), records: [] };
+  return { schema: "workflow-risk/v2", revision: 0, updatedAt: new Date(0).toISOString(), records: [] };
 }
-
 async function readRiskState(path: string): Promise<RiskState> {
   try {
     const info = await stat(path);
     if (!info.isFile() || info.size > 1024 * 1024) throw new Error("risk state target is invalid");
-    const state = JSON.parse(await readFile(path, "utf8")) as RiskState;
-    if (state.schema !== "workflow-risk/v1" || !Array.isArray(state.records)) throw new Error("risk state schema is invalid");
-    return state;
+    const raw = JSON.parse(await readFile(path, "utf8")) as RiskState;
+    if (!['workflow-risk/v1', 'workflow-risk/v2'].includes(String(raw.schema)) || !Array.isArray(raw.records)) throw new Error("risk state schema is invalid");
+    return {
+      schema: "workflow-risk/v2",
+      revision: Number.isInteger(raw.revision) ? Number(raw.revision) : 0,
+      updatedAt: typeof raw.updatedAt === "string" ? raw.updatedAt : new Date(0).toISOString(),
+      records: raw.records as RiskRecord[]
+    };
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return emptyRiskState();
     throw error;
   }
 }
-
 async function writeRiskState(path: string, state: RiskState) {
   await mkdir(dirname(path), { recursive: true, mode: 0o700 });
   const temporary = join(dirname(path), `.${randomUUID()}.tmp`);
   await writeFile(temporary, `${JSON.stringify(state, null, 2)}\n`, { encoding: "utf8", mode: 0o600 });
   await rename(temporary, path);
+}
+async function findWorkContext(path: string, sessionKey: string) {
+  try {
+    const info = await stat(path);
+    if (!info.isFile() || info.size > 16 * 1024 * 1024) return undefined;
+    const state = JSON.parse(await readFile(path, "utf8"));
+    const links = Array.isArray(state.links) ? state.links : [];
+    const link = [...links].reverse().find((item: any) => item.childSessionKey === sessionKey);
+    if (!link || typeof link.planId !== "string" || typeof link.packetId !== "string" || typeof link.workUnitId !== "string" || typeof link.cardId !== "string") return undefined;
+    return { planId: link.planId, packetId: link.packetId, workUnitId: link.workUnitId, cardId: link.cardId, agentId: typeof link.assignee === "string" ? link.assignee : "" };
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return undefined;
+    throw error;
+  }
+}
+function providerOf(ctx: any): string {
+  const provider = [ctx.messageProvider, ctx.channel].find((value) => typeof value === "string" && ["telegram", "discord", "slack", "whatsapp", "signal", "imessage"].includes(value.toLowerCase()));
+  return typeof provider === "string" ? provider.toLowerCase() : "";
+}
+function extractText(raw: unknown): string {
+  if (typeof raw === "string") return raw;
+  if (raw && typeof raw === "object") {
+    const obj = raw as JsonRecord;
+    if (typeof obj.text === "string") return obj.text;
+    if (typeof obj.message === "string") return obj.message;
+    if (typeof obj.content === "string") return obj.content;
+    if (Array.isArray(obj.content)) return (obj.content as any[]).map((c: any) => typeof c === "string" ? c : (c?.text ?? "")).join("");
+    if (typeof obj.response === "string") return obj.response;
+  }
+  return String(raw ?? "");
+}
+function extractJson(text: string): { verdict: string; reason: string; findings: string[] } {
+  const match = text.match(/\{[\s\S]*\}/);
+  if (!match) throw new Error("no JSON object found in review response");
+  const parsed = JSON.parse(match[0]);
+  if (parsed.verdict !== "approve" && parsed.verdict !== "block") throw new Error("invalid verdict");
+  if (!Array.isArray(parsed.findings)) throw new Error("findings must be array");
+  return { verdict: parsed.verdict, reason: String(parsed.reason ?? ""), findings: parsed.findings as string[] };
 }
 
 export default definePluginEntry({
@@ -193,14 +251,24 @@ export default definePluginEntry({
   description: "Deterministic workflow and risk gates backed by official Task Flow.",
   register(api) {
     const cfg = (api.pluginConfig ?? {}) as JsonRecord;
-    const agents = new Set(Array.isArray(cfg.agents) ? cfg.agents.filter((v): v is string => typeof v === "string") : ["housekeeper", "ops"]);
-    const riskAgentId = typeof cfg.riskAgentId === "string" ? cfg.riskAgentId : "ops";
+    const defaultAgents = ["housekeeper", "ops", "coder", "reviewer", "life", "companion-dugu", "companion-wu", "companion-lv"];
+    const agents = new Set(Array.isArray(cfg.agents) ? cfg.agents.filter((v): v is string => typeof v === "string") : defaultAgents);
+    const legacyRiskAgentId = typeof cfg.riskAgentId === "string" ? cfg.riskAgentId : "ops";
+    const riskAgentIds = new Set(Array.isArray(cfg.riskAgentIds) ? cfg.riskAgentIds.filter((v): v is string => typeof v === "string") : [legacyRiskAgentId, "coder"]);
+    const decisionAgentId = typeof cfg.decisionAgentId === "string" ? cfg.decisionAgentId : "housekeeper";
+    const reviewerAgentId = typeof (cfg as JsonRecord).reviewerAgentId === "string" ? String((cfg as JsonRecord).reviewerAgentId) : "reviewer";
     const controllerSessionKey = typeof cfg.controllerSessionKey === "string" && cfg.controllerSessionKey.trim()
       ? cfg.controllerSessionKey.trim() : "agent:housekeeper:task-system";
     const ownerTelegramId = typeof cfg.ownerTelegramId === "string" ? cfg.ownerTelegramId.trim() : "";
+    const ownerSessionKey = typeof cfg.ownerSessionKey === "string" && cfg.ownerSessionKey.trim()
+      ? cfg.ownerSessionKey.trim() : `agent:${decisionAgentId}:telegram:direct:${ownerTelegramId}`;
     const riskPathRaw = typeof cfg.riskStatePath === "string" && cfg.riskStatePath.trim()
       ? cfg.riskStatePath.trim() : join(process.env.HOME ?? process.cwd(), ".openclaw", "workflow-governance", "risk-state.json");
     const riskStatePath = isAbsolute(riskPathRaw) ? riskPathRaw : resolve(riskPathRaw);
+    const taskPathRaw = typeof cfg.taskStatePath === "string" && cfg.taskStatePath.trim()
+      ? cfg.taskStatePath.trim() : join(process.env.HOME ?? process.cwd(), ".openclaw", "task-system-control", "state.json");
+    const taskStatePath = isAbsolute(taskPathRaw) ? taskPathRaw : resolve(taskPathRaw);
+    const registeredSessions = new Map<string, { reviewRunId: string; role: "reviewer" | "housekeeper" }>();
     const riskTurn = new Map<string, string>();
     let riskQueue = Promise.resolve();
     const withRisk = async <T>(mutate: (state: RiskState) => T | Promise<T>): Promise<T> => {
@@ -216,97 +284,85 @@ export default definePluginEntry({
       riskQueue = operation.then(() => undefined, () => undefined);
       return operation;
     };
+    const blockReviewRun = async (reviewRunId: string, reason: string) => {
+      await withRisk((state) => {
+        const record = [...state.records].reverse().find((item) => item.reviewRunId === reviewRunId && item.status === "reviewing");
+        if (record && record.reviewRunId === reviewRunId) {
+          record.status = "review_blocked";
+          record.updatedAt = new Date().toISOString();
+        }
+      });
+    };
 
-    api.on("before_tool_call", async (event, ctx) => {
-      if (ctx.agentId !== riskAgentId || !["exec", "process"].includes(event.toolName)) return;
-      const command = [event.params.command, event.params.cmd, event.params.script].find((v) => typeof v === "string") as string | undefined;
+    api.on("before_tool_call", async (event: any, ctx: any) => {
+      if (ctx.sessionKey && registeredSessions.has(ctx.sessionKey)) {
+        return { block: true, blockReason: "审核或草拟会话不允许调用任何工具。" };
+      }
+      if (!ctx.agentId || !riskAgentIds.has(ctx.agentId) || !["exec", "process"].includes(event.toolName)) return;
+      const command = [event.params.command, event.params.cmd, event.params.script].find((v): v is string => typeof v === "string");
       if (!command || !ctx.sessionKey) return;
       const high = riskDecision(command);
       const medium = high ? undefined : mediumRisk(command);
       if (!high && !medium) return;
+      const work = await findWorkContext(taskStatePath, ctx.sessionKey);
+      if (!work) return { block: true, blockReason: "这项工程动作没有关联到正式工作单元，不能在主会话或游离会话里执行。请回到任务分解链，由对应角色的 Workboard 子 Agent承担。" };
       const level: RiskRecord["level"] = high ? "high" : "medium";
       const description = high ?? medium!;
       const fingerprint = actionFingerprint(event.toolName, event.params);
       const toolCallId = typeof (event as unknown as JsonRecord).toolCallId === "string" ? String((event as unknown as JsonRecord).toolCallId) : undefined;
       const decision = await withRisk((state) => {
         const now = Date.now();
-        let record = [...state.records].reverse().find((item) => item.fingerprint === fingerprint && item.sessionKey === ctx.sessionKey && Date.parse(item.expiresAt) > now && item.status !== "completed");
-        if (record?.status === "approved") {
-          record.status = "executing";
-          record.toolCallId = toolCallId;
-          record.updatedAt = new Date().toISOString();
-          return { allow: true, record: structuredClone(record) };
+        let risk = [...state.records].reverse().find((item) => item.fingerprint === fingerprint && item.planId === work.planId && item.workUnitId === work.workUnitId && Date.parse(item.expiresAt) > now && !["completed", "execution_failed", "review_blocked", "declined"].includes(item.status));
+        if (risk?.status === "approved" || risk?.status === "notified") {
+          risk.status = "executing";
+          risk.sessionKey = ctx.sessionKey;
+          risk.toolCallId = toolCallId;
+          risk.updatedAt = new Date().toISOString();
+          return { allow: true, record: structuredClone(risk) };
         }
-        if (record?.status === "executing") return { allow: false, record: structuredClone(record), duplicate: true };
-        if (!record) {
-          const pendingOther = [...state.records].reverse().find((item) => item.sessionKey === ctx.sessionKey && item.level === "high" && item.status === "pending_decision" && Date.parse(item.expiresAt) > now);
+        if (risk?.status === "executing") return { allow: false, record: structuredClone(risk), duplicate: true };
+        if (!risk) {
+          const pendingOther = [...state.records].reverse().find((item) => item.ownerRoute === ownerSessionKey && item.level === "high" && ["pending_decision", "preflight_required", "reviewing"].includes(item.status) && Date.parse(item.expiresAt) > now && item.fingerprint !== fingerprint);
           if (pendingOther) return { allow: false, record: structuredClone(pendingOther), pendingOther: true };
-          const nowIso = new Date().toISOString();
-          record = {
-            fingerprint, level, agentId: riskAgentId, sessionKey: ctx.sessionKey!,
-            status: level === "high" ? "pending_decision" : "preflight_required",
+          const timestamp = new Date().toISOString();
+          risk = {
+            fingerprint, level, agentId: ctx.agentId, sessionKey: ctx.sessionKey, planId: work.planId, packetId: work.packetId,
+            workUnitId: work.workUnitId, cardId: work.cardId, ownerRoute: ownerSessionKey,
+            status: level === "high" ? "preflight_required" : "preflight_required",
             goal: description.goal, impact: description.impact, worstCase: description.worstCase,
             rollback: description.rollback, alternative: description.alternative,
-            expiresAt: new Date(now + 30 * 60_000).toISOString(), createdAt: nowIso, updatedAt: nowIso
+            expiresAt: new Date(now + 30 * 60_000).toISOString(), createdAt: timestamp, updatedAt: timestamp
           };
-          state.records.push(record);
-          return { allow: false, record: structuredClone(record), repeatPending: false };
+          state.records.push(risk);
+          return { allow: false, record: structuredClone(risk), repeatPending: false };
         }
-        return { allow: false, record: structuredClone(record), repeatPending: record.level === "high" && record.status === "pending_decision" };
+        return { allow: false, record: structuredClone(risk), repeatPending: risk.level === "high" && risk.status === "preflight_required" };
       });
       if (decision.allow) return;
       if (decision.duplicate) return { block: true, blockReason: "同一项变更已经在执行，先核对现有结果，不要重复启动。" };
-      if (decision.pendingOther) return { block: true, blockReason: "当前会话已有一项高风险决定等少主回复。不得再新建或询问第二项；先等原决定完成、拒绝或过期。" };
-      if (decision.repeatPending) return { block: true, blockReason: "这一项高风险决定已经向少主讲明过，不得重复询问。等少主对原准确动作明确同意或拒绝。" };
+      if (decision.pendingOther) return { block: true, blockReason: "当前已有另一项高风险决定在审核流程中。本工作单元先暂停，不得并行启动第二项审核。" };
+      if (decision.repeatPending) return { block: true, blockReason: "这一项高风险决定已经在等待审核。请提交范围、备份和回退后调用 review_high_risk 启动三审。" };
       if (decision.record.level === "high") {
-        return { block: true, blockReason: `这一步尚未执行，因为它是高风险动作。准备做的是${decision.record.goal}；直接影响是${decision.record.impact}；最坏情况是${decision.record.worstCase}。回退办法：${decision.record.rollback}。替代办法：${decision.record.alternative}。请魚玄機用自然中文向少主只询问一次：是否同意执行这一项准确动作。不要展示指纹、命令、路径、会话编号或原生审批卡。` };
+        return { block: true, blockReason: `这是一项高风险动作，尚未执行。准备做的是${decision.record.goal}；直接影响是${decision.record.impact}；最坏情况是${decision.record.worstCase}。回退办法：${decision.record.rollback}。请提交准确范围、已核验备份和可执行回退办法，调用 workflow_governance 的 review_high_risk 启动三审和事前告知；内部动作指纹为 ${fingerprint}。不要询问少主，不要改参数，不要弹出审批卡。` };
       }
       return { block: true, blockReason: `这是一项中风险、可回滚变更，不要询问少主。先在内部核对准确范围、备份和回滚办法，再调用 workflow_governance 的 record_preflight；内部动作指纹为 ${fingerprint}。完成内部预检后重试同一动作，参数变化必须重新预检。` };
     });
 
-    api.on("before_agent_run", async (event, ctx) => {
-      if (ctx.agentId !== riskAgentId || !ctx.sessionKey) return;
-      if (String(event.channelId ?? ctx.channelId ?? ctx.channel ?? "").toLowerCase() !== "telegram" || event.senderIsOwner !== true) return;
-      if (ownerTelegramId && event.senderId !== ownerTelegramId) return;
-      const prompt = String(event.prompt ?? "").normalize("NFKC").trim();
-      const approve = /^(?:同意|同意执行|按此执行)[。！!\s]*$/u.test(prompt);
-      const decline = /^(?:不同意|不要执行|取消|先不做|停止)[。！!\s]*$/u.test(prompt);
-      if (!approve && !decline) return;
-      const resolved = await withRisk((state) => {
-        const record = [...state.records].reverse().find((item) => item.sessionKey === ctx.sessionKey && item.level === "high" && item.status === "pending_decision" && Date.parse(item.expiresAt) > Date.now());
-        if (!record) return undefined;
-        record.status = approve ? "approved" : "declined";
-        record.updatedAt = new Date().toISOString();
-        return structuredClone(record);
-      });
-      if (resolved) riskTurn.set(ctx.sessionKey, resolved.status);
-    });
-
-    api.on("agent_turn_prepare", (_event, ctx) => {
-      if (!ctx.sessionKey) return;
-      const status = riskTurn.get(ctx.sessionKey);
-      if (!status) return;
-      riskTurn.delete(ctx.sessionKey);
-      return {
-        appendContext: status === "approved"
-          ? "少主已经对上一轮准确描述的高风险动作明确同意。只可重试完全相同的参数；参数变化必须重新说明并取得新决定。"
-          : "少主已经拒绝上一轮高风险动作。不得执行，也不得换一种参数绕过；请说明已停止并提供低风险替代方案。"
-      };
-    });
-
-    api.on("after_tool_call", async (event, ctx) => {
-      if (ctx.agentId !== riskAgentId || !ctx.sessionKey || !["exec", "process"].includes(event.toolName)) return;
+    api.on("after_tool_call", async (event: any, ctx: any) => {
+      if (!ctx.agentId || !riskAgentIds.has(ctx.agentId) || !ctx.sessionKey || !["exec", "process"].includes(event.toolName)) return;
       const fingerprint = actionFingerprint(event.toolName, event.params);
+      const work = await findWorkContext(taskStatePath, ctx.sessionKey);
       await withRisk((state) => {
-        const record = [...state.records].reverse().find((item) => item.fingerprint === fingerprint && item.sessionKey === ctx.sessionKey && item.status === "executing");
+        const record = [...state.records].reverse().find((item) => item.fingerprint === fingerprint && item.status === "executing" && (!work || (item.planId === work.planId && item.workUnitId === work.workUnitId)));
         if (!record) return;
-        record.status = event.error ? "approved" : "completed";
+        record.status = event.error ? "execution_failed" : "completed";
         record.updatedAt = new Date().toISOString();
       });
     });
 
-    api.registerTool((ctx) => {
+    api.registerTool((ctx: any) => {
       if (!ctx.agentId || !agents.has(ctx.agentId) || !ctx.sessionKey) return null;
+      const toolSessionKey = ctx.sessionKey;
       const flows = api.runtime.tasks.flow.bindSession({
         sessionKey: controllerSessionKey,
         ...(ctx.deliveryContext ? { requesterOrigin: ctx.deliveryContext } : {})
@@ -314,7 +370,7 @@ export default definePluginEntry({
       return {
         name: "workflow_governance",
         label: "Workflow Governance",
-        description: "Persist formal plan, three independent complete reviews, execution, acceptance, sync and final notification in official Task Flow.",
+        description: "Persist formal plan, three independent complete reviews, execution, acceptance, sync, final notification, and risk governance in official Task Flow.",
         parameters: ParamsSchema,
         async execute(_id: string, raw: unknown) {
           const p = raw as JsonRecord;
@@ -322,17 +378,21 @@ export default definePluginEntry({
             if (p.action === "risk_status") {
               await riskQueue;
               const state = await readRiskState(riskStatePath);
-              const pending = state.records.filter((item) => item.sessionKey === ctx.sessionKey && !["completed", "declined"].includes(item.status) && Date.parse(item.expiresAt) > Date.now());
+              const work = await findWorkContext(taskStatePath, toolSessionKey);
+              const pending = state.records.filter((item) => !["completed", "declined", "execution_failed", "review_blocked"].includes(item.status) && Date.parse(item.expiresAt) > Date.now() &&
+                (item.ownerRoute === ctx.sessionKey || (work && item.planId === work.planId && item.workUnitId === work.workUnitId)));
               return result({ ok: true, pending: pending.map((item) => ({ level: item.level, status: item.status, goal: item.goal, impact: item.impact, rollback: item.rollback, alternative: item.alternative })) });
             }
             if (p.action === "record_preflight") {
-              if (ctx.agentId !== riskAgentId) throw new Error("only the risk agent can record a change preflight");
+              if (!ctx.agentId || !riskAgentIds.has(ctx.agentId)) throw new Error("only an engineering worker can record a change preflight");
               const fingerprint = text(p.action_fingerprint, "action_fingerprint").toLowerCase();
               const scope = text(p.scope_summary, "scope_summary");
               const backup = text(p.backup_summary, "backup_summary");
               const rollback = text(p.rollback_summary, "rollback_summary");
+              const work = await findWorkContext(taskStatePath, toolSessionKey);
+              if (!work) throw new Error("no formal work unit is associated with this worker session");
               const recorded = await withRisk((state) => {
-                const item = [...state.records].reverse().find((record) => record.fingerprint === fingerprint && record.sessionKey === ctx.sessionKey && record.level === "medium" && record.status === "preflight_required" && Date.parse(record.expiresAt) > Date.now());
+                const item = [...state.records].reverse().find((record) => record.fingerprint === fingerprint && record.planId === work.planId && record.workUnitId === work.workUnitId && record.level === "medium" && record.status === "preflight_required" && Date.parse(record.expiresAt) > Date.now());
                 if (!item) throw new Error("no matching medium-risk action is waiting for preflight");
                 item.preflight = { scope, backup, rollback };
                 item.status = "approved";
@@ -340,6 +400,116 @@ export default definePluginEntry({
                 return structuredClone(item);
               });
               return result({ ok: true, preflightReady: true, goal: recorded.goal, instruction: "现在只可重试参数完全相同的动作；参数变化需要重新预检。不要向少主索要许可。" });
+            }
+            if (p.action === "review_high_risk") {
+              if (!ctx.agentId || !riskAgentIds.has(ctx.agentId)) throw new Error("only an engineering worker can initiate a high-risk review");
+              const fingerprint = text(p.action_fingerprint, "action_fingerprint").toLowerCase();
+              const scope = text(p.scope_summary, "scope_summary");
+              const backup = text(p.backup_summary, "backup_summary");
+              const rollback = text(p.rollback_summary, "rollback_summary");
+              const work = await findWorkContext(taskStatePath, toolSessionKey);
+              if (!work) throw new Error("no formal work unit is associated with this worker session");
+              const reviewRunId = randomUUID();
+              const claimed = await withRisk((state) => {
+                const record = [...state.records].reverse().find((item) => item.fingerprint === fingerprint && item.planId === work.planId && item.workUnitId === work.workUnitId && item.level === "high" && item.status === "preflight_required" && Date.parse(item.expiresAt) > Date.now());
+                if (!record) throw new Error("no matching high-risk action is waiting for review");
+                if (record.reviewRunId) throw new Error("a review flow is already in progress for this action");
+                record.reviewRunId = reviewRunId;
+                record.status = "reviewing";
+                record.preflight = { scope, backup, rollback };
+                record.reviews = [];
+                record.updatedAt = new Date().toISOString();
+                return structuredClone(record);
+              });
+              const reviewMaterials = JSON.stringify({ goal: claimed.goal, impact: claimed.impact, worstCase: claimed.worstCase, decisionRollback: claimed.rollback, alternative: claimed.alternative, scope, backup, rollback, fingerprint });
+              for (let n = 1; n <= 3; n++) {
+                const reviewerSession = `agent:${reviewerAgentId}:risk-${reviewRunId}-${n}`;
+                registeredSessions.set(reviewerSession, { reviewRunId, role: "reviewer" });
+                let reviewResult: { verdict: string; reason: string; findings: string[] };
+                try {
+                  const raw = await api.runtime.subagent.run({
+                    sessionKey: reviewerSession,
+                    message: `你是独立审核员，请审核以下高风险动作资料，只返回严格JSON：{"verdict":"approve"或"block","reason":"...","findings":["..."]}\n\n${reviewMaterials}`,
+                    lane: "risk-review", lightContext: true, deliver: false,
+                    idempotencyKey: `risk-review:${reviewRunId}:${n}`
+                  });
+                  reviewResult = extractJson(extractText(raw));
+                } catch (error) {
+                  registeredSessions.delete(reviewerSession);
+                  await blockReviewRun(reviewRunId, `review ${n} failed: ${error instanceof Error ? error.message : String(error)}`);
+                  return result({ ok: false, blocked: true, reason: `review ${n} failed: ${error instanceof Error ? error.message : String(error)}` });
+                }
+                registeredSessions.delete(reviewerSession);
+                const reviewEntry: ReviewEntry = { reviewNumber: n as 1 | 2 | 3, sessionKey: reviewerSession, reviewRunId, verdict: reviewResult.verdict as "approve" | "block", reason: reviewResult.reason, findings: reviewResult.findings, reviewedAt: new Date().toISOString() };
+                const blockCheck = await withRisk((state) => {
+                  const record = [...state.records].reverse().find((item) => item.reviewRunId === reviewRunId && item.status === "reviewing");
+                  if (!record || record.reviewRunId !== reviewRunId) return { invalid: true };
+                  record.reviews = record.reviews || [];
+                  record.reviews.push(reviewEntry);
+                  if (reviewResult.verdict === "block") {
+                    record.status = "review_blocked";
+                    record.updatedAt = new Date().toISOString();
+                    return { blocked: true };
+                  }
+                  record.updatedAt = new Date().toISOString();
+                  return { ok: true };
+                });
+                if (blockCheck.invalid) return result({ ok: false, error: "review flow state changed during review" });
+                if (blockCheck.blocked) return result({ ok: false, blocked: true, reason: `review ${n} blocked: ${reviewResult.reason}` });
+              }
+              const draftSession = `agent:${decisionAgentId}:risk-draft-${reviewRunId}`;
+              registeredSessions.set(draftSession, { reviewRunId, role: "housekeeper" });
+              let notificationText: string;
+              try {
+                const draftRaw = await api.runtime.subagent.run({
+                  sessionKey: draftSession,
+                  message: `为以下高风险动作生成事前告知白话正文。正文必须符合${decisionAgentId === "housekeeper" ? "賈南風" : decisionAgentId}角色语气，包含：准备做什么、会影响什么、最坏可能怎样、出问题如何退回、已由审核员独立审核三次、"这是事前告知，不用回复，我会按计划继续"、预计开始时间。正文不得出现命令、路径、指纹、会话编号、内部卡片名或工程缩写。\n\n${reviewMaterials}`,
+                  lane: "risk-notification-draft", lightContext: true, deliver: false,
+                  idempotencyKey: `risk-draft:${reviewRunId}`
+                });
+                notificationText = extractText(draftRaw).trim();
+              } catch (error) {
+                registeredSessions.delete(draftSession);
+                await blockReviewRun(reviewRunId, `notification draft failed: ${error instanceof Error ? error.message : String(error)}`);
+                return result({ ok: false, blocked: true, reason: `notification draft failed: ${error instanceof Error ? error.message : String(error)}` });
+              }
+              registeredSessions.delete(draftSession);
+              if (!notificationText || notificationText.length < 20) {
+                await blockReviewRun(reviewRunId, "notification text too short or empty");
+                return result({ ok: false, blocked: true, reason: "notification text too short or empty" });
+              }
+              const forbiddenPatterns = [/\b(exec|process|rm\s+-rf|chmod|reboot|shutdown)\b/i, /\b\/[a-z]\//i, /\b[a-f0-9]{32,}\b/i, /fingerprint|session|agent:|cardId|workUnit/i];
+              for (const pattern of forbiddenPatterns) {
+                if (pattern.test(notificationText)) {
+                  await blockReviewRun(reviewRunId, "notification text contains forbidden engineering content");
+                  return result({ ok: false, blocked: true, reason: "notification text contains forbidden engineering content" });
+                }
+              }
+              let messageId: string | undefined;
+              try {
+                const adapter = await api.runtime.channel.outbound.loadAdapter("telegram");
+                if (!adapter?.sendText) throw new Error("telegram outbound adapter unavailable");
+                const sendResult: any = await adapter.sendText({ cfg: api.runtime.config.current() as any, accountId: decisionAgentId, to: ownerTelegramId, text: notificationText });
+                const firstResult = Array.isArray(sendResult) ? sendResult[0] : sendResult;
+                messageId = typeof firstResult?.messageId === "string" ? firstResult.messageId : (typeof firstResult?.results?.[0]?.messageId === "string" ? firstResult.results[0].messageId : undefined);
+              } catch (error) {
+                await blockReviewRun(reviewRunId, `telegram notification failed: ${error instanceof Error ? error.message : String(error)}`);
+                return result({ ok: false, blocked: true, reason: `telegram notification failed: ${error instanceof Error ? error.message : String(error)}` });
+              }
+              if (!messageId) {
+                await blockReviewRun(reviewRunId, "telegram returned empty message ID");
+                return result({ ok: false, blocked: true, reason: "telegram returned empty message ID" });
+              }
+              const notified = await withRisk((state) => {
+                const record = [...state.records].reverse().find((item) => item.reviewRunId === reviewRunId && item.status === "reviewing");
+                if (!record || record.reviewRunId !== reviewRunId) return { invalid: true };
+                record.status = "notified";
+                record.notification = { bodySummary: notificationText.substring(0, 200), messageId, sentAt: new Date().toISOString() };
+                record.updatedAt = new Date().toISOString();
+                return { ok: true, record: structuredClone(record) };
+              });
+              if (notified.invalid) return result({ ok: false, error: "review flow state changed during notification" });
+              return result({ ok: true, notified: true, instruction: "事前告知已发送。现在只可重试参数完全相同的动作；参数变化必须重新审核。不用等待少主回复。" });
             }
             if (p.action === "list") return result({ ok: true, flows: flows.list() });
             if (p.action === "create") {
@@ -415,8 +585,8 @@ export default definePluginEntry({
             }
             if (p.action === "set_stage") {
               const next = text(p.stage, "stage");
-              const allowed: Record<string, string> = { implementation: "validation", validation: "documentation", documentation: "sync" };
-              if (allowed[state.stage] !== next) throw new Error(`invalid stage transition from ${state.stage} to ${next}`);
+              const allowed = { implementation: "validation", validation: "documentation", documentation: "sync" };
+              if (allowed[state.stage as keyof typeof allowed] !== next) throw new Error(`invalid stage transition from ${state.stage} to ${next}`);
               state.stage = next;
               return result({ ok: true, flow: requireApplied(flows.resume({ flowId: flow.flowId, expectedRevision: flow.revision, status: "running", currentStep: next, stateJson: state })) });
             }
@@ -436,26 +606,31 @@ export default definePluginEntry({
                   throw new Error("all child tasks must reach successful terminal state before final notification");
                 }
               }
-              const evidence = Array.isArray(p.acceptance_evidence) ? p.acceptance_evidence as string[] : [];
+              const evidence = Array.isArray(p.acceptance_evidence) ? p.acceptance_evidence : [];
               if (evidence.length < state.acceptanceCriteria.length || evidence.some((v) => !HASH.test(v))) throw new Error("acceptance evidence is incomplete");
-              state.acceptanceEvidence = evidence; state.unfixableItems = Array.isArray(p.unfixable_items) ? p.unfixable_items as string[] : [];
+              state.acceptanceEvidence = evidence;
+              state.unfixableItems = Array.isArray(p.unfixable_items) ? p.unfixable_items : [];
               const eventKey = `workflow:${flow.flowId}:${state.planHash}:completion`;
-              state.notification = { eventKey }; state.stage = "notification_pending";
+              state.notification = { eventKey };
+              state.stage = "notification_pending";
               const updated = requireApplied(flows.setWaiting({ flowId: flow.flowId, expectedRevision: flow.revision, currentStep: "notification_pending", stateJson: state, waitJson: { kind: "owner_notification", eventKey } }));
               return result({ ok: true, eventKey, flow: updated });
             }
             if (p.action === "acknowledge_notification") {
               if (state.stage !== "notification_pending" || !state.notification) throw new Error("no final notification is pending");
               state.notification.messageId = text(p.notification_message_id, "notification_message_id");
-              state.notification.acknowledgedAt = new Date().toISOString(); state.stage = "completed";
+              state.notification.acknowledgedAt = new Date().toISOString();
+              state.stage = "completed";
               return result({ ok: true, flow: requireApplied(flows.finish({ flowId: flow.flowId, expectedRevision: flow.revision, stateJson: state })) });
             }
             if (p.action === "block") {
-              const reason = text(p.blocked_reason, "blocked_reason"); state.stage = "blocked";
+              const reason = text(p.blocked_reason, "blocked_reason");
+              state.stage = "blocked";
               return result({ ok: true, flow: requireApplied(flows.setWaiting({ flowId: flow.flowId, expectedRevision: flow.revision, currentStep: "blocked", blockedSummary: reason, stateJson: state, waitJson: { kind: "blocked", reason } })) });
             }
             throw new Error(`unknown action: ${String(p.action)}`);
-          } catch (error) {
+          }
+          catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             api.logger.warn(`workflow_governance rejected: ${message}`);
             return result({ ok: false, error: message });
