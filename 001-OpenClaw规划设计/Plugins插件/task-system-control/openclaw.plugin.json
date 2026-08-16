@@ -1,0 +1,60 @@
+{
+  "id": "task-system-control",
+  "name": "Task System Control",
+  "description": "Durable owner intake, direct receipt-gated role workers, truthful lifecycle state and completion wakeups.",
+  "version": "2.1.0",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "statePath": { "type": "string" },
+      "boardId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,79}$", "default": "task-system" },
+      "ownerTelegramId": { "type": "string" },
+      "gatewayTimeoutMs": { "type": "integer", "minimum": 1000, "maximum": 60000, "default": 15000 },
+      "controllerLeaseMs": { "type": "integer", "minimum": 30000, "maximum": 3600000, "default": 600000 },
+      "maxDispatchPasses": { "type": "integer", "minimum": 1, "maximum": 8, "default": 8 },
+      "agents": {
+        "type": "object",
+        "additionalProperties": { "type": "string" },
+        "default": {
+          "housekeeper": "housekeeper",
+          "ops": "default",
+          "life": "life",
+          "coder": "coder",
+          "reviewer": "reviewer",
+          "companion-dugu": "companion-dugu",
+          "companion-wu": "companion-wu",
+          "companion-lv": "companion-lv"
+        }
+      },
+      "controllerSessions": {
+        "type": "object",
+        "additionalProperties": { "type": "string" }
+      },
+      "capabilities": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["owners", "requiredTools", "readOnly", "sideEffect"],
+          "properties": {
+            "owners": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+            "requiredTools": { "type": "array", "items": { "type": "string" } },
+            "readOnly": { "type": "boolean" },
+            "sideEffect": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  },
+  "activation": { "onStartup": true },
+  "contracts": { "tools": ["task_intake", "task_delegate", "task_handoff", "task_module", "task_work_proof", "task_work_complete"] },
+  "toolMetadata": {
+    "task_intake": { "optional": true },
+    "task_delegate": { "optional": true },
+    "task_handoff": { "optional": true },
+    "task_module": { "optional": true },
+    "task_work_proof": { "optional": true },
+    "task_work_complete": { "optional": true }
+  }
+}
